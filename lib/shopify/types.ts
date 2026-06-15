@@ -125,6 +125,10 @@ export type SEO = {
   description: string;
 };
 
+export type ProductMetafield = {
+  value: string;
+} | null;
+
 export type ShopifyCart = {
   id: string | undefined;
   checkoutUrl: string;
@@ -163,6 +167,8 @@ export type ShopifyProduct = {
   seo: SEO;
   tags: string[];
   updatedAt: string;
+  technicalDetails?: ProductMetafield;
+  sizeChart?: ProductMetafield;
 };
 
 export type ShopifyCartOperation = {

@@ -56,6 +56,12 @@ const productFragment = /* GraphQL */ `
     }
     tags
     updatedAt
+    technicalDetails: metafield(namespace: "custom", key: "technical_details") {
+      value
+    }
+    sizeChart: metafield(namespace: "custom", key: "size_chart") {
+      value
+    }
   }
   ${imageFragment}
   ${seoFragment}

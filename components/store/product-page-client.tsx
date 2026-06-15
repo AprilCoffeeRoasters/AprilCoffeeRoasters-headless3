@@ -4,8 +4,13 @@ import clsx from "clsx";
 import CategoryNav from "components/store/category-nav";
 import Footer from "components/store/collections/footer";
 import Logo from "components/store/logo";
+import ProductMetafieldModal from "components/store/product-metafield-modal";
 import ProductPageAddToCart from "components/store/product-page-add-to-cart";
 import type { Product } from "lib/shopify/types";
+import type {
+  ParsedSizeChart,
+  ParsedTechnicalDetails,
+} from "lib/store/parse-product-metafields";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type UIEvent } from "react";
@@ -37,6 +42,8 @@ export type ProductPageClientProps = {
   handle: string;
   title: string;
   descriptionLines: string[];
+  technicalDetails: ParsedTechnicalDetails | null;
+  sizeChart: ParsedSizeChart | null;
   images: ProductPageImage[];
   variants: ProductPageVariant[];
   relatedProducts: ProductPageRelated[];
@@ -116,6 +123,8 @@ export default function ProductPageClient({
   productId,
   title,
   descriptionLines,
+  technicalDetails,
+  sizeChart,
   images,
   variants,
   relatedProducts,
@@ -123,6 +132,9 @@ export default function ProductPageClient({
 }: ProductPageClientProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [openMetafieldModal, setOpenMetafieldModal] = useState<
+    "technical-details" | "size-chart" | null
+  >(null);
   
   const [selectedVariantId, setSelectedVariantId] = useState(
     variants[0]?.id ?? "",
@@ -639,37 +651,31 @@ export default function ProductPageClient({
     ) : null}
 
     {/* LINKS — desktop: after price; mobile: after description */}
-    {/* <div className="mt-5 flex flex-col gap-0 phone:order-4">
-      <button
-        type="button"
-        className="text-sm uppercase underline hover:text-gray-300 hover:no-underline"
-        aria-label="product-technical-details"
-      >
-        Technical Details
-      </button>
-      <button
-        type="button"
-        className="text-sm uppercase underline hover:text-gray-300 hover:no-underline"
-        aria-label="product-size-chart"
-      >
-        Size Chart
-      </button>
-    </div> */}
-<div className="mt-5 flex flex-col gap-0 phone:order-4">
-  <button
-    type="button"
-    className="m-0 p-0 text-left text-sm uppercase underline hover:text-gray-300 hover:no-underline"
-  >
-    Technical Details
-  </button>
+    {(technicalDetails || sizeChart) ? (
+      <div className="mt-5 flex flex-col gap-0 phone:order-4">
+        {technicalDetails ? (
+          <button
+            type="button"
+            className="m-0 p-0 text-left text-sm uppercase underline hover:text-gray-300 hover:no-underline"
+            aria-label="product-technical-details"
+            onClick={() => setOpenMetafieldModal("technical-details")}
+          >
+            Technical Details
+          </button>
+        ) : null}
 
-  <button
-    type="button"
-    className="m-0 p-0 text-left text-sm uppercase underline hover:text-gray-300 hover:no-underline"
-  >
-    Size Chart
-  </button>
-</div>
+        {sizeChart ? (
+          <button
+            type="button"
+            className="m-0 p-0 text-left text-sm uppercase underline hover:text-gray-300 hover:no-underline"
+            aria-label="product-size-chart"
+            onClick={() => setOpenMetafieldModal("size-chart")}
+          >
+            Size Chart
+          </button>
+        ) : null}
+      </div>
+    ) : null}
     {/* ACTIONS — mobile: first after product image */}
     {variants.length > 0 && hasAnyVariantAvailable ? (
       <div
@@ -786,6 +792,18 @@ export default function ProductPageClient({
       </div>
       {/* <Footer /> */}
 
+      <ProductMetafieldModal
+        isOpen={openMetafieldModal === "technical-details"}
+        onClose={() => setOpenMetafieldModal(null)}
+        productTitle={title}
+        technicalDetails={technicalDetails}
+      />
+      <ProductMetafieldModal
+        isOpen={openMetafieldModal === "size-chart"}
+        onClose={() => setOpenMetafieldModal(null)}
+        productTitle={title}
+        sizeChart={sizeChart}
+      />
     </>
   );
 }

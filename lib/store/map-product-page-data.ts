@@ -6,6 +6,10 @@ import type {
 } from "components/store/product-page-client";
 import type { Product, ProductVariant } from "lib/shopify/types";
 import { shopifyImageUrl } from "lib/shopify-image-url";
+import {
+  parseSizeChart,
+  parseTechnicalDetails,
+} from "lib/store/parse-product-metafields";
 import { parseProductDescriptionLines } from "lib/store/parse-product-description";
 
 function formatVariantPrice(variant: ProductVariant): string {
@@ -83,6 +87,8 @@ export function mapProductPageData(
       product.description,
       product.descriptionHtml,
     ),
+    technicalDetails: parseTechnicalDetails(product.technicalDetails?.value),
+    sizeChart: parseSizeChart(product.sizeChart?.value),
     images,
     variants,
     relatedProducts,
