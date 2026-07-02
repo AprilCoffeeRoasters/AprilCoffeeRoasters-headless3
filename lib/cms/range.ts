@@ -1,6 +1,11 @@
 import { gql } from "graphql-request";
 import {
+  unstable_cacheLife as cacheLife,
+  unstable_cacheTag as cacheTag,
+} from "next/cache";
+import {
   datoRequest,
+  datoCacheTag,
   isDatoCmsConfigured,
   type DatoResponsiveImage,
   type DatoStructuredTextValue,
@@ -218,6 +223,10 @@ async function getAllRangeProducts(): Promise<
 }
 
 export async function getAllRanges(): Promise<DatoRangeRecord[]> {
+  "use cache";
+  cacheTag(datoCacheTag());
+  cacheLife("days");
+
   const query = gql`
     ${rangeFields}
     query AllRanges {
@@ -242,6 +251,10 @@ export async function getAllRanges(): Promise<DatoRangeRecord[]> {
 export async function getRangeBySlug(
   slug: string,
 ): Promise<DatoRangeRecord | null> {
+  "use cache";
+  cacheTag(datoCacheTag(), `dato:range:${slug}`);
+  cacheLife("days");
+
   const query = gql`
     ${rangeFields}
     query Range($slug: String!) {

@@ -298,7 +298,11 @@ import type {
   LandingPageData,
   LandingTriFergNavItem,
 } from "lib/landing-types";
-import { cache } from "react";
+import {
+  unstable_cacheLife as cacheLife,
+  unstable_cacheTag as cacheTag,
+} from "next/cache";
+import { datoCacheTag } from "lib/cms/datocms";
 
 const LATEST_ADVICE_SLOT = 2;
 
@@ -513,6 +517,10 @@ function withRangeHeaderLinks(links: LandingLink[], rangeLinks: LandingLink[]) {
 }
 
 async function loadLandingPageData(): Promise<LandingPageData> {
+  "use cache";
+  cacheTag(datoCacheTag());
+  cacheLife("days");
+
   const [cmsLanding, adviceFeed, rangeLinks] = await Promise.all([
     getDatoLandingPageContent(),
     getAdviceFeed(),
@@ -576,4 +584,4 @@ async function loadLandingPageData(): Promise<LandingPageData> {
   };
 }
 
-export const getLandingPageData = cache(loadLandingPageData);
+export const getLandingPageData = loadLandingPageData;

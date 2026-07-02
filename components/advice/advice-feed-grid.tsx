@@ -1,7 +1,7 @@
 "use client";
 
 import type { AdviceFeedItem, AdviceFeedMetadata } from "lib/advice-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdviceCard, type AdviceCardProps } from "./advice-card";
 
 function splitIntoColumns(items: AdviceCardProps[]) {
@@ -35,6 +35,11 @@ export function AdviceFeedGrid({
   const [items, setItems] = useState(initialFeed);
   const [metadata, setMetadata] = useState(initialMetadata);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setItems(initialFeed);
+    setMetadata(initialMetadata);
+  }, [initialFeed, initialMetadata]);
 
   const cardProps = items.map(toCardProps);
   const columns = splitIntoColumns(cardProps);

@@ -1,5 +1,10 @@
 import { gql } from "graphql-request";
 import {
+  unstable_cacheLife as cacheLife,
+  unstable_cacheTag as cacheTag,
+} from "next/cache";
+import {
+    datoCacheTag,
     datoRequest,
     isDatoCmsConfigured,
     type DatoResponsiveImage
@@ -85,6 +90,10 @@ function isMissingHomepageModel(error: unknown): boolean {
 }
 
 export async function getDatoLandingPageContent(): Promise<DatoLandingPageContent | null> {
+  "use cache";
+  cacheTag(datoCacheTag());
+  cacheLife("days");
+
   if (!isDatoCmsConfigured()) return null;
 
   try {
