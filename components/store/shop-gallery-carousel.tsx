@@ -55,7 +55,7 @@ export default function ShopGalleryCarousel({
           <button
             type="button"
             aria-label="left-gallery-button"
-            className="z-10 shrink-0 cursor-pointer bg-white p-2 phone:absolute phone:left-0 phone:h-full phone:bg-transparent"
+            className="z-10 shrink-0 cursor-pointer bg-white p-2 max-md:absolute max-md:left-0 max-md:h-full max-md:bg-transparent"
             onClick={() => goTo(index - 1)}
           >
             <GalleryArrow direction="left" />
@@ -102,7 +102,7 @@ export default function ShopGalleryCarousel({
           <button
             type="button"
             aria-label="right-gallery-button"
-            className="z-10 shrink-0 cursor-pointer bg-white p-2 phone:absolute phone:right-0 phone:h-full phone:bg-transparent"
+            className="z-10 shrink-0 cursor-pointer bg-white p-2 max-md:absolute max-md:right-0 max-md:h-full max-md:bg-transparent"
             onClick={() => goTo(index + 1)}
           >
             <GalleryArrow direction="right" />
@@ -113,7 +113,7 @@ export default function ShopGalleryCarousel({
       {count > 1 ? (
         <div
           aria-label="gallery-index"
-          className="mt-3 flex w-full justify-end text-sm text-[#9ca3af] phone:justify-center"
+          className="mt-3 flex w-full justify-end text-sm text-[#9ca3af] max-md:justify-center"
         >
           {index + 1} / {count}
         </div>

@@ -5,13 +5,20 @@ import {
 import { fetchShopifyAdviceFeed } from "lib/shopify-advice";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
-
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     if (isDatoCmsConfigured()) {
-      const data = await fetchDatoAdviceFeed();
-      return NextResponse.json(data);
+      try {
+        const data = await fetchDatoAdviceFeed();
+        return NextResponse.json(data);
+      } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            "DatoCMS advice API failed, falling back to Shopify:",
+            error,
+          );
+        }
+      }
     }
 
     const cursor = req.nextUrl.searchParams.get("cursor");

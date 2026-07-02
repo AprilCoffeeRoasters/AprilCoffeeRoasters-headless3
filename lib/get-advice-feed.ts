@@ -10,7 +10,16 @@ export async function getAdviceFeed(
   cursor?: string | null,
 ): Promise<AdviceFeedResponse> {
   if (isDatoCmsConfigured()) {
-    return fetchDatoAdviceFeed();
+    try {
+      return await fetchDatoAdviceFeed();
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          "DatoCMS advice feed failed, falling back to Shopify:",
+          error,
+        );
+      }
+    }
   }
 
   try {

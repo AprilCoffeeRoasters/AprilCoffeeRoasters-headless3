@@ -70,17 +70,17 @@ export function AdviceFeedGrid({
       {/* Mobile: single-column feed */}
       <div
         aria-label="advice-view"
-        className="flex w-full min-w-0 flex-col tablet:hidden"
+        className="flex w-full min-w-0 flex-col md:hidden"
       >
         {cardProps.map((item) => (
           <AdviceCard key={item.href} {...item} layout="mobile" />
         ))}
       </div>
 
-      {/* Tablet+: 3-column masonry */}
+      {/* md+: 3-column masonry */}
       <div
         aria-label="advice-view"
-        className="hidden w-full min-w-0 tablet:mt-14 tablet:flex desktop:mt-14"
+        className="hidden w-full min-w-0 md:mt-14 md:flex lg:mt-14"
       >
         {columns.map((column, columnIndex) => (
           <div key={columnIndex} className="min-w-0 flex-1 basis-0 pl-0">

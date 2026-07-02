@@ -31,12 +31,12 @@ export default async function PalaceLandingPage() {
                   className={`group relative block w-24 md:w-56 ${item.fillClass}`}
                 >
                   <div
-                    className="w-full transition-opacity duration-150 ease-in-out desktop:group-hover:opacity-20"
+                    className="w-full transition-opacity duration-150 ease-in-out lg:group-hover:opacity-20"
                     aria-label="tri-ferg"
                   >
                     <TriFergSvg />
                   </div>
-                  <h2 className="mt-2 text-center text-xs md:mt-0 md:text-md desktop:absolute desktop:inset-0 desktop:flex desktop:w-full desktop:items-center desktop:justify-center desktop:text-xl desktop:opacity-0 desktop:transition-opacity desktop:duration-150 desktop:ease-in-out desktop:group-hover:opacity-100">
+                  <h2 className="mt-2 text-center text-xs md:mt-0 md:text-md lg:absolute lg:inset-0 lg:flex lg:w-full lg:items-center lg:justify-center lg:text-xl lg:opacity-0 lg:transition-opacity lg:duration-150 lg:ease-in-out lg:group-hover:opacity-100">
                     {item.title}
                   </h2>
                 </Link>

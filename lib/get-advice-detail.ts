@@ -24,7 +24,17 @@ export async function getAdviceDetail(
   slug: string,
 ): Promise<AdviceArticleDetail | null> {
   if (isDatoCmsConfigured()) {
-    return fetchDatoAdviceDetail(slug);
+    try {
+      const article = await fetchDatoAdviceDetail(slug);
+      if (article) return article;
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          `DatoCMS advice "${slug}" failed, falling back to Shopify:`,
+          error,
+        );
+      }
+    }
   }
 
   const article = await fetchShopifyArticleDetail("advice", slug);

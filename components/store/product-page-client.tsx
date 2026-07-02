@@ -224,13 +224,13 @@ export default function ProductPageClient({
   sm:mt-8
   sm:w-[75.2%]
 
-  phone:h-auto
-  phone:overflow-y-visible
-  phone:float-none
-  phone:mt-0
-  phone:w-full
-  phone:pr-0
-  phone:-translate-x-0
+  max-md:h-auto
+  max-md:overflow-y-visible
+  max-md:float-none
+  max-md:mt-0
+  max-md:w-full
+  max-md:pr-0
+  max-md:-translate-x-0
 "
 //           className="
 //   h-[calc(100vh-130px)]
@@ -241,7 +241,7 @@ export default function ProductPageClient({
 //   sm:w-[78%]
 // "
        
-//  className="h-[calc(100vh-130px)] min-h-0 overflow-y-auto mt-5 w-9/12 phone:h-auto phone:overflow-y-visible phone:float-none phone:mt-0 phone:w-full tablet:w-10/12 phone:-translate-x-0 ease-out duration-300"
+//  className="h-[calc(100vh-130px)] min-h-0 overflow-y-auto mt-5 w-9/12 max-md:h-auto max-md:overflow-y-visible max-md:float-none max-md:mt-0 max-md:w-full md:w-10/12 max-md:-translate-x-0 ease-out duration-300"
         >
        <div
   aria-label="product-view"
@@ -252,12 +252,12 @@ export default function ProductPageClient({
     justify-between
     gap-[2%]
 
-    phone:flex-col
+    max-md:flex-col
   "
 >
   {/* Mobile: title + price above images; desktop unchanged */}
   {!galleryMode ? (
-    <div className="hidden w-full min-w-0 phone:block phone:px-5">
+    <div className="hidden w-full min-w-0 max-md:block max-md:px-5">
       <ProductHeader
         title={title}
         price={selectedVariant?.price ?? ""}
@@ -274,18 +274,18 @@ export default function ProductPageClient({
     //     min-w-0
     //     cursor-zoom-in
 
-    //     phone:w-full
+    //     max-md:w-full
     //   "
     // >
     <div
   className={`
     min-w-0
-    phone:w-full
+    max-md:w-full
 
     ${
       galleryMode
         ? "w-full cursor-zoom-out"
-        : "w-[68%] cursor-zoom-in phone:cursor-zoom-in"
+        : "w-[68%] cursor-zoom-in max-md:cursor-zoom-in"
     }
   `}
 >
@@ -293,7 +293,7 @@ export default function ProductPageClient({
     <div
       id="slider"
       className={clsx(
-        "m-auto mt-0 hidden phone:block",
+        "m-auto mt-0 hidden max-md:block",
         galleryMode ? "cursor-zoom-out" : "cursor-zoom-in",
       )}
       onClick={() =>
@@ -407,7 +407,7 @@ export default function ProductPageClient({
   <>
     {/* Desktop: click-to-zoom carousel + thumbnails */}
     <div
-      className="m-auto mt-0 phone:hidden"
+      className="m-auto mt-0 max-md:hidden"
       onClick={() => setGalleryMode(true)}
     >
       <div aria-label="product-images-carousel">
@@ -484,7 +484,7 @@ export default function ProductPageClient({
           mt-4
           w-full
 
-          phone:hidden
+          max-md:hidden
         "
       >
         <div
@@ -523,7 +523,7 @@ export default function ProductPageClient({
 ) : (
   /* ZOOM GALLERY (desktop only) */
   <div
-    className="w-full cursor-zoom-out phone:hidden"
+    className="w-full cursor-zoom-out max-md:hidden"
     aria-label="product-images-gallery"
     onClick={() => setGalleryMode(false)}
   >
@@ -556,7 +556,7 @@ export default function ProductPageClient({
             mt-4
             w-full
 
-            phone:hidden
+            max-md:hidden
           "
         >
           <div
@@ -600,8 +600,8 @@ export default function ProductPageClient({
       flex-col
       items-start
 
-      phone:w-full
-      phone:px-5
+      max-md:w-full
+      max-md:px-5
     "
   > */}
   {/* RIGHT SIDE */}
@@ -614,15 +614,15 @@ export default function ProductPageClient({
       flex-col
       items-start
 
-      phone:w-full
-      phone:px-5
+      max-md:w-full
+      max-md:px-5
     "
   >
     {/* HEADER — desktop only; mobile uses block above images */}
     <ProductHeader
       title={title}
       price={selectedVariant?.price ?? ""}
-      className="phone:hidden"
+      className="max-md:hidden"
     />
 
       {/* DESCRIPTION — mobile: after related products */}
@@ -639,7 +639,7 @@ export default function ProductPageClient({
           uppercase
           leading-5
          sm:leading-[18px]
-          phone:order-3
+          max-md:order-3
         "
       >
         <ul className="list-disc pl-4">
@@ -650,9 +650,9 @@ export default function ProductPageClient({
       </div>
     ) : null}
 
-    {/* LINKS — desktop: after price; mobile: after description */}
+    {/* LINKS — lg: after price; mobile: after description */}
     {(technicalDetails || sizeChart) ? (
-      <div className="mt-5 flex flex-col gap-0 phone:order-4">
+      <div className="mt-5 flex flex-col gap-0 max-md:order-4">
         {technicalDetails ? (
           <button
             type="button"
@@ -687,8 +687,8 @@ export default function ProductPageClient({
           grid-cols-2
           gap-2
 
-          phone:order-1
-          phone:mt-5
+          max-md:order-1
+          max-md:mt-5
         "
       >
         <div
@@ -722,8 +722,8 @@ export default function ProductPageClient({
               hover:text-black
               focus:ring-0
 
-              phone:h-8
-              phone:text-base
+              max-md:h-8
+              max-md:text-base
             "
           >
             {variants.map((variant) => (
@@ -742,7 +742,7 @@ export default function ProductPageClient({
           product={product}
           selectedVariantId={selectedVariantId}
           variantLabel={selectedVariant?.label ?? "item"}
-          className="flex h-7 w-full items-center justify-center border-2 border-black bg-black px-4 text-sm font-bold uppercase text-white transition hover:bg-white hover:text-black  phone:h-8 phone:text-base"
+          className="flex h-7 w-full items-center justify-center border-2 border-black bg-black px-4 text-sm font-bold uppercase text-white transition hover:bg-white hover:text-black  max-md:h-8 max-md:text-base"
         />
       </div>
     ) : null}
@@ -752,7 +752,7 @@ export default function ProductPageClient({
       <div
         aria-label="product-selector-grid"
         id="product-selector-grid"
-        className="mt-6 w-full phone:order-2"
+        className="mt-6 w-full max-md:order-2"
       >
         <div className="grid grid-cols-4 text-center">
           {relatedProducts.map((product) => (
@@ -784,7 +784,7 @@ export default function ProductPageClient({
   </div>
 )}
 </div>
-          <div className={galleryMode ? "phone:hidden" : undefined}>
+          <div className={galleryMode ? "max-md:hidden" : undefined}>
             <Footer />
           </div>
         </main>

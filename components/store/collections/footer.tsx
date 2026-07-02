@@ -64,7 +64,7 @@ const socialLinks = [
 ];
 
 const listItemClass =
-  "mx-2.5 list-none pb-1.5 text-sm hover:underline phone:mx-0";
+  "mx-2.5 list-none pb-1.5 text-sm hover:underline max-md:mx-0";
 
 function FooterLink({
   href,
@@ -139,10 +139,10 @@ export default function Footer() {
     <footer
       id="footer"
       aria-label="footer"
-      className="shrink-0 clear-both mx-auto my-0 h-1/4 max-w-sm phone:mt-10 phone:max-w-xs phone:-translate-x-0 ease-out duration-300"
+      className="shrink-0 clear-both mx-auto my-0 h-1/4 max-w-sm max-md:mt-10 max-md:max-w-xs max-md:-translate-x-0 ease-out duration-300"
     >
-      <div className="text-center leading-4 phone:leading-none">
-        <div className="block desktop:hidden desktop:invisible md:hidden md:invisible">
+      <div className="text-center leading-4 max-md:leading-none">
+        <div className="block lg:hidden lg:invisible md:hidden md:invisible">
           <details className="my-2 text-sm uppercase">
             <summary className={detailsSummaryClass}>
               <h4 className="w-full text-center">Shops</h4>
@@ -174,7 +174,7 @@ export default function Footer() {
           </details>
         </div>
 
-        <div className="flex flex-row place-content-around phone:hidden phone:invisible">
+        <div className="flex flex-row place-content-around max-md:hidden max-md:invisible">
           <div className="my-5 text-sm uppercase">
             <h4 className="mt-1 select-none pb-1.5 font-bold">Shops</h4>
             <ShopList />

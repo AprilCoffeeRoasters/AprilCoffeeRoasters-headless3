@@ -30,15 +30,15 @@ export function ArticleDetail({
           aria-label="advice-item-view"
           className="w-full pb-4 uppercase"
         >
-          <div className="flex flex-row font-bold phone:flex-col">
+          <div className="flex flex-row font-bold max-md:flex-col">
             <h1
               aria-label="advice-item-title"
-              className="w-3/4 py-2 text-md phone:w-full"
+              className="w-3/4 py-2 text-[17.6px] sm:text-[18px] sm:leading-[26px] max-md:w-full"
             >
               {article.title}
             </h1>
 
-            <div className="w-1/4 whitespace-pre text-sm phone:w-auto phone:text-xs tablet:w-auto">
+            <div className="w-1/4 whitespace-pre text-sm max-md:w-auto max-md:text-xs md:w-auto">
               {sidebarText ? (
                 <p aria-label="advice-item-description">{sidebarText}</p>
               ) : null}
@@ -61,7 +61,7 @@ export function ArticleDetail({
           ) : null}
 
           {editorialImages.length ? (
-            <div className="sm:mt-7.5 mt-2.5 grid grid-cols-3 gap-[20px] sm:px-2.5 px-0 phone:grid-cols-1">
+            <div className="sm:mt-7.5 mt-2.5 grid grid-cols-3 gap-[20px] sm:px-2.5 px-0 max-md:grid-cols-1">
               {editorialImages.map((image, index) => (
                 <div key={image.url || index}>
                   <Image
@@ -79,7 +79,7 @@ export function ArticleDetail({
           ) : null}
 
           {productImages.length ? (
-            <div className="mt-14 grid grid-cols-3 gap-y-20 gap-x-10 px-8 phone:grid-cols-2 phone:gap-x-5 phone:gap-y-10">
+            <div className="mt-14 grid grid-cols-3 gap-y-20 gap-x-10 px-8 max-md:grid-cols-2 max-md:gap-x-5 max-md:gap-y-10">
               {productImages.map((image, index) => (
                 <div
                   key={image.url || index}

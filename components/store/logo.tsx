@@ -15,7 +15,7 @@ function shouldShowStoreCart(pathname: string) {
   );
 }
 
-const TRI_FERG_MARK_CLASS = "ml-1.5 inline-block w-20 phone:w-12";
+const TRI_FERG_MARK_CLASS = "ml-1.5 inline-block w-20 max-md:w-12";
 
 const TRI_FERG_MARKS = [
   { id: "grey", fillClass: "fill-tri-ferg-grey" },
@@ -68,16 +68,16 @@ export default function Logo({
       role="banner"
       id="header"
       aria-label="header"
-      className="mx-auto flex max-w-(--breakpoint-xl) py-2.5 text-center ease-out duration-300 phone:sticky phone:top-0 phone:z-50 phone:w-full phone:py-1.5 phone:pb-4 md:w-[90%] md:pb-4 desktop:w-[70%]"
+      className="mx-auto flex max-w-(--breakpoint-xl) py-2.5 text-center ease-out duration-300 max-md:sticky max-md:top-0 max-md:z-50 max-md:w-full max-md:py-1.5 max-md:pb-4 md:w-[90%] md:pb-4 lg:w-[70%]"
     >
-      <div className="w-4/12 phone:invisible phone:hidden" />
+      <div className="w-4/12 max-md:invisible max-md:hidden" />
 
-      <div className="w-4/12 phone:w-1/2 phone:text-left">
+      <div className="w-4/12 max-md:w-1/2 max-md:text-left">
         <Link
           href="/"
           id="header-fergs"
           aria-label="header-fergs"
-          className="mx-auto flex cursor-pointer phone:ml-4"
+          className="mx-auto flex cursor-pointer max-md:ml-4"
         >
           {marks.map((mark) => (
             <div
@@ -91,13 +91,13 @@ export default function Logo({
         </Link>
       </div>
 
-      <div className="w-4/12 phone:w-1/2">
+      <div className="w-4/12 max-md:w-1/2">
         {/* <div className="float-right flex translate-y-1/2 items-start gap-1"> */}
         <div className="float-right flex translate-y-1/2">
           {showCart ? <StoreCart /> : null}
           {/* <button
             type="button"
-            className="ml-auto pl-2.5 md:invisible md:hidden desktop:invisible desktop:hidden"
+            className="ml-auto pl-2.5 md:invisible md:hidden lg:invisible lg:hidden"
             aria-label="mobile-menu-btn"
             id="mobile-menu-btn"
             data-menu-open={menuOpen ? "true" : "false"}
@@ -121,7 +121,7 @@ export default function Logo({
           {/* {productGalleryOpen ? (
             <button
               type="button"
-              className="ml-auto pr-5 text-[2rem] font-light leading-none tablet:invisible tablet:hidden desktop:invisible desktop:hidden"
+              className="ml-auto pr-5 text-[2rem] font-light leading-none md:invisible md:hidden"
               aria-label="close-product-gallery"
               onClick={onProductGalleryClose}
             >
@@ -131,7 +131,7 @@ export default function Logo({
       {productGalleryOpen ? (
   <button
     type="button"
-    className="ml-auto pl-2.5 tablet:invisible tablet:hidden desktop:invisible desktop:hidden"
+    className="ml-auto pl-2.5 md:invisible md:hidden"
     aria-label="close-product-gallery"
     onClick={onProductGalleryClose}
   >
@@ -156,7 +156,7 @@ export default function Logo({
      
             <button
               type="button"
-              className="ml-auto pl-2.5 tablet:invisible tablet:hidden desktop:invisible desktop:hidden"
+              className="ml-auto pl-2.5 md:invisible md:hidden"
               aria-label="mobile-menu-btn"
               id="mobile-menu-btn"
               data-menu-open={menuOpen ? "true" : "false"}

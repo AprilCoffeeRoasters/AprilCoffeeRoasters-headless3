@@ -29,7 +29,7 @@
 //       <div
 //         aria-label="cart"
 //         className="ml-2 hidden select-none text-[11px] leading-[15px] font-normal md:block"
-//         // className="ml-2 hidden s phone:hidden md:block"
+//         // className="ml-2 hidden s max-md:hidden md:block"
 //       >
 //         <Link
 //           href="/cart"
@@ -115,8 +115,8 @@ export default function StoreCart() {
           font-[400]
           uppercase
 
-          phone:invisible
-          phone:hidden
+          max-md:invisible
+          max-md:hidden
           md:block
         "
       >
@@ -182,27 +182,27 @@ export default function StoreCart() {
           </span>
         </div>
       </div> */}
-{/* DESKTOP CART */}
-{/* DESKTOP CART */}
-<div
-  aria-label="cart"
-  className="
+      {/* DESKTOP CART */}
+      {/* DESKTOP CART */}
+      <div
+        aria-label="cart"
+        className="
     ml-2
-    w-[110px]
+    w-[120px]
     select-none
     text-[11px]
     leading-[15px]
     font-[400]
     uppercase
 
-    phone:hidden
+    max-md:hidden
     md:block
   "
->
-  <Link
-    href="/cart"
-    aria-label="cart-heading"
-    className="
+      >
+        <Link
+          href="/cart"
+          aria-label="cart-heading"
+          className="
       block
       w-full
       bg-black
@@ -214,13 +214,13 @@ export default function StoreCart() {
       leading-[15px]
       no-underline
     "
-  >
-    Cart
-  </Link>
+        >
+          Cart
+        </Link>
 
-  <div
-    id="cart-footer"
-    className="
+        <div
+          id="cart-footer"
+          className="
       flex
       w-full
       items-center
@@ -232,35 +232,35 @@ export default function StoreCart() {
       text-left
       uppercase
     "
-  >
-    <span
-      aria-label="cart-count"
-      id="cart-count"
-      className="whitespace-nowrap"
-    >
-      {formatItemCount(quantity)}
-    </span>
+        >
+          <span
+            aria-label="cart-count"
+            id="cart-count"
+            className="whitespace-nowrap"
+          >
+            {formatItemCount(quantity)}
+          </span>
 
-    {totalAmount ? (
-      <span
-        aria-label="cart-amount"
-        className="ml-2 inline-block whitespace-nowrap"
-      >
-        <Price
-          amount={totalAmount.amount}
-          currencyCode={totalAmount.currencyCode}
-          className="
+          {totalAmount ? (
+            <span
+              aria-label="cart-amount"
+              className="ml-2 inline-block whitespace-nowrap"
+            >
+              <Price
+                amount={totalAmount.amount}
+                currencyCode={totalAmount.currencyCode}
+                className="
             inline
             text-[11px]
             leading-[15px]
             font-[400]
           "
-          currencyCodeClassName="hidden"
-        />
-      </span>
-    ) : null}
-  </div>
-</div>
+                currencyCodeClassName="hidden"
+              />
+            </span>
+          ) : null}
+        </div>
+      </div>
       {/* MOBILE CART */}
       <Link
         href="/cart"
@@ -272,10 +272,8 @@ export default function StoreCart() {
           uppercase
           text-white
 
-          tablet:invisible
-          tablet:hidden
-          desktop:invisible
-          desktop:hidden
+          md:invisible
+          md:hidden
         "
       >
         <span

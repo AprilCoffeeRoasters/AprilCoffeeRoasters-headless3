@@ -127,10 +127,6 @@
   --leading-4.5: 1.125rem;
 }
 
-@custom-variant phone (@media (max-width: 767px));
-@custom-variant tablet (@media (min-width: 768px));
-@custom-variant md (@media (min-width: 768px));
-@custom-variant desktop (@media (min-width: 1024px));
 /* Dark utilities only apply with .dark on an ancestor — not OS prefers-color-scheme */
 @custom-variant dark (&:where(.dark, .dark *));
 

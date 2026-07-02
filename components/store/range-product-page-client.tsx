@@ -110,7 +110,7 @@ export default function RangeProductPageClient({
                     type="button"
                     aria-label="left-gallery-button"
                     onClick={() => goToImage("prev")}
-                    className="z-10 cursor-pointer bg-white p-2 phone:absolute phone:left-0 phone:h-full phone:bg-transparent"
+                    className="z-10 cursor-pointer bg-white p-2 max-md:absolute max-md:left-0 max-md:h-full max-md:bg-transparent"
                   >
                     <GalleryArrow direction="left" />
                   </button>
@@ -143,7 +143,7 @@ export default function RangeProductPageClient({
                     type="button"
                     aria-label="right-gallery-button"
                     onClick={() => goToImage("next")}
-                    className="z-10 cursor-pointer bg-white p-2 phone:absolute phone:right-0 phone:h-full phone:bg-transparent"
+                    className="z-10 cursor-pointer bg-white p-2 max-md:absolute max-md:right-0 max-md:h-full max-md:bg-transparent"
                   >
                     <GalleryArrow direction="right" />
                   </button>
@@ -154,14 +154,14 @@ export default function RangeProductPageClient({
 
           <h2
             aria-label="product-variant-title"
-            className="phone:text-center"
+            className="max-md:text-center"
           >
             {title}
           </h2>
 
           {descriptionHtml ? (
             <p
-              className="phone:text-center"
+              className="max-md:text-center"
               dangerouslySetInnerHTML={{ __html: descriptionHtml }}
             />
           ) : null}

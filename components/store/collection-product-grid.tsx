@@ -208,7 +208,7 @@ export default function CollectionProductGrid({
         <div
           aria-label="grid"
           id="grid"
-          className="grid phone:grid-cols-2 tablet:grid-cols-5 desktop:grid-cols-6"
+          className="grid max-md:grid-cols-2 md:grid-cols-5 lg:grid-cols-6"
         >
           {visibleProducts.map((product, index) => (
             <ProductCard
@@ -222,7 +222,7 @@ export default function CollectionProductGrid({
         {onFilterClick ? (
           <div
             id="grid-floating-container"
-            className="pointer-events-none sticky bottom-4 z-50 hidden w-full phone:block"
+            className="pointer-events-none sticky bottom-4 z-50 hidden w-full max-md:block"
           >
             <div className="flex justify-end pr-4">
               <div id="grid-floating-content" className="pointer-events-auto">
@@ -230,7 +230,7 @@ export default function CollectionProductGrid({
                   type="button"
                   aria-label="filter-button"
                   onClick={onFilterClick}
-                  className="flex h-8 cursor-pointer items-center justify-center whitespace-nowrap border-2 border-black bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black desktop:mb-1 phone:my-0 phone:h-8 phone:py-1 phone:text-base"
+                  className="flex h-8 cursor-pointer items-center justify-center whitespace-nowrap border-2 border-black bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black lg:mb-1 max-md:my-0 max-md:h-8 max-md:py-1 max-md:text-base"
                 >
                   <span className="font-bold">Filter</span>
                 </button>
