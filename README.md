@@ -1,8 +1,18 @@
 # Demo Commerce
 
-A Palace Skateboards–inspired headless storefront built on [Next.js Commerce](https://github.com/vercel/commerce). It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
+A Palace Skateboards–inspired headless storefront. It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
 
-The app uses the Next.js App Router with React Server Components, Server Actions, `Suspense`, and partial prerendering (PPR).
+Built with the Next.js App Router, React Server Components, Server Actions, `Suspense`, and partial prerendering (PPR).
+
+## How it works
+
+**Commerce (Shopify)** — Products, collections, cart, and checkout are powered by the Shopify Storefront API. Customers browse and buy through standard shop routes; checkout redirects to Shopify.
+
+**Editorial content** — The advice feed and article pages prefer DatoCMS when `DATOCMS_API_TOKEN` is set. If DatoCMS is unavailable or not configured, the app falls back to Shopify blog posts (advice and lookbook handles) or a product grid from a collection.
+
+**CMS pages (DatoCMS)** — When configured, DatoCMS also supplies the landing page hero and featured content, seasonal product ranges, and retail shop listings with galleries. Without DatoCMS, those sections use app defaults or Shopify data.
+
+**Cache revalidation** — Webhook endpoints invalidate cached Shopify and DatoCMS content on publish, so updates appear without a full redeploy.
 
 ## Features
 
