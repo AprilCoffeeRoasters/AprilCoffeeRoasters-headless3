@@ -138,6 +138,3 @@ For Shopify integration details, see the [Vercel Shopify integration guide](http
 
 Configure DatoCMS webhooks to call `POST /api/revalidate-dato` with the `DATOCMS_WEBHOOK_SECRET` header when content is published.
 
-## License
-
-MIT — see [license.md](license.md). Based on [Next.js Commerce](https://github.com/vercel/commerce) by Vercel.
