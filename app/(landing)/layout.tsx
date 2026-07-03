@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   description: "Palace landing page.",
 };

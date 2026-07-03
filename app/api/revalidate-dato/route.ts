@@ -61,9 +61,16 @@ function safeRevalidateTag(tag: string): boolean {
   }
 }
 
-function safeRevalidatePath(path: string): boolean {
+function safeRevalidatePath(
+  path: string,
+  type?: "layout" | "page",
+): boolean {
   try {
-    revalidatePath(path);
+    if (type) {
+      revalidatePath(path, type);
+    } else {
+      revalidatePath(path);
+    }
     return true;
   } catch (error) {
     console.error("[revalidate-dato] revalidatePath failed:", path, error);
@@ -104,7 +111,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       globalTag,
     );
 
-    const paths = ["/advice"];
+    const paths = ["/", "/advice", "/shops", "/collections/all"];
     if (slug) {
       paths.push(`/advice/${slug}`);
       paths.push(`/range/${slug}`);
@@ -113,6 +120,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     for (const path of paths) {
       (safeRevalidatePath(path) ? revalidatedPaths : failedPaths).push(path);
+    }
+
+    if (!safeRevalidatePath("/", "layout")) {
+      failedPaths.push("/ (layout)");
+    } else {
+      revalidatedPaths.push("/ (layout)");
     }
 
     const hasFailures = failedTags.length > 0 || failedPaths.length > 0;

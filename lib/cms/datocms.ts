@@ -109,10 +109,6 @@ export async function datoRequest<T>(
 }
 
 export async function getAllArticles(): Promise<DatoArticleRecord[]> {
-  "use cache";
-  cacheTag(datoCacheTag());
-  cacheLife("days");
-
   const query = gql`
     ${articleFields}
     query AllArticles {
@@ -132,10 +128,6 @@ export async function getAllArticles(): Promise<DatoArticleRecord[]> {
 export async function getArticleBySlug(
   slug: string,
 ): Promise<DatoArticleRecord | null> {
-  "use cache";
-  cacheTag(datoCacheTag(), `dato:article:${slug}`);
-  cacheLife("days");
-
   const query = gql`
     ${articleFields}
     query Article($slug: String!) {

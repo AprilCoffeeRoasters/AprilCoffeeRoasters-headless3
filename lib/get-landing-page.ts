@@ -298,11 +298,7 @@ import type {
   LandingPageData,
   LandingTriFergNavItem,
 } from "lib/landing-types";
-import {
-  unstable_cacheLife as cacheLife,
-  unstable_cacheTag as cacheTag,
-} from "next/cache";
-import { datoCacheTag } from "lib/cms/datocms";
+import { cache } from "react";
 
 const LATEST_ADVICE_SLOT = 2;
 
@@ -343,6 +339,7 @@ const defaultTriFergNav: LandingTriFergNavItem[] = [
 const defaultHeaderLinks: LandingLink[] = [
   { label: "Shops", href: "/shops", external: false },
   { label: "Web Shop", href: "/collections/all", external: false },
+  { label: "Latest", href: "/advice", external: false },
   { label: "Advice", href: "/advice", external: false },
   {
     label: "Manor Place",
@@ -432,32 +429,30 @@ function injectFeaturedIntoHeader(
   links: LandingLink[],
   featured: LandingFeaturedContent,
 ): LandingLink[] {
-  const adviceIndex = links.findIndex(
+  const latestLink: LandingLink = {
+    label: "Latest",
+    href: featured.href,
+    external: featured.href.startsWith("http"),
+  };
+
+  const latestIndex = links.findIndex(
     (link) =>
+      link.label === "Latest" ||
       link.href === featured.href ||
       (link.href.startsWith("/advice/") && link.href !== "/advice"),
   );
 
-  if (adviceIndex === -1) {
-    const insertAt = Math.min(2, links.length);
-    const next = [...links];
-    next.splice(insertAt, 0, {
-      label: featured.title,
-      href: featured.href,
-      external: featured.href.startsWith("http"),
-    });
-    return next;
+  if (latestIndex !== -1) {
+    return links.map((link, index) =>
+      index === latestIndex ? latestLink : link,
+    );
   }
 
-  return links.map((link, index) =>
-    index === adviceIndex
-      ? {
-          label: featured.title,
-          href: featured.href,
-          external: featured.href.startsWith("http"),
-        }
-      : link,
-  );
+  const adviceIndex = links.findIndex((link) => link.href === "/advice");
+  const insertAt = adviceIndex === -1 ? links.length : adviceIndex;
+  const next = [...links];
+  next.splice(insertAt, 0, latestLink);
+  return next;
 }
 
 function triFergFromHeaderLinks(
@@ -522,10 +517,6 @@ function withRangeHeaderLinks(links: LandingLink[], rangeLinks: LandingLink[]) {
 }
 
 async function loadLandingPageData(): Promise<LandingPageData> {
-  "use cache";
-  cacheTag(datoCacheTag());
-  cacheLife("days");
-
   const [cmsLanding, adviceFeed, rangeLinks] = await Promise.all([
     getDatoLandingPageContent(),
     getAdviceFeed(),
@@ -533,31 +524,9 @@ async function loadLandingPageData(): Promise<LandingPageData> {
   ]);
 
   const latestAdvice = adviceFeed.adviceFeed[0];
-  let featured =
-    cmsLanding?.featured ??
-    (latestAdvice ? feedItemToFeatured(latestAdvice) : null);
-
-  if (featured && latestAdvice) {
-    const featuredArticle = featured;
-    const matched = adviceFeed.adviceFeed.find(
-      (item) =>
-        item.slug === featuredArticle.href.replace(/^\/advice\//, "") ||
-        item.title.toLowerCase() === featuredArticle.title.toLowerCase(),
-    );
-    if (matched) {
-      featured = {
-        ...featured,
-        href: matched.path,
-        image: featured.image ?? {
-          src: matched.image,
-          width: matched.width,
-          height: matched.height,
-          srcSet: matched.srcSet ?? "",
-          webpSrcSet: "",
-        },
-      };
-    }
-  }
+  const featured = latestAdvice
+    ? feedItemToFeatured(latestAdvice)
+    : (cmsLanding?.featured ?? null);
 
   const headerLinks = withRangeHeaderLinks(
     cmsLanding?.headerLinks.length ? cmsLanding.headerLinks : defaultHeaderLinks,
@@ -587,4 +556,4 @@ async function loadLandingPageData(): Promise<LandingPageData> {
   };
 }
 
-export const getLandingPageData = loadLandingPageData;
+export const getLandingPageData = cache(loadLandingPageData);

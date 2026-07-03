@@ -63,7 +63,7 @@ export default function Header({
         } ${menuElevated ? "relative z-30 bg-white" : ""}`}
       >
         <div className="mx-5 mt-1.5 mb-2.5 flex w-full max-w-5xl items-center md:mt-3.5 md:mb-0 md:items-start">
-          <Link href="/" aria-label="black-april-logo">
+          <Link href="/" prefetch={false} aria-label="black-april-logo">
             <div
               className="relative block h-16 w-54 transition-opacity duration-150 ease-in-out hover:opacity-25 md:bottom-[12px] md:h-[71px] md:w-44"
               aria-label="logo"
@@ -79,13 +79,15 @@ export default function Header({
           </Link>
           <nav className="header-main-nav ml-auto flex max-md:invisible max-md:hidden">
             {navItems.map((item) => (
-              <h1 key={item.href} className="header-nav-item">
+              <h1 key={item.label} className="header-nav-item">
                 {item.external ? (
                   <a href={item.href} target="_blank" rel="noreferrer">
                     {item.label}
                   </a>
                 ) : (
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link href={item.href} prefetch={false}>
+                    {item.label}
+                  </Link>
                 )}
               </h1>
             ))}
@@ -153,7 +155,7 @@ export default function Header({
       >
         <ul>
           {navItems.map((item) => (
-            <li key={item.href} data-testid={menuItemTestId(item.label)}>
+            <li key={item.label} data-testid={menuItemTestId(item.label)}>
               {item.external ? (
                 <a
                   href={item.href}
@@ -167,6 +169,7 @@ export default function Header({
               ) : (
                 <Link
                   href={item.href}
+                  prefetch={false}
                   className={mobileLinkClass}
                   onClick={closeMenu}
                 >

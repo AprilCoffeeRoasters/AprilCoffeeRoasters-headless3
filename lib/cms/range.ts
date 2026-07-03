@@ -223,10 +223,6 @@ async function getAllRangeProducts(): Promise<
 }
 
 export async function getLatestRange(): Promise<DatoRangeRecord | null> {
-  "use cache";
-  cacheTag(datoCacheTag());
-  cacheLife("days");
-
   const query = gql`
     ${rangeFields}
     query LatestRange {

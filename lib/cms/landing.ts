@@ -1,13 +1,8 @@
 import { gql } from "graphql-request";
 import {
-  unstable_cacheLife as cacheLife,
-  unstable_cacheTag as cacheTag,
-} from "next/cache";
-import {
-    datoCacheTag,
-    datoRequest,
-    isDatoCmsConfigured,
-    type DatoResponsiveImage
+  datoRequest,
+  isDatoCmsConfigured,
+  type DatoResponsiveImage,
 } from "lib/cms/datocms";
 import type { LandingFeaturedContent, LandingLink } from "lib/landing-types";
 
@@ -90,10 +85,6 @@ function isMissingHomepageModel(error: unknown): boolean {
 }
 
 export async function getDatoLandingPageContent(): Promise<DatoLandingPageContent | null> {
-  "use cache";
-  cacheTag(datoCacheTag());
-  cacheLife("days");
-
   if (!isDatoCmsConfigured()) return null;
 
   try {
