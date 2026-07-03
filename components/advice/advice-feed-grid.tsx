@@ -1,7 +1,7 @@
 "use client";
 
 import type { AdviceFeedItem, AdviceFeedMetadata } from "lib/advice-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdviceCard, type AdviceCardProps } from "./advice-card";
 
 function splitIntoColumns(items: AdviceCardProps[]) {
@@ -35,6 +35,11 @@ export function AdviceFeedGrid({
   const [items, setItems] = useState(initialFeed);
   const [metadata, setMetadata] = useState(initialMetadata);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setItems(initialFeed);
+    setMetadata(initialMetadata);
+  }, [initialFeed, initialMetadata]);
 
   const cardProps = items.map(toCardProps);
   const columns = splitIntoColumns(cardProps);
@@ -70,17 +75,17 @@ export function AdviceFeedGrid({
       {/* Mobile: single-column feed */}
       <div
         aria-label="advice-view"
-        className="flex w-full min-w-0 flex-col tablet:hidden"
+        className="flex w-full min-w-0 flex-col md:hidden"
       >
         {cardProps.map((item) => (
           <AdviceCard key={item.href} {...item} layout="mobile" />
         ))}
       </div>
 
-      {/* Tablet+: 3-column masonry */}
+      {/* md+: 3-column masonry */}
       <div
         aria-label="advice-view"
-        className="hidden w-full min-w-0 tablet:mt-14 tablet:flex desktop:mt-14"
+        className="hidden w-full min-w-0 md:mt-14 md:flex lg:mt-14"
       >
         {columns.map((column, columnIndex) => (
           <div key={columnIndex} className="min-w-0 flex-1 basis-0 pl-0">

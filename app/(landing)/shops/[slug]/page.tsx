@@ -1,6 +1,7 @@
 import { getAllShops, getShopBySlug } from "lib/cms/datocms";
 import { parseShopAddress, shopGallerySlides } from "lib/cms/shops";
 import { structuredTextToHtml } from "lib/cms/structured-text";
+import { getLandingPageData } from "lib/get-landing-page";
 import { notFound } from "next/navigation";
 import ShopPage from "../../../../components/store/shop-page";
 
@@ -19,7 +20,10 @@ export default async function ShopDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const shop = await getShopBySlug(slug);
+  const [shop, { headerLinks, footerLinks }] = await Promise.all([
+    getShopBySlug(slug),
+    getLandingPageData(),
+  ]);
 
   if (!shop) {
     notFound();
@@ -34,6 +38,8 @@ export default async function ShopDetailPage({
       address={parseShopAddress(shop.address)}
       timing={shop.openingHours ?? undefined}
       miscInformationHtml={structuredTextToHtml(shop.miscInformation)}
+      headerLinks={headerLinks}
+      footerLinks={footerLinks}
     />
   );
 }

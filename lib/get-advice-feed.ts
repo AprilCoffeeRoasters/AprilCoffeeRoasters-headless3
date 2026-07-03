@@ -3,14 +3,36 @@ import {
   fetchDatoAdviceFeed,
   isDatoCmsConfigured,
 } from "lib/cms/demo-store-advice";
+import { datoCacheTag } from "lib/cms/datocms";
 import { fetchShopifyAdviceFeed } from "lib/shopify-advice";
+import {
+  unstable_cacheLife as cacheLife,
+  unstable_cacheTag as cacheTag,
+} from "next/cache";
 import { headers } from "next/headers";
+
+async function getDatoAdviceFeed(): Promise<AdviceFeedResponse> {
+  "use cache";
+  cacheTag(datoCacheTag());
+  cacheLife("days");
+
+  return fetchDatoAdviceFeed();
+}
 
 export async function getAdviceFeed(
   cursor?: string | null,
 ): Promise<AdviceFeedResponse> {
   if (isDatoCmsConfigured()) {
-    return fetchDatoAdviceFeed();
+    try {
+      return await getDatoAdviceFeed();
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          "DatoCMS advice feed failed, falling back to Shopify:",
+          error,
+        );
+      }
+    }
   }
 
   try {

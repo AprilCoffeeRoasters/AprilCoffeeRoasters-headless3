@@ -1,8 +1,8 @@
 export function TriFergSvg({ className }: { className?: string }) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 139.3 121.7"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 139.3 121.7"
       className={className ?? "h-auto w-full fill-inherit"}
       aria-hidden
     >
@@ -17,3 +17,4 @@ export function TriFergSvg({ className }: { className?: string }) {
     </svg>
   );
 }
+

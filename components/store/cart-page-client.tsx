@@ -36,9 +36,9 @@ function CartLineRow({ line }: { line: CartItem }) {
   return (
     <div
       aria-label={line.merchandise.product.handle}
-      className="flex border-b uppercase phone:min-h-28 phone:pb-3"
+      className="flex border-b uppercase max-md:min-h-28 max-md:pb-3"
     >
-      <div className="w-1/5 phone:w-[32%]">
+      <div className="w-1/5 max-md:w-[32%]">
         <Link href={`/product/${line.merchandise.product.handle}`}>
           {image?.url ? (
             <Image
@@ -59,7 +59,7 @@ function CartLineRow({ line }: { line: CartItem }) {
         <div className="ml-2 text-left">
           <Link
             href={`/product/${line.merchandise.product.handle}`}
-            className="m-0 whitespace-pre-wrap text-sm font-bold no-underline phone:w-full phone:whitespace-pre-wrap"
+            className="m-0 whitespace-pre-wrap text-sm font-bold no-underline max-md:w-full max-md:whitespace-pre-wrap"
           >
             {line.merchandise.product.title}
           </Link>
@@ -72,7 +72,7 @@ function CartLineRow({ line }: { line: CartItem }) {
             </div>
             <div
               aria-label="delete-button"
-              className="mt-2 md:invisible md:hidden desktop:invisible desktop:hidden"
+              className="mt-2 md:invisible md:hidden lg:invisible lg:hidden"
             >
               {line.id ? (
                 <CartLineRemoveButton
@@ -85,8 +85,8 @@ function CartLineRow({ line }: { line: CartItem }) {
         </div>
       </div>
 
-      <div className="mt-2 flex w-1/4 phone:w-[18%]">
-        <div className="text-sm phone:invisible phone:hidden">
+      <div className="mt-2 flex w-1/4 max-md:w-[18%]">
+        <div className="text-sm max-md:invisible max-md:hidden">
           {line.id ? (
             <CartLineRemoveButton
               lineId={line.id}
@@ -120,11 +120,11 @@ export default function CartPageClient() {
         <main
           role="main"
           id="mainContent"
-          className="sm:mt-3 mt-5 h-[calc(100vh-130px)] min-h-0 w-9/12 overflow-y-auto phone:h-auto phone:overflow-y-visible phone:float-none phone:mt-0 phone:w-full  phone:-translate-x-0 ease-out duration-300"
+          className="sm:mt-3 mt-5 h-[calc(100vh-130px)] min-h-0 w-9/12 overflow-y-auto max-md:h-auto max-md:overflow-y-visible max-md:float-none max-md:mt-0 max-md:w-full  max-md:-translate-x-0 ease-out duration-300"
         >
           <div
             id="cart-view"
-            className="mx-auto mt-5 w-full max-w-150 phone:h-full phone:px-2.5"
+            className="mx-auto mt-5 w-full max-w-150 max-md:h-full max-md:px-2.5"
           >
             {lines.length === 0 ? (
               <p className="py-16 text-center text-sm font-bold uppercase">
@@ -142,7 +142,7 @@ export default function CartPageClient() {
                   <CartLineRow key={line.id ?? line.merchandise.id} line={line} />
                 ))}
 
-                <div className="mt-4 text-center text-sm font-bold uppercase phone:mt-3">
+                <div className="mt-4 text-center text-sm font-bold uppercase max-md:mt-3">
                   {subtotal ? (
                     <div aria-label="cart-subtotal" className="mb-3.5">
                       Subtotal
@@ -210,7 +210,7 @@ export default function CartPageClient() {
                     <button
                       type="button"
                       disabled={!termsAccepted}
-                      className="mx-auto mb-[18px] inline-block cursor-pointer items-center justify-center whitespace-nowrap border-2 bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black phone:my-1 phone:h-8 phone:py-1 phone:text-base text-base! disabled:cursor-not-allowed phone:mb-[18px] tablet:mb-[18px]"
+                      className="mx-auto mb-[18px] inline-block cursor-pointer items-center justify-center whitespace-nowrap border-2 bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black max-md:my-1 max-md:h-8 max-md:py-1 max-md:text-base text-base! disabled:cursor-not-allowed max-md:mb-[18px] md:mb-[18px]"
                       aria-label="checkout-btn"
                     >
                       Checkout

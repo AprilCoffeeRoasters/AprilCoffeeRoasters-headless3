@@ -30,7 +30,7 @@ export default function ThankYouPageClient() {
         <main
           role="main"
           id="mainContent"
-          className="sm:mt-3 mt-5 min-h-0 w-9/12 phone:float-none phone:mt-0 phone:w-full"
+          className="sm:mt-3 mt-5 min-h-0 w-9/12 max-md:float-none max-md:mt-0 max-md:w-full"
         >
           <div className="mx-auto mt-5 w-full max-w-150 px-2.5 py-16 text-center">
             <h1 className="text-sm font-bold uppercase">Thank you</h1>

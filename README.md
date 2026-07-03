@@ -1,4 +1,6 @@
-# April-cooffew
+# Demo Commerce
+
+A Palace Skateboards–inspired headless storefront. It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
 
 Built with the Next.js App Router, React Server Components, Server Actions, `Suspense`, and partial prerendering (PPR).
 

@@ -5,8 +5,6 @@ import { ArticleDetail } from "../../../../components/advice/article-detail";
 import Footer from "../../../../components/store/footer";
 import Header from "../../../../components/store/header";
 
-export const dynamic = "force-dynamic";
-
 export default async function AdviceArticlePage({
   params,
 }: {

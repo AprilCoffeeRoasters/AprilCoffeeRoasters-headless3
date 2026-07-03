@@ -1,6 +1,11 @@
 import { gql } from "graphql-request";
 import {
+  unstable_cacheLife as cacheLife,
+  unstable_cacheTag as cacheTag,
+} from "next/cache";
+import {
   datoRequest,
+  datoCacheTag,
   isDatoCmsConfigured,
   type DatoResponsiveImage,
   type DatoStructuredTextValue,
@@ -217,7 +222,38 @@ async function getAllRangeProducts(): Promise<
   return productsByRangeId;
 }
 
+export async function getLatestRange(): Promise<DatoRangeRecord | null> {
+  "use cache";
+  cacheTag(datoCacheTag());
+  cacheLife("days");
+
+  const query = gql`
+    ${rangeFields}
+    query LatestRange {
+      allRanges(orderBy: _firstPublishedAt_DESC, first: 1) {
+        ...RangeFields
+      }
+    }
+  `;
+
+  const data = await datoRequest<{
+    allRanges: DatoRangeRecordRaw[];
+  }>(query);
+
+  const raw = data.allRanges[0];
+  if (!raw) {
+    return null;
+  }
+
+  const products = await getProductsForRange(raw.id);
+  return normalizeRange(raw, products);
+}
+
 export async function getAllRanges(): Promise<DatoRangeRecord[]> {
+  "use cache";
+  cacheTag(datoCacheTag());
+  cacheLife("days");
+
   const query = gql`
     ${rangeFields}
     query AllRanges {
@@ -242,6 +278,10 @@ export async function getAllRanges(): Promise<DatoRangeRecord[]> {
 export async function getRangeBySlug(
   slug: string,
 ): Promise<DatoRangeRecord | null> {
+  "use cache";
+  cacheTag(datoCacheTag(), `dato:range:${slug}`);
+  cacheLife("days");
+
   const query = gql`
     ${rangeFields}
     query Range($slug: String!) {

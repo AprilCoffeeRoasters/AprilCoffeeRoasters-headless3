@@ -125,7 +125,7 @@ export default function CollectionPageClient({
   return (
     <>
       <Logo onMenuOpenChange={setMenuOpen} />
-      <div className="mx-auto mt-0 min-h-0 w-full max-w-[1400px] overflow-hidden bg-white sm:mt-3 phone:overflow-visible">
+      <div className="mx-auto mt-0 min-h-0 w-full max-w-[1400px] overflow-hidden bg-white sm:mt-3 max-md:overflow-visible">
         <CategoryNav
           menuOpen={menuOpen}
           activeCollection={collection}
@@ -150,13 +150,13 @@ h-[calc(100vh-30px)]
 
   md:w-[75%]
 
-  phone:mt-0
-  phone:h-auto
-  phone:overflow-y-visible
-  phone:float-none
-  phone:w-full
-  phone:pr-0
-  phone:-translate-x-0
+  max-md:mt-0
+  max-md:h-auto
+  max-md:overflow-y-visible
+  max-md:float-none
+  max-md:w-full
+  max-md:pr-0
+  max-md:-translate-x-0
 "
         >
           {initialProducts.length === 0 ? (

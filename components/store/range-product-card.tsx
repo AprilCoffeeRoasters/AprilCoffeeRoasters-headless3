@@ -97,11 +97,11 @@ export default function RangeProductCard({
       href={href}
       aria-label={product.slug}
       prefetch={true}
-      className="group relative w-1/6 phone:w-1/2"
+      className="group relative w-1/6 max-md:w-1/2"
     >
       <RangeProductImage image={product.thumbnail?.responsiveImage} />
 
-      <div className="absolute left-0 top-2/4 inline-block w-full -translate-y-1/2 text-center text-sm font-bold opacity-0 transition-opacity duration-150 ease-in-out group-hover:opacity-100 phone:invisible phone:hidden tablet:invisible tablet:hidden">
+      <div className="absolute left-0 top-2/4 inline-block w-full -translate-y-1/2 text-center text-sm font-bold opacity-0 transition-opacity duration-150 ease-in-out group-hover:opacity-100 max-md:invisible max-md:hidden md:invisible md:hidden">
         <div className="float-none w-full">
           <h3>{title}</h3>
         </div>

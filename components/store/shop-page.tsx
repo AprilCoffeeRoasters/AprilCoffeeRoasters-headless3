@@ -1,4 +1,5 @@
 import type { ShopGalleryImage } from "lib/cms/shops";
+import type { LandingLink } from "lib/landing-types";
 import Footer from "./footer";
 import Header from "./header";
 import ShopGalleryCarousel from "./shop-gallery-carousel";
@@ -10,6 +11,8 @@ interface ShopPageProps {
   phone?: string;
   timing?: string;
   miscInformationHtml?: string;
+  headerLinks?: LandingLink[];
+  footerLinks?: LandingLink[];
 }
 
 export default function ShopPage({
@@ -19,18 +22,20 @@ export default function ShopPage({
   phone,
   timing,
   miscInformationHtml,
+  headerLinks,
+  footerLinks,
 }: ShopPageProps) {
   return (
     <main className="flex min-h-screen flex-col bg-white text-black">
-      <Header />
+      <Header navItems={headerLinks} />
 
       <div className="flex flex-1 grow justify-center">
         <div className="mx-5 flex w-full max-w-5xl">
           <div className="w-full font-bold uppercase" aria-label="shop-view">
-            <div className="flex justify-between px-16 pb-6 phone:px-0">
+            <div className="flex justify-between px-16 pb-6 max-md:px-0">
               <div className="text-[17.6px] md:text-[20px]">{name}</div>
 
-              <div className="text-sm phone:text-xs">
+              <div className="text-sm max-md:text-xs">
                 <div>
                   {address.map((line, lineIndex) => (
                     <p key={lineIndex}>{line || <span>&nbsp;</span>}</p>
@@ -55,7 +60,7 @@ export default function ShopPage({
         </div>
       </div>
 
-      <Footer />
+      <Footer links={footerLinks} />
     </main>
   );
 }

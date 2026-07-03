@@ -146,22 +146,22 @@ export function Footer2({ links = defaultFooterLinks }: FooterProps) {
         flex
         justify-center
         uppercase
-        phone:block
-        phone:max-h-44
+        max-md:block
+        max-md:max-h-44
         sm:pt-4
         sm:mt-7
       "
     >
-      <div className="w-full max-w-5xl pb-8 phone:block sm:pb-8">
+      <div className="w-full max-w-5xl pb-8 max-md:block sm:pb-8">
         <ul
           className="
             flex
             justify-center
             text-sm
             font-bold
-            phone:grid
-            phone:grid-cols-2
-            phone:text-xs
+            max-md:grid
+            max-md:grid-cols-2
+            max-md:text-xs
           "
         >
           {footerLinks.map((item, index) => (
@@ -172,9 +172,9 @@ export function Footer2({ links = defaultFooterLinks }: FooterProps) {
                 justify-center
                 px-3
                 hover:underline
-                phone:w-full
-                phone:p-0
-                phone:pb-3
+                max-md:w-full
+                max-md:p-0
+                max-md:pb-3
               "
             >
               <Link

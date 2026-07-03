@@ -11,10 +11,10 @@ import type {
 const modalTextClass = "text-[13px] leading-[18px]";
 
 const closeBtnClass =
-  "flex items-center justify-center whitespace-nowrap border-2 border-black bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black phone:h-8 phone:py-1 phone:text-base absolute right-0 top-0 h-5 w-[50px]! cursor-pointer border-r-0 border-t-0 phone:my-0 phone:px-2";
+  "flex items-center justify-center whitespace-nowrap border-2 border-black bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black max-md:h-8 max-md:py-1 max-md:text-base absolute right-0 top-0 h-5 w-[50px]! cursor-pointer border-r-0 border-t-0 max-md:my-0 max-md:px-2";
 
 const technicalDetailsPanelClass =
-  `relative left-1/2 top-1/2 flex w-3/5 max-w-[400px] -translate-x-1/2 -translate-y-1/2 flex-col border-2 border-black bg-white px-[30px] py-8 ${modalTextClass} font-normal opacity-100 phone:max-h-full phone:w-full phone:max-w-[500px] phone:overflow-y-scroll phone:px-2.5`;
+  `relative left-1/2 top-1/2 flex w-3/5 max-w-[400px] -translate-x-1/2 -translate-y-1/2 flex-col border-2 border-black bg-white px-[30px] py-8 ${modalTextClass} font-normal opacity-100 max-md:max-h-full max-md:w-full max-md:max-w-[500px] max-md:overflow-y-scroll max-md:px-2.5`;
 
 const technicalDetailsContentClass =
   `select-none ${modalTextClass} font-normal uppercase [&>ul]:my-4 [&>ul]:block [&>ul]:list-disc [&>ul]:pl-4 [&_li]:font-normal [&_li]:leading-[18px] [&_p]:font-normal`;
@@ -26,7 +26,7 @@ const sizeChartTitleClass =
   "my-4 block text-[13px] leading-[18px] select-none text-base font-bold uppercase";
 
 const sizeChartPanelClass =
-  `relative left-1/2 top-1/2 flex w-3/5 max-w-[400px] -translate-x-1/2 -translate-y-1/2 flex-col border-2 border-black bg-white px-[30px] py-[15px] ${modalTextClass} font-normal opacity-100 phone:max-h-full phone:w-full phone:max-w-[500px] phone:overflow-y-scroll phone:px-2.5`;
+  `relative left-1/2 top-1/2 flex w-3/5 max-w-[400px] -translate-x-1/2 -translate-y-1/2 flex-col border-2 border-black bg-white px-[30px] py-[15px] ${modalTextClass} font-normal opacity-100 max-md:max-h-full max-md:w-full max-md:max-w-[500px] max-md:overflow-y-scroll max-md:px-2.5`;
 
 type ProductMetafieldModalProps = {
   isOpen: boolean;
@@ -143,7 +143,7 @@ export default function ProductMetafieldModal({
           </button>
 
           {isTechnicalDetails && technicalDetails ? (
-            <div aria-label="popover-modal" className="phone:p-2">
+            <div aria-label="popover-modal" className="max-md:p-2">
               <h3 className={modalTitleClass}>
                 {productTitle ?? title} Details
               </h3>
@@ -152,7 +152,7 @@ export default function ProductMetafieldModal({
           ) : null}
 
           {!isTechnicalDetails ? (
-            <div aria-label="popover-modal" className="phone:p-2">
+            <div aria-label="popover-modal" className="max-md:p-2">
               <h3 className={sizeChartTitleClass}>
                 {productTitle ? `${productTitle} Sizing` : (title ?? "Size Chart")}
               </h3>

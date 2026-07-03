@@ -29,7 +29,7 @@
 //       <div
 //         aria-label="cart"
 //         className="ml-2 hidden select-none text-[11px] leading-[15px] font-normal md:block"
-//         // className="ml-2 hidden s phone:hidden md:block"
+//         // className="ml-2 hidden s max-md:hidden md:block"
 //       >
 //         <Link
 //           href="/cart"
@@ -115,8 +115,8 @@ export default function StoreCart() {
           font-[400]
           uppercase
 
-          phone:invisible
-          phone:hidden
+          max-md:invisible
+          max-md:hidden
           md:block
         "
       >
@@ -195,7 +195,7 @@ export default function StoreCart() {
     font-[400]
     uppercase
 
-    phone:hidden
+    max-md:hidden
     md:block
   "
       >
@@ -272,10 +272,8 @@ export default function StoreCart() {
           uppercase
           text-white
 
-          tablet:invisible
-          tablet:hidden
-          desktop:invisible
-          desktop:hidden
+          md:invisible
+          md:hidden
         "
       >
         <span
