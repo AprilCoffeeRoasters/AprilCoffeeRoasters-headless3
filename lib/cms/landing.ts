@@ -102,7 +102,6 @@ export async function getDatoLandingPageContent(): Promise<DatoLandingPageConten
     }>(homepageQuery);
 
     const normalized = normalizeHomepage(data.homepage);
-    console.log("[datoCMS homepage]", { raw: data.homepage, normalized });
     return normalized;
   } catch (error) {
     if (isMissingHomepageModel(error)) {

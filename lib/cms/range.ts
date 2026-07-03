@@ -222,6 +222,33 @@ async function getAllRangeProducts(): Promise<
   return productsByRangeId;
 }
 
+export async function getLatestRange(): Promise<DatoRangeRecord | null> {
+  "use cache";
+  cacheTag(datoCacheTag());
+  cacheLife("days");
+
+  const query = gql`
+    ${rangeFields}
+    query LatestRange {
+      allRanges(orderBy: _firstPublishedAt_DESC, first: 1) {
+        ...RangeFields
+      }
+    }
+  `;
+
+  const data = await datoRequest<{
+    allRanges: DatoRangeRecordRaw[];
+  }>(query);
+
+  const raw = data.allRanges[0];
+  if (!raw) {
+    return null;
+  }
+
+  const products = await getProductsForRange(raw.id);
+  return normalizeRange(raw, products);
+}
+
 export async function getAllRanges(): Promise<DatoRangeRecord[]> {
   "use cache";
   cacheTag(datoCacheTag());

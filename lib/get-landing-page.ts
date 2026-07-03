@@ -290,7 +290,7 @@
 // export const getLandingPageData = cache(loadLandingPageData);
 import type { AdviceFeedItem } from "lib/advice-types";
 import { getDatoLandingPageContent } from "lib/cms/landing";
-import { getAllRanges, isDatoCmsConfigured } from "lib/cms/range";
+import { getLatestRange, isDatoCmsConfigured } from "lib/cms/range";
 import { getAdviceFeed } from "lib/get-advice-feed";
 import type {
   LandingFeaturedContent,
@@ -341,7 +341,6 @@ const defaultTriFergNav: LandingTriFergNavItem[] = [
 ];
 
 const defaultHeaderLinks: LandingLink[] = [
-  { label: "SUMMER 2026 RANGE", href: "/range/summer-2026", external: false },
   { label: "Shops", href: "/shops", external: false },
   { label: "Web Shop", href: "/collections/all", external: false },
   { label: "Advice", href: "/advice", external: false },
@@ -493,12 +492,18 @@ async function getRangeHeaderLinks(): Promise<LandingLink[]> {
   }
 
   try {
-    const ranges = await getAllRanges();
-    return ranges.map((range) => ({
-      label: range.title,
-      href: `/range/${range.slug}`,
-      external: false,
-    }));
+    const range = await getLatestRange();
+    if (!range) {
+      return [];
+    }
+
+    return [
+      {
+        label: range.title,
+        href: `/range/${range.slug}`,
+        external: false,
+      },
+    ];
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
       console.warn("Failed to fetch ranges from DatoCMS:", error);
@@ -526,8 +531,6 @@ async function loadLandingPageData(): Promise<LandingPageData> {
     getAdviceFeed(),
     getRangeHeaderLinks(),
   ]);
-
-  console.log("[landing page datoCMS]", { cmsLanding, adviceFeed });
 
   const latestAdvice = adviceFeed.adviceFeed[0];
   let featured =

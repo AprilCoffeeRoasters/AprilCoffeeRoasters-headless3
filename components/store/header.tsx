@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const defaultNavItems: LandingLink[] = [
-  { label: "SUMMER 2026 RANGE", href: "/range/summer-2026-range", external: false },
   { label: "Shops", href: "/shops", external: false },
   { label: "Web Shop", href: "/collections/all", external: false },
   { label: "Advice", href: "/advice", external: false },
