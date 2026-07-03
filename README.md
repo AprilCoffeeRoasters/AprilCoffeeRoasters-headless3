@@ -1,4 +1,4 @@
-# Demo Commerce
+# April Coffee
 
 A Palace Skateboards–inspired headless storefront. It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
 
