@@ -1,5 +1,5 @@
 import { CartProvider } from "components/cart/cart-context";
-import { WelcomeToast } from "components/welcome-toast";
+// import { WelcomeToast } from "components/welcome-toast";
 import { GeistSans } from "geist/font/sans";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
@@ -34,7 +34,7 @@ export default async function RootLayout({
         <CartProvider cartPromise={cart}>
           {children}
           <Toaster closeButton />
-          <WelcomeToast />
+          {/* <WelcomeToast /> */}
         </CartProvider>
       </body>
     </html>
