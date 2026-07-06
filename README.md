@@ -23,6 +23,7 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 - **Range** — Seasonal product ranges and lookbook-style product pages from DatoCMS
 - **Shops** — Retail location listings and galleries from DatoCMS
 - **On-demand revalidation** — Webhook endpoints for Shopify and DatoCMS cache invalidation
+  
 
 ## Tech stack
 
