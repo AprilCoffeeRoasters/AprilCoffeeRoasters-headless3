@@ -28,8 +28,8 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 
 | Layer     | Technology                         |
 | --------- | ---------------------------------- |
-| Framework | Next.js 15 (App Router, Turbopack) |
-| UI        | React 19, Tailwind CSS 4           |
+| Framework | Next.js  |
+| UI        | React, Tailwind CSS          |
 | Commerce  | Shopify Storefront API             |
 | Content   | DatoCMS (optional)                 |
 | Language  | TypeScript                         |
@@ -142,8 +142,4 @@ pnpm test     # Prettier check
 
 ## Deployment
 
-Deploy to [Vercel](https://vercel.com) or any Node.js host that supports Next.js 15. Set all environment variables in your hosting provider before deploying.
-
-For Shopify integration details, see the [Vercel Shopify integration guide](https://vercel.com/docs/integrations/ecommerce/shopify).
-
-Configure DatoCMS webhooks to call `POST /api/revalidate-dato` with the `DATOCMS_WEBHOOK_SECRET` header when content is published.
+vercel
