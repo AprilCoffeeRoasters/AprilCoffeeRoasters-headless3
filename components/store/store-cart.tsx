@@ -188,7 +188,7 @@ export default function StoreCart() {
         aria-label="cart"
         className="
     ml-2
-    w-[120px]
+    w-[min-w-[120px] w-fit max-w-[180px]]
     select-none
     text-[11px]
     leading-[15px]

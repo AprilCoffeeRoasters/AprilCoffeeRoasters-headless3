@@ -344,7 +344,7 @@ const defaultHeaderLinks: LandingLink[] = [
   {
     label: "Manor Place",
     href: "https://manorplace.com",
-    external: true,
+    external: false,
   },
 ];
 

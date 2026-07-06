@@ -542,7 +542,10 @@
 "use client";
 
 import { useCart } from "components/cart/cart-context";
-import { TriFergSvg } from "components/store/tri-ferg-svg";
+import {
+  TriFergSvg,
+  triFergLogoFromMarkId,
+} from "components/store/landing-logos";
 import { DEFAULT_OPTION } from "lib/constants";
 import { formatCartMoney } from "lib/format-cart-money";
 import type { CartItem } from "lib/shopify/types";
@@ -563,11 +566,7 @@ const inputClass =
   "h-[48px] w-full border border-[#d7d7d7] bg-white px-4 text-[14px] outline-none focus:border-black";
 
 function CheckoutHeader() {
-  const marks = [
-    { id: "grey", fillClass: "fill-tri-ferg-grey" },
-    { id: "red", fillClass: "fill-tri-ferg-red" },
-    { id: "blue", fillClass: "fill-tri-ferg-blue" },
-  ] as const;
+  const marks = [{ id: "grey" }, { id: "red" }, { id: "blue" }] as const;
 
   return (
     <header className="border-b border-[#d7d7d7] bg-[#efefef] py-8">
@@ -577,12 +576,8 @@ function CheckoutHeader() {
         className="mx-auto flex w-fit items-center justify-center gap-3"
       >
         {marks.map((mark) => (
-          <span
-            key={mark.id}
-            className={`inline-block w-20 ${mark.fillClass}`}
-            aria-hidden
-          >
-            <TriFergSvg />
+          <span key={mark.id} className="inline-block w-20" aria-hidden>
+            <TriFergSvg logo={triFergLogoFromMarkId(mark.id)} />
           </span>
         ))}
       </Link>

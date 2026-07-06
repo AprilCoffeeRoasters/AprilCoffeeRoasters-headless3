@@ -1,7 +1,10 @@
 "use client";
 
+import {
+  TriFergSvg,
+  triFergLogoFromMarkId,
+} from "components/store/landing-logos";
 import StoreCart from "components/store/store-cart";
-import { TriFergSvg } from "components/store/tri-ferg-svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,12 +18,13 @@ function shouldShowStoreCart(pathname: string) {
   );
 }
 
-const TRI_FERG_MARK_CLASS = "ml-1.5 inline-block w-20 max-md:w-12";
+const TRI_FERG_MARK_CLASS = "inline-block translate-x-2 w-[80px] max-md:w-12";
+
 
 const TRI_FERG_MARKS = [
-  { id: "grey", fillClass: "fill-tri-ferg-grey" },
-  { id: "blue", fillClass: "fill-tri-ferg-blue" },
-  { id: "red", fillClass: "fill-tri-ferg-red" },
+  { id: "grey" },
+  { id: "blue" },
+  { id: "red" },
 ] as const;
 
 function shuffleMarks<T>(items: readonly T[]): T[] {
@@ -55,20 +59,20 @@ export default function Logo({
   };
   const [marks, setMarks] = useState(() => [...TRI_FERG_MARKS]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMarks(shuffleMarks(TRI_FERG_MARKS));
-    }, 750);
+        useEffect(() => {
+          const interval = setInterval(() => {
+            setMarks(shuffleMarks(TRI_FERG_MARKS));
+          }, 750);
 
-    return () => clearInterval(interval);
-  }, []);
+          return () => clearInterval(interval);
+        }, []);
 
   return (
     <header
       role="banner"
       id="header"
       aria-label="header"
-      className="mx-auto flex max-w-(--breakpoint-xl) py-2.5 text-center ease-out duration-300 max-md:sticky max-md:top-0 max-md:z-50 max-md:w-full max-md:py-1.5 max-md:pb-4 md:w-[90%] md:pb-4 lg:w-[70%]"
+      className="mx-auto flex max-w-(--breakpoint-xl) py-0.5 text-center ease-out duration-300 max-md:sticky max-md:top-0 max-md:z-50 max-md:w-full max-md:py-1.5  md:w-[90%] max-md:pb-2 md:pb-4 lg:w-[70%]"
     >
       <div className="w-4/12 max-md:invisible max-md:hidden" />
 
@@ -77,15 +81,15 @@ export default function Logo({
           href="/"
           id="header-fergs"
           aria-label="header-fergs"
-          className="mx-auto flex cursor-pointer max-md:ml-4"
+          className="mx-auto flex cursor-pointer gap-1 max-md:ml-4"
         >
           {marks.map((mark) => (
             <div
               key={mark.id}
               aria-label="tri-ferg"
-              className={`${TRI_FERG_MARK_CLASS} ${mark.fillClass}`}
+              className={TRI_FERG_MARK_CLASS}
             >
-              <TriFergSvg />
+              <TriFergSvg logo={triFergLogoFromMarkId(mark.id)} />
             </div>
           ))}
         </Link>
