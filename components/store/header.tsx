@@ -65,11 +65,12 @@ export default function Header({
         <div className="mx-5 mt-1.5 mb-2.5 flex w-full max-w-5xl items-center md:mt-3.5 md:mb-0 md:items-start">
           <Link href="/" prefetch={false} aria-label="black-april-logo">
             <div
-              className="relative block h-16 w-54 transition-opacity duration-150 ease-in-out hover:opacity-25 md:bottom-[12px] md:h-[71px] md:w-44"
+  className="relative block h-16 w-54  transition-opacity duration-150 ease-in-out hover:opacity-25 md:bottom-[12px] md:h-[82px] md:w-[250px]"
+  // className="relative block h-16 w-54 transition-opacity duration-150 ease-in-out hover:opacity-25 md:bottom-[12px] md:h-[71px] md:w-48"
               aria-label="logo"
             >
               <Image
-                src="/images/black-april-logo.png"
+                src="/images/april-orange-logoo.png"
                 alt="Black April Logo"
                 fill
                 priority
