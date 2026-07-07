@@ -27,7 +27,6 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 - **On-demand revalidation** — Webhook endpoints for Shopify and DatoCMS cache invalidation
 
 ## Tech stack
-
 | Layer     | Technology              |
 | --------- | ----------------------- |
 | Framework | Next.js 16              |
