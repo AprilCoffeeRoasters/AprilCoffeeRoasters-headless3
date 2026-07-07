@@ -1,8 +1,8 @@
 # April Coffee
 
-A April Coffee headless storefront store. It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
+An April Coffee headless storefront. It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
 
-Built with the Next.js App Router, React Server Components, Server Actions, `Suspense`, and partial prerendering (PPR).
+Built with the Next.js App Router, React Server Components, Server Actions, `Suspense`, and component-level caching.
 
 ## How it works
 
@@ -17,23 +17,24 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 ## Features
 
 - **Landing page** — Tri-Ferg navigation linking to shops, web shop, advice, and external destinations
+- **Dynamic header nav** — The third nav slot shows the latest advice article title and links to that article; if no article is available, it falls back to **Latest** linking to `/advice`
+- **Seasonal range nav** — When a DatoCMS range is published, its title is prepended to the header (e.g. `SUMMER 2026 RANGE`)
 - **Web shop** — Collections, product detail, cart, and Shopify checkout
 - **Advice** — Editorial feed from DatoCMS (when configured) or Shopify blog posts / product grids
 - **Lookbook** — Shopify blog articles for seasonal lookbooks
 - **Range** — Seasonal product ranges and lookbook-style product pages from DatoCMS
 - **Shops** — Retail location listings and galleries from DatoCMS
 - **On-demand revalidation** — Webhook endpoints for Shopify and DatoCMS cache invalidation
-  
 
 ## Tech stack
 
-| Layer     | Technology                         |
-| --------- | ---------------------------------- |
-| Framework | Next.js  |
-| UI        | React, Tailwind CSS          |
-| Commerce  | Shopify Storefront API             |
-| Content   | DatoCMS (optional)                 |
-| Language  | TypeScript                         |
+| Layer     | Technology              |
+| --------- | ----------------------- |
+| Framework | Next.js 16              |
+| UI        | React, Tailwind CSS     |
+| Commerce  | Shopify Storefront API  |
+| Content   | DatoCMS (optional)      |
+| Language  | TypeScript              |
 
 ## Routes
 
@@ -77,7 +78,20 @@ lib/
   shopify/       # Shopify Storefront API client, queries, mutations
   cms/           # DatoCMS client (landing, ranges, shops, advice)
   store/         # Product/collection helpers and mappers
+  get-landing-page.ts  # Header, footer, and Tri-Ferg nav assembly
 ```
+
+## Navigation
+
+Header and Tri-Ferg nav are built in `lib/get-landing-page.ts`.
+
+**Default slots:** Shops · Web Shop · Latest · Advice · Manor Place
+
+**When content is available:**
+
+1. **Latest advice article** — The **Latest** slot is replaced with the article title and links to `/advice/[slug]`. The article is taken from the first item in the advice feed, or from the DatoCMS homepage featured content if the feed is empty.
+2. **Seasonal range** — The latest DatoCMS range title is prepended to the header (e.g. `SUMMER 2026 RANGE` → `/range/summer-2026`).
+3. **Fallback** — If no valid article is found, the slot stays as **Latest** and links to `/advice`.
 
 ## Environment variables
 
@@ -114,6 +128,10 @@ When `DATOCMS_API_TOKEN` is set, the app loads homepage content, advice articles
 | `DATOCMS_API_TOKEN`      | Content Delivery API read token        |
 | `DATOCMS_WEBHOOK_SECRET` | Secret for `POST /api/revalidate-dato` |
 
+**Required DatoCMS models (API keys):** `article`, `homepage`, `shop`, `range`, `product`
+
+**Homepage model fields:** `herotitle`, `herodescription`, `heroimage`, `featuredcontent` (article slug). Header and footer links use app defaults until those fields exist in DatoCMS.
+
 ## Running locally
 
 ```bash
@@ -143,4 +161,4 @@ pnpm test     # Prettier check
 
 ## Deployment
 
-vercel
+Deploy to [Vercel](https://vercel.com) or any platform that supports Next.js 16. Set the environment variables above in your deployment settings and configure Shopify and DatoCMS webhooks to call the revalidation endpoints on publish.

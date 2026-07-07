@@ -125,7 +125,7 @@ export default function CollectionPageClient({
   return (
     <>
       <Logo onMenuOpenChange={setMenuOpen} />
-      <div className="mx-auto mt-0 min-h-0 w-full max-w-[1400px] overflow-hidden bg-white sm:mt-3 max-md:overflow-visible">
+      <div className="mx-auto mt-0 min-h-0 w-full max-w-[1400px] overflow-hidden bg-white sm:mt-1 max-md:overflow-visible">
         <CategoryNav
           menuOpen={menuOpen}
           activeCollection={collection}

@@ -14,6 +14,20 @@ function splitIntoColumns(items: AdviceCardProps[]) {
   return columns;
 }
 
+function appendToColumns(
+  columns: AdviceCardProps[][],
+  newItems: AdviceCardProps[],
+  startIndex: number,
+) {
+  const next = columns.map((column) => [...column]);
+
+  newItems.forEach((item, index) => {
+    next[(startIndex + index) % 3]!.push(item);
+  });
+
+  return next;
+}
+
 function toCardProps(item: AdviceFeedItem): AdviceCardProps {
   return {
     title: item.title,
@@ -34,15 +48,18 @@ export function AdviceFeedGrid({
 }) {
   const [items, setItems] = useState(initialFeed);
   const [metadata, setMetadata] = useState(initialMetadata);
+  const [columns, setColumns] = useState(() =>
+    splitIntoColumns(initialFeed.map(toCardProps)),
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setItems(initialFeed);
     setMetadata(initialMetadata);
+    setColumns(splitIntoColumns(initialFeed.map(toCardProps)));
   }, [initialFeed, initialMetadata]);
 
   const cardProps = items.map(toCardProps);
-  const columns = splitIntoColumns(cardProps);
   const hasMore = metadata.hasNextPage;
 
   async function loadMore() {
@@ -59,11 +76,12 @@ export function AdviceFeedGrid({
         adviceFeedMetadata: AdviceFeedMetadata;
       };
 
-      setItems((prev) => {
-        const seen = new Set(prev.map((item) => item.id));
-        const next = data.adviceFeed.filter((item) => !seen.has(item.id));
-        return [...prev, ...next];
-      });
+      const seen = new Set(items.map((item) => item.id));
+      const nextItems = data.adviceFeed.filter((item) => !seen.has(item.id));
+      const nextCardProps = nextItems.map(toCardProps);
+
+      setItems((prev) => [...prev, ...nextItems]);
+      setColumns((prev) => appendToColumns(prev, nextCardProps, items.length));
       setMetadata(data.adviceFeedMetadata);
     } finally {
       setLoading(false);

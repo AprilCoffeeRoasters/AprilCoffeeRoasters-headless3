@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import {
-  unstable_cacheLife as cacheLife,
-  unstable_cacheTag as cacheTag,
+  cacheLife,
+  cacheTag,
 } from "next/cache";
 import {
   datoRequest,

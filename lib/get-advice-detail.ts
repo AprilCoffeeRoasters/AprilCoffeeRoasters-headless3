@@ -1,8 +1,8 @@
 import type { AdviceArticleDetail } from "lib/advice-article";
 import {
-  fetchDatoAdviceDetail,
-  isDatoCmsConfigured,
-} from "lib/cms/demo-store-advice";
+    fetchDatoAdviceDetail,
+    isDatoCmsConfigured,
+} from "lib/cms/aprilcoffee-advice";
 import { fetchShopifyArticleDetail } from "lib/shopify-advice";
 import type { Article } from "lib/shopify/types";
 

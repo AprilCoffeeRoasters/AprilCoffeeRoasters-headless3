@@ -3,7 +3,7 @@ import { CartProvider } from "components/cart/cart-context";
 import { GeistSans } from "geist/font/sans";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -32,10 +32,10 @@ export default async function RootLayout({
     <html lang="en" className={GeistSans.variable}>
       <body className="bg-white text-black selection:bg-teal-300">
         <CartProvider cartPromise={cart}>
-          {children}
-          <Toaster closeButton />
-          {/* <WelcomeToast /> */}
+          <Suspense fallback={null}>{children}</Suspense>
         </CartProvider>
+        <Toaster closeButton />
+        {/* <WelcomeToast /> */}
       </body>
     </html>
   );

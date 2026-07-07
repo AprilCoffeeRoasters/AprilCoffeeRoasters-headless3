@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import {
-  unstable_cacheLife as cacheLife,
-  unstable_cacheTag as cacheTag,
+  cacheLife,
+  cacheTag,
 } from "next/cache";
 
 const endpoint = "https://graphql.datocms.com/";
@@ -112,7 +112,7 @@ export async function getAllArticles(): Promise<DatoArticleRecord[]> {
   const query = gql`
     ${articleFields}
     query AllArticles {
-      allArticles {
+      allArticles(orderBy: _updatedAt_DESC) {
         ...ArticleFields
       }
     }
@@ -123,6 +123,37 @@ export async function getAllArticles(): Promise<DatoArticleRecord[]> {
   }>(query);
 
   return data.allArticles;
+}
+
+export async function getArticlesPage(options: {
+  first: number;
+  skip: number;
+}): Promise<{ articles: DatoArticleRecord[]; totalCount: number }> {
+  const query = gql`
+    ${articleFields}
+    query ArticlesPage($first: IntType!, $skip: IntType!) {
+      allArticles(
+        first: $first
+        skip: $skip
+        orderBy: _updatedAt_DESC
+      ) {
+        ...ArticleFields
+      }
+      _allArticlesMeta {
+        count
+      }
+    }
+  `;
+
+  const data = await datoRequest<{
+    allArticles: DatoArticleRecord[];
+    _allArticlesMeta: { count: number };
+  }>(query, { first: options.first, skip: options.skip });
+
+  return {
+    articles: data.allArticles,
+    totalCount: data._allArticlesMeta.count,
+  };
 }
 
 export async function getArticleBySlug(

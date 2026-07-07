@@ -1,8 +1,8 @@
 import type { AdviceFeedResponse } from "lib/advice-types";
 import {
-  fetchDatoAdviceFeed,
-  isDatoCmsConfigured,
-} from "lib/cms/demo-store-advice";
+    fetchDatoAdviceFeed,
+    isDatoCmsConfigured,
+} from "lib/cms/aprilcoffee-advice";
 import { fetchShopifyAdviceFeed } from "lib/shopify-advice";
 import { headers } from "next/headers";
 
@@ -11,7 +11,7 @@ export async function getAdviceFeed(
 ): Promise<AdviceFeedResponse> {
   if (isDatoCmsConfigured()) {
     try {
-      return await fetchDatoAdviceFeed();
+      return await fetchDatoAdviceFeed({ cursor });
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.warn(

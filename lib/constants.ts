@@ -90,4 +90,5 @@ export function getShopifyAdviceFeedSource(): ShopifyAdviceFeedSource {
   return "auto";
 }
 
-export const SHOPIFY_ADVICE_PAGE_SIZE = 24;
+export const ADVICE_PAGE_SIZE = 24;
+export const SHOPIFY_ADVICE_PAGE_SIZE = ADVICE_PAGE_SIZE;

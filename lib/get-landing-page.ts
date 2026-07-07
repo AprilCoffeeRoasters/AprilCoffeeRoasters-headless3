@@ -301,6 +301,7 @@ import type {
 import { cache } from "react";
 
 const LATEST_ADVICE_SLOT = 2;
+const LATEST_NAV_LABEL = "Latest";
 
 const defaultTriFergNav: LandingTriFergNavItem[] = [
   {
@@ -316,7 +317,7 @@ const defaultTriFergNav: LandingTriFergNavItem[] = [
     ariaLabel: "web-shop-tri-ferg-link",
   },
   {
-    title: "Latest",
+    title: LATEST_NAV_LABEL,
     href: "/advice",
     fillClass: "fill-tri-ferg-blue",
     ariaLabel: "latest-advice-tri-ferg-link",
@@ -339,7 +340,7 @@ const defaultTriFergNav: LandingTriFergNavItem[] = [
 const defaultHeaderLinks: LandingLink[] = [
   { label: "Shops", href: "/shops", external: false },
   { label: "Web Shop", href: "/collections/all", external: false },
-  { label: "Latest", href: "/advice", external: false },
+  { label: LATEST_NAV_LABEL, href: "/advice", external: false },
   { label: "Advice", href: "/advice", external: false },
   {
     label: "Manor Place",
@@ -387,6 +388,16 @@ const defaultFooterLinks: LandingLink[] = [
   },
 ];
 
+function isValidFeatured(
+  featured: LandingFeaturedContent | null,
+): featured is LandingFeaturedContent {
+  return Boolean(featured?.title?.trim() && featured?.href?.trim());
+}
+
+function featuredNavLabel(featured: LandingFeaturedContent): string {
+  return featured.title.trim() || LATEST_NAV_LABEL;
+}
+
 function feedItemToFeatured(item: AdviceFeedItem): LandingFeaturedContent {
   return {
     title: item.title,
@@ -417,7 +428,7 @@ function injectFeaturedIntoTriFerg(
     index === slot
       ? {
           ...item,
-          title: featured.title,
+          title: featuredNavLabel(featured),
           href: featured.href,
           external: featured.href.startsWith("http"),
         }
@@ -430,14 +441,14 @@ function injectFeaturedIntoHeader(
   featured: LandingFeaturedContent,
 ): LandingLink[] {
   const latestLink: LandingLink = {
-    label: "Latest",
+    label: featuredNavLabel(featured),
     href: featured.href,
     external: featured.href.startsWith("http"),
   };
 
   const latestIndex = links.findIndex(
     (link) =>
-      link.label === "Latest" ||
+      link.label === LATEST_NAV_LABEL ||
       link.href === featured.href ||
       (link.href.startsWith("/advice/") && link.href !== "/advice"),
   );
@@ -536,7 +547,7 @@ async function loadLandingPageData(): Promise<LandingPageData> {
   const footerLinks =
     cmsLanding?.footerLinks.length ? cmsLanding.footerLinks : defaultFooterLinks;
 
-  const headerWithFeatured = featured
+  const headerWithFeatured = isValidFeatured(featured)
     ? injectFeaturedIntoHeader(headerLinks, featured)
     : headerLinks;
 
@@ -544,7 +555,7 @@ async function loadLandingPageData(): Promise<LandingPageData> {
     ? triFergFromHeaderLinks(headerWithFeatured)
     : defaultTriFergNav;
 
-  const triFergNav = featured
+  const triFergNav = isValidFeatured(featured)
     ? injectFeaturedIntoTriFerg(triFergBase, featured)
     : triFergBase;
 

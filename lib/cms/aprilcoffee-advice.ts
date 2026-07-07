@@ -1,12 +1,13 @@
 import type { AdviceArticleDetail } from "lib/advice-article";
 import type { AdviceFeedItem, AdviceFeedResponse } from "lib/advice-types";
 import {
-  getAllArticles,
   getArticleBySlug,
+  getArticlesPage,
   isDatoCmsConfigured,
   type DatoArticleRecord,
   type DatoResponsiveImage,
 } from "lib/cms/datocms";
+import { ADVICE_PAGE_SIZE } from "lib/constants";
 import { structuredTextToHtml } from "lib/cms/structured-text";
 
 export { isDatoCmsConfigured };
@@ -42,40 +43,48 @@ function recordToFeedItem(record: DatoArticleRecord): AdviceFeedItem | null {
   };
 }
 
-function sortByNewest(
-  records: DatoArticleRecord[],
-): DatoArticleRecord[] {
-  return [...records].sort((a, b) => {
-    const aTime = a.updatedAt ? Date.parse(a.updatedAt) : 0;
-    const bTime = b.updatedAt ? Date.parse(b.updatedAt) : 0;
-    return bTime - aTime;
-  });
+function parseDatoFeedOffset(cursor: string | null | undefined): number {
+  if (!cursor) return 0;
+  const offset = Number.parseInt(cursor, 10);
+  return Number.isFinite(offset) && offset > 0 ? offset : 0;
 }
 
-export async function fetchDatoAdviceFeed(): Promise<AdviceFeedResponse> {
-  const records = sortByNewest(await getAllArticles());
-  const adviceFeed = records.flatMap((record) => {
-    const item = recordToFeedItem(record);
-    return item ? [item] : [];
-  });
+export async function fetchDatoAdviceFeed(options?: {
+  cursor?: string | null;
+  first?: number;
+}): Promise<AdviceFeedResponse> {
+  const first = options?.first ?? ADVICE_PAGE_SIZE;
+  let skip = parseDatoFeedOffset(options?.cursor);
+  const adviceFeed: AdviceFeedItem[] = [];
+  let totalCount = 0;
+
+  while (adviceFeed.length < first) {
+    const page = await getArticlesPage({ first, skip });
+    totalCount = page.totalCount;
+
+    if (page.articles.length === 0) break;
+
+    for (const record of page.articles) {
+      const item = recordToFeedItem(record);
+      if (item) adviceFeed.push(item);
+      if (adviceFeed.length >= first) break;
+    }
+
+    skip += page.articles.length;
+    if (skip >= totalCount) break;
+  }
+
+  const hasNextPage = skip < totalCount;
 
   return {
     adviceFeed,
     adviceFeedMetadata: {
       count: adviceFeed.length,
-      totalCount: adviceFeed.length,
-      hasNextPage: false,
-      endCursor: null,
+      totalCount,
+      hasNextPage,
+      endCursor: hasNextPage ? String(skip) : null,
     },
   };
-}
-
-export async function fetchDatoAdviceBySlug(
-  slug: string,
-): Promise<AdviceFeedItem | undefined> {
-  const record = await getArticleBySlug(slug);
-  if (!record) return undefined;
-  return recordToFeedItem(record) ?? undefined;
 }
 
 export async function fetchDatoAdviceDetail(
@@ -90,9 +99,11 @@ export async function fetchDatoAdviceDetail(
   );
   const info = record.info?.trim() || undefined;
 
+  const seenUrls = new Set<string>();
   const galleryImages = record.images.flatMap((item) => {
     const image = item.responsiveImage;
-    if (!image) return [];
+    if (!image || seenUrls.has(image.src)) return [];
+    seenUrls.add(image.src);
     return [
       {
         url: image.src,
