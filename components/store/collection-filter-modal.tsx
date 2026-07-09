@@ -147,7 +147,7 @@ import clsx from "clsx";
 import { filterSizeOptions } from "lib/store/collection-filters";
 
 const filterBtnClass =
-  "flex items-center justify-center whitespace-nowrap border-2 border-black px-4 text-center cursor-pointer uppercase text-[12.8px] leading-[18px] font-[700] max-md:my-1 max-md:h-8 max-md:py-1";
+  "flex items-center justify-center whitespace-nowrap border-2 border-black px-4 text-center cursor-pointer text-[10px] leading-[15px] font-bold uppercase max-md:my-1 max-md:h-8 max-md:py-1 max-md:text-[13px] max-md:leading-[18px]";
 
 type CollectionFilterModalProps = {
   isOpen: boolean;
@@ -180,7 +180,7 @@ export default function CollectionFilterModal({
           <DialogPanel
             transition
             aria-label="popover-modal"
-            className="relative flex w-3/5 max-w-[400px] flex-col border-2 border-black bg-white px-[30px] py-[15px] text-[12.8px] leading-[18px] transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0 max-md:max-h-full max-md:w-full max-md:max-w-[500px] max-md:overflow-y-scroll max-md:px-2.5"
+            className="relative flex w-3/5 max-w-[400px] flex-col border-2 border-black bg-white px-[30px] py-[15px] text-[13px] leading-[18px] transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0 max-md:max-h-full max-md:w-full max-md:max-w-[500px] max-md:overflow-y-scroll max-md:px-2.5"
           >
             <button
               type="button"
@@ -188,7 +188,7 @@ export default function CollectionFilterModal({
               aria-label="close-modal-button"
               className={clsx(
                 filterBtnClass,
-                "absolute right-0 top-0 h-5 w-[50px] border-r-0 border-t-0 bg-black text-white hover:bg-white hover:text-black max-md:my-0 max-md:px-2"
+                "absolute right-0 top-0 h-5 w-[50px]! border-r-0 border-t-0 bg-black text-white hover:bg-white hover:text-black max-md:my-0! max-md:px-2"
               )}
             >
               Close
@@ -196,7 +196,7 @@ export default function CollectionFilterModal({
 
             <div className="max-md:p-2">
               <div className="my-4">
-                <h3 className="select-none uppercase text-[12.8px] leading-[18px] font-[700]">
+                <h3 className="select-none text-[13px] leading-[18px] font-bold uppercase">
                   Sold Out
                 </h3>
 
@@ -208,7 +208,7 @@ export default function CollectionFilterModal({
                       disabled={showSoldOut}
                       onClick={() => onShowSoldOutChange(true)}
                       className={clsx(
-                        "px-6 py-1 uppercase text-[12.8px] leading-[18px] font-[700] transition disabled:cursor-not-allowed",
+                        "px-6 py-1 text-[10px] leading-[15px] font-bold uppercase transition disabled:cursor-not-allowed max-md:text-[13px] max-md:leading-[18px]",
                         showSoldOut
                           ? "cursor-pointer bg-black text-white"
                           : "cursor-pointer bg-white text-black"
@@ -223,7 +223,7 @@ export default function CollectionFilterModal({
                       disabled={!showSoldOut}
                       onClick={() => onShowSoldOutChange(false)}
                       className={clsx(
-                        "border-l border-black px-6 py-1 uppercase text-[12.8px] leading-[18px] font-[700] transition disabled:cursor-not-allowed",
+                        "border-l border-black px-6 py-1 text-[10px] leading-[15px] font-bold uppercase transition disabled:cursor-not-allowed max-md:text-[13px] max-md:leading-[18px]",
                         !showSoldOut
                           ? "cursor-pointer bg-black text-white"
                           : "cursor-pointer bg-white text-black"
@@ -236,7 +236,7 @@ export default function CollectionFilterModal({
               </div>
 
               <div className="my-4">
-                <h3 className="select-none uppercase text-[12.8px] leading-[18px] font-[700]">
+                <h3 className="select-none text-[13px] leading-[18px] font-bold uppercase">
                   In-Stock
                 </h3>
 
