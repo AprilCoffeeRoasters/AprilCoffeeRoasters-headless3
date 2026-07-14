@@ -1,7 +1,12 @@
-import type { AdviceFeedItem } from "lib/advice-types";
+import type { AdviceFeedItem } from "lib/advice/advice-types";
 import { getDatoLandingPageContent } from "lib/cms/landing";
 import { getLatestRange, isDatoCmsConfigured } from "lib/cms/range";
-import { getAdviceFeed } from "lib/get-advice-feed";
+import { getAdviceFeed } from "lib/advice/get-advice-feed";
+import {
+  defaultTriFergNav,
+  LATEST_NAV_LABEL,
+  socialLinks as defaultFooterLinks,
+} from "lib/constants";
 import type {
   LandingFeaturedContent,
   LandingLink,
@@ -11,41 +16,6 @@ import type {
 import { cache } from "react";
 
 const LATEST_ADVICE_SLOT = 2;
-const LATEST_NAV_LABEL = "Latest";
-
-const defaultTriFergNav: LandingTriFergNavItem[] = [
-  {
-    title: "Shops",
-    href: "/shops",
-    fillClass: "fill-tri-ferg-red",
-    ariaLabel: "shops-tri-ferg-link",
-  },
-  {
-    title: "Web Shop",
-    href: "/collections/all",
-    fillClass: "fill-tri-ferg-grey",
-    ariaLabel: "web-shop-tri-ferg-link",
-  },
-  {
-    title: LATEST_NAV_LABEL,
-    href: "/advice",
-    fillClass: "fill-tri-ferg-blue",
-    ariaLabel: "latest-advice-tri-ferg-link",
-  },
-  {
-    title: "Advice",
-    href: "/advice",
-    fillClass: "",
-    ariaLabel: "advice-tri-ferg-link",
-  },
-  {
-    title: "Manor Place",
-    href: "https://manorplace.com",
-    fillClass: "fill-tri-ferg-lime-green",
-    ariaLabel: "manor-place-tri-ferg-link",
-    external: true,
-  },
-];
 
 const defaultHeaderLinks: LandingLink[] = [
   { label: LATEST_NAV_LABEL, href: "/advice", external: false },
@@ -56,45 +26,6 @@ const defaultHeaderLinks: LandingLink[] = [
     label: "Manor Place",
     href: "https://manorplace.com",
     external: false,
-  },
-];
-
-const defaultFooterLinks: LandingLink[] = [
-  {
-    label: "Instagram",
-    href: "https://instagram.com/palaceskateboards",
-    external: true,
-  },
-  {
-    label: "TikTok",
-    href: "https://www.tiktok.com/@palaceskateboards",
-    external: true,
-  },
-  {
-    label: "Apple Music",
-    href: "https://apple.co/palace",
-    external: true,
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/channel/UCADVAEBl9ZZ9gFOwURmm2kA",
-    external: true,
-  },
-  { label: "WeChat", href: "/wechat", external: false },
-  {
-    label: "Weibo",
-    href: "https://weibo.com/u/7322458413",
-    external: true,
-  },
-  {
-    label: "Mailing List",
-    href: "https://mailing-list.palaceskateboards.com",
-    external: true,
-  },
-  {
-    label: "Boring Stuff",
-    href: "https://boring.palaceskateboards.com/",
-    external: true,
   },
 ];
 

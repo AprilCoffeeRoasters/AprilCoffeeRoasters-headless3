@@ -1,10 +1,10 @@
 "use client";
 
-import CategoryNav from "components/store/category-nav";
-import CollectionFilterModal from "components/store/collection-filter-modal";
-import CollectionProductGrid from "components/store/collection-product-grid";
-import Footer from "components/store/collections/footer";
-import Logo from "components/store/logo";
+import CategoryNav from "components/store/collections/category-nav";
+import CollectionFilterModal from "components/store/collections/collection-filter-modal";
+import Footer from "components/store/collections/collection-footer";
+import CollectionProductGrid from "components/store/collections/collection-product-grid";
+import Logo from "components/store/logo/logo";
 import type { PageInfo, Product } from "lib/shopify/types";
 import {
   applyCollectionFilters,

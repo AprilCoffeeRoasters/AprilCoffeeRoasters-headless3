@@ -1,4 +1,4 @@
-import CollectionPageClient from "components/store/collection-page-client";
+import CollectionPageClient from "components/store/collections/collection-page-client";
 import type { PageInfo, Product } from "lib/shopify/types";
 import { Suspense } from "react";
 

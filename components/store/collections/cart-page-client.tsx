@@ -1,12 +1,12 @@
 "use client";
 
 import { useCart } from "components/cart/cart-context";
-import CartLineRemoveButton from "components/store/cart-line-remove-button";
-import CategoryNav from "components/store/category-nav";
-import Footer from "components/store/collections/footer";
-import Logo from "components/store/logo";
+import CartLineRemoveButton from "components/store/collections/cart-line-remove-button";
+import CategoryNav from "components/store/collections/category-nav";
+import Footer from "components/store/collections/collection-footer";
+import Logo from "components/store/logo/logo";
 import { DEFAULT_OPTION } from "lib/constants";
-import { formatCartMoney } from "lib/format-cart-money";
+import { formatCartMoney } from "lib/format/format-cart-money";
 import type { CartItem } from "lib/shopify/types";
 import Image from "next/image";
 import Link from "next/link";

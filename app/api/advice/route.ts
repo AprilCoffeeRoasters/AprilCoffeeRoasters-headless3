@@ -2,7 +2,7 @@ import {
     fetchDatoAdviceFeed,
     isDatoCmsConfigured,
 } from "lib/cms/aprilcoffee-advice";
-import { fetchShopifyAdviceFeed } from "lib/shopify-advice";
+import { fetchShopifyAdviceFeed } from "lib/advice/shopify-advice";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {

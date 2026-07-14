@@ -3,7 +3,7 @@
 // import { useCart } from "components/cart/cart-context";
 // import { TriFergSvg } from "components/store/tri-ferg-svg";
 // import { DEFAULT_OPTION } from "lib/constants";
-// import { formatCartMoney } from "lib/format-cart-money";
+// import { formatCartMoney } from "lib/format/format-cart-money";
 // import type { CartItem } from "lib/shopify/types";
 // import Image from "next/image";
 // import Link from "next/link";
@@ -545,9 +545,9 @@ import { useCart } from "components/cart/cart-context";
 import {
   TriFergSvg,
   triFergLogoFromMarkId,
-} from "components/store/landing-logos";
+} from "components/store/logo/landing-logos";
 import { DEFAULT_OPTION } from "lib/constants";
-import { formatCartMoney } from "lib/format-cart-money";
+import { formatCartMoney } from "lib/format/format-cart-money";
 import type { CartItem } from "lib/shopify/types";
 import Image from "next/image";
 import Link from "next/link";

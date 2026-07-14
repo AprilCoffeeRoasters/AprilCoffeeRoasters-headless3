@@ -1,6 +1,6 @@
 // import Link from "next/link";
-// import Footer from "../../../components/store/footer";
-// import Header from "../../../components/store/header";
+// import Footer from "../../../components/store/layout/footer";
+// import Header from "../../../components/store/layout/header";
 // const navItems = [
 //   "SUMMER 2026 RANGE",
 //   "SUMMER 2026 LOOKBOOK",
@@ -129,8 +129,8 @@ import { getAllShops, isDatoCmsConfigured } from "lib/cms/datocms";
 import { shopCoverSrc } from "lib/cms/shops";
 import { getLandingPageData } from "lib/get-landing-page";
 import Link from "next/link";
-import Footer from "../../../components/store/footer";
-import Header from "../../../components/store/header";
+import Footer from "../../../components/store/layout/footer";
+import Header from "../../../components/store/layout/header";
 
 export default async function Page() {
   const { headerLinks, footerLinks } = await getLandingPageData();

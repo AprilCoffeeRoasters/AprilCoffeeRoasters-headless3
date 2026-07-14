@@ -1,9 +1,9 @@
-import type { AdviceArticleDetail } from "lib/advice-article";
+import type { AdviceArticleDetail } from "lib/advice/advice-article";
 import {
     fetchDatoAdviceDetail,
     isDatoCmsConfigured,
 } from "lib/cms/aprilcoffee-advice";
-import { fetchShopifyArticleDetail } from "lib/shopify-advice";
+import { fetchShopifyArticleDetail } from "lib/advice/shopify-advice";
 import type { Article } from "lib/shopify/types";
 
 export function shopifyArticleToDetail(article: Article): AdviceArticleDetail {

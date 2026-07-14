@@ -1,6 +1,6 @@
-import Footer from "components/store/footer";
-import Header from "components/store/header";
-import RangeProductPageClient from "components/store/range-product-page-client";
+import Footer from "components/store/layout/footer";
+import Header from "components/store/layout/header";
+import RangeProductPageClient from "components/store/range/range-product-page-client";
 import { getRangeBySlug, isDatoCmsConfigured } from "lib/cms/range";
 import { getLandingPageData } from "lib/get-landing-page";
 import { getProduct } from "lib/shopify";

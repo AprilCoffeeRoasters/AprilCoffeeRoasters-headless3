@@ -3,7 +3,7 @@
 import {
   TriFergSvg,
   triFergLogoFromMarkId,
-} from "components/store/landing-logos";
+} from "components/store/logo/landing-logos";
 import StoreCart from "components/store/store-cart";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

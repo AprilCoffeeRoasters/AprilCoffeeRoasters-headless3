@@ -1,9 +1,9 @@
-import Footer from "components/store/footer";
-import Header from "components/store/header";
+import Footer from "components/store/layout/footer";
+import Header from "components/store/layout/header";
 import {
   TriFergSvg,
   triFergLogoFromFillClass,
-} from "components/store/landing-logos";
+} from "components/store/logo/landing-logos";
 import { getLandingPageData } from "lib/get-landing-page";
 import Link from "next/link";
 

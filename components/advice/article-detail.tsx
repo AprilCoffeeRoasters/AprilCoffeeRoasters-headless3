@@ -1,4 +1,4 @@
-import type { AdviceArticleDetail } from "lib/advice-article";
+import type { AdviceArticleDetail } from "lib/advice/advice-article";
 import Image from "next/image";
 
 function articleImages(article: AdviceArticleDetail) {

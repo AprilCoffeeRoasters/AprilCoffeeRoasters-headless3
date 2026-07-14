@@ -1,8 +1,8 @@
-import { getAdviceFeed } from "lib/get-advice-feed";
+import { getAdviceFeed } from "lib/advice/get-advice-feed";
 import { getLandingPageData } from "lib/get-landing-page";
 import { AdviceFeedGrid } from "../../../components/advice/advice-feed-grid";
-import Footer from "../../../components/store/footer";
-import Header from "../../../components/store/header";
+import Footer from "../../../components/store/layout/footer";
+import Header from "../../../components/store/layout/header";
 
 export default async function AdvicePage() {
   const [{ adviceFeed, adviceFeedMetadata }, { headerLinks, footerLinks }] =

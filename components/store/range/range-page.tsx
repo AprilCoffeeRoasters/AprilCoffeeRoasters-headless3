@@ -1,4 +1,4 @@
-import RangeProductCard from "components/store/range-product-card";
+import RangeProductCard from "components/store/range/range-product-card";
 import type { DatoRangeRecord } from "lib/cms/range";
 
 export default function RangePage({ range }: { range: DatoRangeRecord }) {

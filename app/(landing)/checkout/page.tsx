@@ -1,4 +1,4 @@
-import CheckoutPageClient from "components/store/checkout-page-client";
+import CheckoutPageClient from "components/store/collections/checkout-page-client";
 import { getCart } from "lib/shopify";
 import { redirect } from "next/navigation";
 

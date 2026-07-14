@@ -1,6 +1,6 @@
 "use client";
 
-import type { AdviceFeedItem, AdviceFeedMetadata } from "lib/advice-types";
+import type { AdviceFeedItem, AdviceFeedMetadata } from "lib/advice/advice-types";
 import { useEffect, useState } from "react";
 import { AdviceCard, type AdviceCardProps } from "./advice-card";
 

@@ -1,11 +1,11 @@
 "use client";
 
 import clsx from "clsx";
-import CategoryNav from "components/store/category-nav";
-import Footer from "components/store/collections/footer";
-import Logo from "components/store/logo";
-import ProductMetafieldModal from "components/store/product-metafield-modal";
-import ProductPageAddToCart from "components/store/product-page-add-to-cart";
+import CategoryNav from "components/store/collections/category-nav";
+import Footer from "components/store/collections/collection-footer";
+import Logo from "components/store/logo/logo";
+import ProductMetafieldModal from "components/store/product/product-metafield-modal";
+import ProductPageAddToCart from "components/store/product/product-page-add-to-cart";
 import type { Product } from "lib/shopify/types";
 import type {
   ParsedSizeChart,

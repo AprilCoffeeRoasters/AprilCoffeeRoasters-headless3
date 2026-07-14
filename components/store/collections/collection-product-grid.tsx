@@ -1,6 +1,6 @@
 "use client";
 
-import ProductCard from "components/store/product-card";
+import ProductCard from "components/store/product/product-card";
 import type { PageInfo, Product, ProductsPage } from "lib/shopify/types";
 import type { CollectionFilters } from "lib/store/collection-filters";
 import { decodePaginationCursor } from "lib/store/collection-pagination";

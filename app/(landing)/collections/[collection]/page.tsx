@@ -1,4 +1,4 @@
-import CollectionPageLayout from "components/store/collection-page-layout";
+import CollectionPageLayout from "components/store/collections/collection-page-layout";
 import { loadCollectionProductsPage } from "lib/shopify";
 import { collectionCategories } from "lib/store/collection-categories";
 import { notFound } from "next/navigation";

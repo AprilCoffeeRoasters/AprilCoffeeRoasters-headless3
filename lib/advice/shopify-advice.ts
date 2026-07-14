@@ -1,4 +1,4 @@
-import type { AdviceFeedItem, AdviceFeedResponse } from "lib/advice-types";
+import type { AdviceFeedItem, AdviceFeedResponse } from "lib/advice/advice-types";
 import {
   getShopifyAdviceBlogHandle,
   getShopifyAdviceCollectionHandle,

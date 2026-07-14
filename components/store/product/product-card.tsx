@@ -1,4 +1,4 @@
-import { formatProductPrice } from "lib/format-product-price";
+import { formatProductPrice } from "lib/format/format-product-price";
 import { shopifyImageUrl } from "lib/shopify-image-url";
 import type { Product } from "lib/shopify/types";
 import Image from "next/image";

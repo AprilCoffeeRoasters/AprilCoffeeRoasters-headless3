@@ -48,7 +48,7 @@ export default function ShopGalleryCarousel({
   return (
     <div aria-label="gallery-carousel" className="flex w-full flex-col items-center">
       <div
-        className="relativeter overflow-hidden transition-[height] duration-300"
+        className="relative flex w-full items-center overflow-hidden transition-[height] duration-300"
         style={{ maxHeight: MAX_HEIGHT }}
       >
         {count > 1 ? (

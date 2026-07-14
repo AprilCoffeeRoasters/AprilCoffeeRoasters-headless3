@@ -1,9 +1,9 @@
 import { ArticleDetail } from "../../../../components/advice/article-detail";
-import Footer from "../../../../components/store/footer";
-import Header from "../../../../components/store/header";
-import { shopifyArticleToDetail } from "lib/get-advice-detail";
+import Footer from "../../../../components/store/layout/footer";
+import Header from "../../../../components/store/layout/header";
+import { shopifyArticleToDetail } from "lib/advice/get-advice-detail";
 import { getLandingPageData } from "lib/get-landing-page";
-import { fetchShopifyArticleDetail } from "lib/shopify-advice";
+import { fetchShopifyArticleDetail } from "lib/advice/shopify-advice";
 import { notFound } from "next/navigation";
 
 export default async function LookbookArticlePage({

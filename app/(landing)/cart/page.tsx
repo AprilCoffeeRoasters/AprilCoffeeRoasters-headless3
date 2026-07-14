@@ -1,4 +1,4 @@
-import CartPageClient from "components/store/cart-page-client";
+import CartPageClient from "components/store/collections/cart-page-client";
 
 export const metadata = {
   title: "Cart",

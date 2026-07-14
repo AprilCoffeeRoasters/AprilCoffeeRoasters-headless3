@@ -1,9 +1,9 @@
-import { getAdviceDetail } from "lib/get-advice-detail";
+import { getAdviceDetail } from "lib/advice/get-advice-detail";
 import { getLandingPageData } from "lib/get-landing-page";
 import { notFound } from "next/navigation";
 import { ArticleDetail } from "../../../../components/advice/article-detail";
-import Footer from "../../../../components/store/footer";
-import Header from "../../../../components/store/header";
+import Footer from "../../../../components/store/layout/footer";
+import Header from "../../../../components/store/layout/header";
 
 export default async function AdviceArticlePage({
   params,

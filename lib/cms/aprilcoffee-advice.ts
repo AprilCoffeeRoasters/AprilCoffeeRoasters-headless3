@@ -1,5 +1,5 @@
-import type { AdviceArticleDetail } from "lib/advice-article";
-import type { AdviceFeedItem, AdviceFeedResponse } from "lib/advice-types";
+import type { AdviceArticleDetail } from "lib/advice/advice-article";
+import type { AdviceFeedItem, AdviceFeedResponse } from "lib/advice/advice-types";
 import {
   getArticleBySlug,
   getArticlesPage,

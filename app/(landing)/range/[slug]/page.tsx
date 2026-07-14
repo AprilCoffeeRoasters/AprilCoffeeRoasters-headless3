@@ -1,6 +1,6 @@
-import Footer from "components/store/footer";
-import Header from "components/store/header";
-import RangePage from "components/store/range-page";
+import Footer from "components/store/layout/footer";
+import Header from "components/store/layout/header";
+import RangePage from "components/store/range/range-page";
 import { getAllRanges, getRangeBySlug, isDatoCmsConfigured } from "lib/cms/range";
 import { getLandingPageData } from "lib/get-landing-page";
 import type { Metadata } from "next";

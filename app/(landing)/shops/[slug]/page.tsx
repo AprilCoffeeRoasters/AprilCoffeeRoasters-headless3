@@ -3,7 +3,7 @@ import { parseShopAddress, shopGallerySlides } from "lib/cms/shops";
 import { structuredTextToHtml } from "lib/cms/structured-text";
 import { getLandingPageData } from "lib/get-landing-page";
 import { notFound } from "next/navigation";
-import ShopPage from "../../../../components/store/shop-page";
+import ShopPage from "../../../../components/store/shop/shop-page";
 
 export async function generateStaticParams() {
   try {

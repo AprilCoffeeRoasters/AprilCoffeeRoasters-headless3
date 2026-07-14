@@ -1,3 +1,5 @@
+import type { LandingLink, LandingTriFergNavItem } from "lib/landing-types";
+
 export type SortFilterItem = {
   title: string;
   slug: string | null;
@@ -92,3 +94,115 @@ export function getShopifyAdviceFeedSource(): ShopifyAdviceFeedSource {
 
 export const ADVICE_PAGE_SIZE = 24;
 export const SHOPIFY_ADVICE_PAGE_SIZE = ADVICE_PAGE_SIZE;
+
+export type FooterLinkItem = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+export const shopLinks = [
+  "Australia Shop",
+  "Canada Shop",
+  "EU Shop",
+  "Japan Shop",
+  "World Shop",
+  "USA Shop",
+];
+
+export const boringLinks: FooterLinkItem[] = [
+  {
+    label: "Delivery Information",
+    href: "https://boring.palaceskateboards.com/row/delivery-information/",
+  },
+  {
+    label: "Returns Information",
+    href: "https://boring.palaceskateboards.com/row/returns-information/",
+  },
+  {
+    label: "Terms & Conditions",
+    href: "https://boring.palaceskateboards.com/row/terms-and-conditions",
+  },
+  {
+    label: "Terms of Use",
+    href: "https://boring.palaceskateboards.com/row/terms-of-use",
+  },
+  {
+    label: "Privacy Policy",
+    href: "https://boring.palaceskateboards.com/row/privacy-policy",
+  },
+];
+
+export const socialLinks: LandingLink[] = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/aprilcoffeecph",
+    external: true,
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/channel/UCPlsOYZ8ZEam57EUCf3DKjg",
+    external: true,
+  },
+  {
+    label: "Wholesale",
+    href: "/wholesale",
+    external: false,
+  },
+  {
+    label: "Coffee Info",
+    href: "/coffee-info",
+    external: false,
+  },
+  {
+    label: "SMILEY",
+    href: "https://www.findsmiley.dk/1347286",
+    external: true,
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+    external: false,
+  },
+  {
+    label: "Mailing List",
+    href: "/mailing-list",
+    external: false,
+  },
+];
+
+export const LATEST_NAV_LABEL = "Latest";
+
+export const defaultTriFergNav: LandingTriFergNavItem[] = [
+  {
+    title: "Shops",
+    href: "/shops",
+    fillClass: "fill-tri-ferg-red",
+    ariaLabel: "shops-tri-ferg-link",
+  },
+  {
+    title: "Web Shop",
+    href: "/collections/all",
+    fillClass: "fill-tri-ferg-grey",
+    ariaLabel: "web-shop-tri-ferg-link",
+  },
+  {
+    title: LATEST_NAV_LABEL,
+    href: "/advice",
+    fillClass: "fill-tri-ferg-blue",
+    ariaLabel: "latest-advice-tri-ferg-link",
+  },
+  {
+    title: "Advice",
+    href: "/advice",
+    fillClass: "",
+    ariaLabel: "advice-tri-ferg-link",
+  },
+  {
+    title: "Manor Place",
+    href: "https://manorplace.com",
+    fillClass: "fill-tri-ferg-lime-green",
+    ariaLabel: "manor-place-tri-ferg-link",
+    external: true,
+  },
+];

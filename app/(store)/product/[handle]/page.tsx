@@ -1,4 +1,4 @@
-import ProductPageClient from "components/store/product-page-client";
+import ProductPageClient from "components/store/product/product-page-client";
 import { getProduct, getProductRecommendations } from "lib/shopify";
 import { mapProductPageData } from "lib/store/map-product-page-data";
 import type { Metadata } from "next";

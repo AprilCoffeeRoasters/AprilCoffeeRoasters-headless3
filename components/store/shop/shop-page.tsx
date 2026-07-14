@@ -1,7 +1,7 @@
 import type { ShopGalleryImage } from "lib/cms/shops";
 import type { LandingLink } from "lib/landing-types";
-import Footer from "./footer";
-import Header from "./header";
+import Footer from "../layout/footer";
+import Header from "../layout/header";
 import ShopGalleryCarousel from "./shop-gallery-carousel";
 
 interface ShopPageProps {

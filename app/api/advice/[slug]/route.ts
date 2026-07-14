@@ -1,4 +1,4 @@
-import { getAdviceDetail } from "lib/get-advice-detail";
+import { getAdviceDetail } from "lib/advice/get-advice-detail";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

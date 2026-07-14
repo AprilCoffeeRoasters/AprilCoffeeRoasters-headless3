@@ -1,10 +1,3 @@
-// export const TRI_FERG_LOGOS = {
-//   black: "/homelogos/black-april - preview.png",
-//   blue: "/homelogos/blue-april-preview (1).png",
-//   green: "/homelogos/green-april-preview (1).png",
-//   red: "/homelogos/red-april-preview (1).png",
-//   white: "/homelogos/white-april-preview (1).png",
-// } as const;
 export const TRI_FERG_LOGOS = {
   black: "/homelogos/black-april-crop.png",
   blue: "/homelogos/blue-april-crop.png",

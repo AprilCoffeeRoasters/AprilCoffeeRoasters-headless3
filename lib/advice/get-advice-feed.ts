@@ -1,9 +1,9 @@
-import type { AdviceFeedResponse } from "lib/advice-types";
+import type { AdviceFeedResponse } from "lib/advice/advice-types";
 import {
     fetchDatoAdviceFeed,
     isDatoCmsConfigured,
 } from "lib/cms/aprilcoffee-advice";
-import { fetchShopifyAdviceFeed } from "lib/shopify-advice";
+import { fetchShopifyAdviceFeed } from "lib/advice/shopify-advice";
 import { headers } from "next/headers";
 
 export async function getAdviceFeed(
