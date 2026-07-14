@@ -14,7 +14,7 @@
 //   return NextResponse.json(page);
 // }
 import { loadCollectionProductsPage } from "lib/shopify";
-import { NextRequest, NextResponse } from "next/server";
+import { connection, NextRequest, NextResponse } from "next/server";
 
 const COLLECTION_HANDLE_PATTERN = /^[a-z0-9]+(?:[-_][a-z0-9]+)*$/;
 const CURSOR_PATTERN = /^[A-Za-z0-9+/=_-]+$/;
@@ -22,6 +22,8 @@ const MAX_COLLECTION_LENGTH = 100;
 const MAX_CURSOR_LENGTH = 512;
 
 export async function GET(request: NextRequest) {
+  await connection();
+
   try {
     const collection =
       request.nextUrl.searchParams.get("collection")?.trim().toLowerCase() ||
