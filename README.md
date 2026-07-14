@@ -14,7 +14,6 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 **Cache revalidation** — Webhook endpoints invalidate cached Shopify and DatoCMS content on publish, so updates appear without a full redeploy.
 
 ## Features
-
 - **Landing page** — Tri-Ferg navigation linking to shops, web shop, advice, and external destinations
 - **Dynamic header nav** — The third nav slot shows the latest advice article title and links to that article; if no article is available, it falls back to **Latest** linking to `/advice`
 - **Seasonal range nav** — When a DatoCMS range is published, its title is prepended to the header (e.g. `SUMMER 2026 RANGE`)
