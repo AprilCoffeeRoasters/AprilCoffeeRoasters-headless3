@@ -48,6 +48,7 @@ export const TAGS = {
   cart: "cart",
 };
 
+export const FALLBACK_STATIC_PARAMS = [{ slug: "__placeholder__" }];
 export const HIDDEN_PRODUCT_TAG = "nextjs-frontend-hidden";
 export const COLLECTION_PRODUCTS_PAGE_SIZE = 30;
 export const DEFAULT_OPTION = "Default Title";

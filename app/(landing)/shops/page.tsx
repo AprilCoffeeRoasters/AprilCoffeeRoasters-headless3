@@ -156,8 +156,7 @@ export default async function Page() {
   }
 
   if (!emptyMessage && records.length === 0) {
-    emptyMessage =
-      "Currently no shop added. Publish at least one shop in DatoCMS.";
+    emptyMessage = "No shops available.";
   }
 
   const shops = records.map((shop) => ({

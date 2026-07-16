@@ -2,24 +2,28 @@ import Footer from "components/store/layout/footer";
 import Header from "components/store/layout/header";
 import RangePage from "components/store/range/range-page";
 import { getAllRanges, getRangeBySlug, isDatoCmsConfigured } from "lib/cms/range";
+import { FALLBACK_STATIC_PARAMS } from "lib/constants";
 import { getLandingPageData } from "lib/get-landing-page";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   if (!isDatoCmsConfigured()) {
-    return [];
+    return FALLBACK_STATIC_PARAMS;
   }
 
   try {
     const ranges = await getAllRanges();
+    if (ranges.length === 0) {
+      return FALLBACK_STATIC_PARAMS;
+    }
     return ranges.map((range) => ({ slug: range.slug }));
   } catch {
-    return [];
+    return FALLBACK_STATIC_PARAMS;
   }
 }
 
-export async function generateMetadata(props: {
+export async function generateMetadata(props: { 
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await props.params;
