@@ -1,11 +1,11 @@
 import type { AdviceFeedItem } from "lib/advice/advice-types";
+import { getAdviceFeed } from "lib/advice/get-advice-feed";
 import { getDatoLandingPageContent } from "lib/cms/landing";
 import { getLatestRange, isDatoCmsConfigured } from "lib/cms/range";
-import { getAdviceFeed } from "lib/advice/get-advice-feed";
 import {
+  socialLinks as defaultFooterLinks,
   defaultTriFergNav,
   LATEST_NAV_LABEL,
-  socialLinks as defaultFooterLinks,
 } from "lib/constants";
 import type {
   LandingFeaturedContent,

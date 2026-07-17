@@ -1,9 +1,9 @@
 import type { AdviceFeedResponse } from "lib/advice/advice-types";
-import {
-    fetchDatoAdviceFeed,
-    isDatoCmsConfigured,
-} from "lib/cms/aprilcoffee-advice";
 import { fetchShopifyAdviceFeed } from "lib/advice/shopify-advice";
+import {
+  fetchDatoAdviceFeed,
+  isDatoCmsConfigured,
+} from "lib/cms/aprilcoffee-advice";
 import { headers } from "next/headers";
 
 export async function getAdviceFeed(
@@ -38,8 +38,9 @@ export async function getAdviceFeed(
       return res.json() as Promise<AdviceFeedResponse>;
     }
   } catch {
-    // Fall back when self-fetch is unavailable (e.g. build without host).
+    console.error("Failed to fetch advice feed from Shopify");  
   }
 
   return fetchShopifyAdviceFeed({ cursor });
 }
+

@@ -96,8 +96,9 @@ export function parseSizeChart(value: string | null | undefined): ParsedSizeChar
           plainText: null,
         };
       }
-    } catch {
-      // Fall through to plain text display.
+    }
+    catch (error) {
+      console.error(error);
     }
   }
 

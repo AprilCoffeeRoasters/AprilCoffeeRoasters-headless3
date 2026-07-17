@@ -147,12 +147,7 @@ export const socialLinks: LandingLink[] = [
   },
   {
     label: "Wholesale",
-    href: "/wholesale",
-    external: false,
-  },
-  {
-    label: "Coffee Info",
-    href: "/coffee-info",
+    href: "https://wholesale-aprilcoffeeroastery.com",
     external: false,
   },
   {
@@ -160,14 +155,15 @@ export const socialLinks: LandingLink[] = [
     href: "https://www.findsmiley.dk/1347286",
     external: true,
   },
-  {
-    label: "Contact",
-    href: "/contact",
-    external: false,
-  },
+ 
   {
     label: "Mailing List",
     href: "/mailing-list",
+    external: false,
+  },
+  {
+    label: "Get in Contact",
+    href: "/get-in-contact",
     external: false,
   },
 ];
@@ -176,7 +172,7 @@ export const LATEST_NAV_LABEL = "Latest";
 
 export const defaultTriFergNav: LandingTriFergNavItem[] = [
   {
-    title: "Shops",
+    title: "LOCATIONS",
     href: "/shops",
     fillClass: "fill-tri-ferg-red",
     ariaLabel: "shops-tri-ferg-link",
@@ -187,6 +183,7 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
     fillClass: "fill-tri-ferg-grey",
     ariaLabel: "web-shop-tri-ferg-link",
   },
+ 
   {
     title: LATEST_NAV_LABEL,
     href: "/advice",
@@ -194,13 +191,13 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
     ariaLabel: "latest-advice-tri-ferg-link",
   },
   {
-    title: "Advice",
+    title: "COFFEE INFO",
     href: "/advice",
     fillClass: "",
     ariaLabel: "advice-tri-ferg-link",
   },
   {
-    title: "Manor Place",
+    title: "SP",
     href: "https://manorplace.com",
     fillClass: "fill-tri-ferg-lime-green",
     ariaLabel: "manor-place-tri-ferg-link",
