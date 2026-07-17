@@ -2,8 +2,8 @@
 
 import CategoryNav from "components/store/collections/category-nav";
 import CollectionFilterModal from "components/store/collections/collection-filter-modal";
-import Footer from "components/store/collections/collection-footer";
 import CollectionProductGrid from "components/store/collections/collection-product-grid";
+import Footer from "components/store/layout/footer";
 import Logo from "components/store/logo/logo";
 import type { PageInfo, Product } from "lib/shopify/types";
 import {

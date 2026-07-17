@@ -3,7 +3,7 @@
 import { useCart } from "components/cart/cart-context";
 import CartLineRemoveButton from "components/store/collections/cart-line-remove-button";
 import CategoryNav from "components/store/collections/category-nav";
-import Footer from "components/store/collections/collection-footer";
+import Footer from "components/store/layout/footer";
 import Logo from "components/store/logo/logo";
 import { DEFAULT_OPTION } from "lib/constants";
 import { formatCartMoney } from "lib/format/format-cart-money";

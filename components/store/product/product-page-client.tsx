@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import CategoryNav from "components/store/collections/category-nav";
-import Footer from "components/store/collections/collection-footer";
+import Footer from "components/store/layout/footer";
 import Logo from "components/store/logo/logo";
 import ProductMetafieldModal from "components/store/product/product-metafield-modal";
 import ProductPageAddToCart from "components/store/product/product-page-add-to-cart";
@@ -785,12 +785,12 @@ export default function ProductPageClient({
 )}
 </div>
           <div className={galleryMode ? "max-md:hidden" : undefined}>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </main>
 
       </div>
-      {/* <Footer /> */}
+      <Footer />
 
       <ProductMetafieldModal
         isOpen={openMetafieldModal === "technical-details"}
