@@ -1,8 +1,4 @@
 import { gql } from "graphql-request";
-import {
-  cacheLife,
-  cacheTag,
-} from "next/cache";
 
 const endpoint = "https://graphql.datocms.com/";
 const DATO_CACHE_TAG = "datocms";
@@ -239,10 +235,6 @@ const shopFields = gql`
 `;
 
 export async function getAllShops(): Promise<DatoShopRecord[]> {
-  "use cache";
-  cacheTag(datoCacheTag());
-  cacheLife("days");
-
   const query = gql`
     ${shopFields}
     query Shops {
@@ -262,10 +254,6 @@ export async function getAllShops(): Promise<DatoShopRecord[]> {
 export async function getShopBySlug(
   slug: string,
 ): Promise<DatoShopRecord | null> {
-  "use cache";
-  cacheTag(datoCacheTag(), `dato:shop:${slug}`);
-  cacheLife("days");
-
   const query = gql`
     ${shopFields}
     query Shop($slug: String!) {

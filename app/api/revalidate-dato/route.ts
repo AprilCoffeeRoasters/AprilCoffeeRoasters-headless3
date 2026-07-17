@@ -114,6 +114,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const paths = ["/", "/advice", "/shops", "/collections/all"];
     if (slug) {
       paths.push(`/advice/${slug}`);
+      paths.push(`/shops/${slug}`);
       paths.push(`/range/${slug}`);
       paths.push(`/range/${slug}/product/${slug}`);
     }
