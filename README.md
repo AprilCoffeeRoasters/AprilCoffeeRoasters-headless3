@@ -124,6 +124,11 @@ When `DATOCMS_API_TOKEN` is set, the app loads homepage content, advice articles
 | `DATOCMS_API_TOKEN`      | Content Delivery API read token        |
 | `DATOCMS_WEBHOOK_SECRET` | Secret for `POST /api/revalidate-dato` |
 
+# Contact form (Resend) — emails go to Freshdesk support inbox
+RESEND_API_KEY=""
+CONTACT_FROM_EMAIL="April Coffee <hello@your-verified-domain.com>"
+CONTACT_TO_EMAIL="support@aprilcoffeeroastery.freshdesk.com"
+
 **Required DatoCMS models (API keys):** `article`, `homepage`, `shop`, `range`, `product`
 
 **Homepage model fields:** `herotitle`, `herodescription`, `heroimage`, `featuredcontent` (article slug). Header and footer links use app defaults until those fields exist in DatoCMS.
