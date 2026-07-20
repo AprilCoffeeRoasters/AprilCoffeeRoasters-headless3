@@ -96,7 +96,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
 
     if (!response.ok) {
-      const detail = await response.text();
+      const detail = await response.json();
       console.error("Resend error:", response.status, detail);
       return NextResponse.json(
         { error: "Failed to send message. Please try again." },
