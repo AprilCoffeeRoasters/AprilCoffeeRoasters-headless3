@@ -36,18 +36,15 @@ export const getCollectionsQuery = /* GraphQL */ `
   ${collectionFragment}
 `;
 
+
 export const getCollectionProductsQuery = /* GraphQL */ `
   query getCollectionProducts(
     $handle: String!
-    $sortKey: ProductCollectionSortKeys
-    $reverse: Boolean
     $first: Int!
     $after: String
   ) {
     collection(handle: $handle) {
       products(
-        sortKey: $sortKey
-        reverse: $reverse
         first: $first
         after: $after
       ) {
@@ -65,3 +62,33 @@ export const getCollectionProductsQuery = /* GraphQL */ `
   }
   ${productFragment}
 `;
+
+// export const getCollectionProductsQuery = /* GraphQL */ `
+//   query getCollectionProducts(
+//     $handle: String!
+//     $sortKey: ProductCollectionSortKeys
+//     $reverse: Boolean
+//     $first: Int!
+//     $after: String
+//   ) {
+//     collection(handle: $handle) {
+//       products(
+//         sortKey: $sortKey
+//         reverse: $reverse
+//         first: $first
+//         after: $after
+//       ) {
+//         pageInfo {
+//           hasNextPage
+//           endCursor
+//         }
+//         edges {
+//           node {
+//             ...product
+//           }
+//         }
+//       }
+//     }
+//   }
+//   ${productFragment}
+// `;

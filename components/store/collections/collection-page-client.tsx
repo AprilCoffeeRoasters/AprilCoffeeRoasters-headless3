@@ -3,7 +3,6 @@
 import CategoryNav from "components/store/collections/category-nav";
 import CollectionFilterModal from "components/store/collections/collection-filter-modal";
 import CollectionProductGrid from "components/store/collections/collection-product-grid";
-import Footer from "components/store/layout/footer";
 import Logo from "components/store/logo/logo";
 import type { PageInfo, Product } from "lib/shopify/types";
 import {
@@ -21,6 +20,7 @@ import {
 } from "lib/store/collection-pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import Footer from "../layout/footer";
 
 export default function CollectionPageClient({
   collection,
@@ -178,8 +178,10 @@ h-[calc(100vh-30px)]
               />
             </>
           )}
-          <Footer />
+        
+          
         </main>
+        <Footer />
       </div>
 
       <CollectionFilterModal

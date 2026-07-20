@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import CategoryNav from "components/store/collections/category-nav";
-import Footer from "components/store/layout/footer";
 import Logo from "components/store/logo/logo";
 import ProductMetafieldModal from "components/store/product/product-metafield-modal";
 import ProductPageAddToCart from "components/store/product/product-page-add-to-cart";
@@ -14,6 +13,7 @@ import type {
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type UIEvent } from "react";
+import Footer from "../layout/footer";
 
 export type ProductPageImage = {
   src: string;
