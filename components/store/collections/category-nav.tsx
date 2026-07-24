@@ -33,8 +33,8 @@ export default function CategoryNav({
             <li key={item.handle} aria-label={`menu-item-${item.handle}`}>
               <Link
                 href={href}
-                className={`block text-sm font-bold leading-[18px] no-underline transition duration-150 ease-in-out hover:text-amber-500 max-md:py-2 ${
-                  isActive ? "text-amber-500" : "text-black"
+                className={`type-h2 block text-sm leading-[18px] no-underline transition duration-150 ease-in-out hover:text-hover-frame max-md:py-2 ${
+                  isActive ? "text-active" : "text-standard-grey"
                 }`}
                 {...(isActive
                   ? { "data-selector": "category-menu-active" }
@@ -49,7 +49,7 @@ export default function CategoryNav({
           <li aria-label="menu-item-cart">
             <Link
               href="/cart"
-              className="block text-sm font-bold leading-[18px] text-black no-underline transition duration-150 ease-in-out hover:text-amber-500 max-md:py-2"
+              className="type-h2 block text-sm leading-[18px] text-standard-grey no-underline transition duration-150 ease-in-out hover:text-hover-frame max-md:py-2"
             >
               Cart
             </Link>
@@ -64,7 +64,7 @@ export default function CategoryNav({
               type="button"
               aria-label="filter-button"
               onClick={onFilterClick}
-              className="block w-full cursor-pointer text-right text-sm font-bold uppercase leading-[18px] text-black no-underline transition duration-150 ease-in-out hover:text-amber-500"
+              className="type-h2 block w-full cursor-pointer text-right text-sm uppercase leading-[18px] text-standard-grey no-underline transition duration-150 ease-in-out hover:text-hover-frame"
             >
               Filter
             </button>

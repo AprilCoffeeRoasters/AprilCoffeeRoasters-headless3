@@ -43,13 +43,13 @@ export default function ProductCard({
 
         <div className="absolute left-0 top-2/4 inline-block w-full -translate-y-1/2 text-center text-sm font-bold opacity-0 transition-opacity duration-150 ease-in-out group-hover:opacity-100 max-md:relative max-md:block max-md:translate-y-0 max-md:pl-4 max-md:text-left max-md:text-sm max-md:opacity-100 pointer-events-none">
           <div className="float-none w-full duration-150 ease-in-out group-hover:transition-colors max-md:w-4/5 max-md:text-[0.9em]">
-            <h3 className="m-0 text-[12px] leading-[16px]">
+            <h3 className="type-text2 m-0 text-[12px] leading-[16px]">
               {product.title}
             </h3>
           </div>
           <div
             aria-label="price-label"
-            className="mt-1 duration-150 ease-in-out group-hover:transition-colors max-md:text-[0.9em] text-[13px] font-bold lg:text-md"
+            className="type-text2 mt-1 duration-150 ease-in-out group-hover:transition-colors max-md:text-[0.9em] text-[13px] lg:text-md"
           >
             {price}
           </div>

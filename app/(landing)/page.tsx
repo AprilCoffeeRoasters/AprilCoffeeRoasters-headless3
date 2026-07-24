@@ -32,7 +32,7 @@ export default async function PalaceLandingPage() {
                   aria-label={item.ariaLabel}
                   // target={item.external ? "_blank" : undefined}
                   // rel={item.external ? "noopener noreferrer" : undefined}
-                  className="group relative block shrink-0 w-[95px] leading-none md:w-[167px]"
+                  className="group relative block shrink-0 w-[135px] leading-none md:w-[220px]"
                 >
                   <div
                     className="w-full leading-none transition-opacity duration-150 ease-in-out lg:group-hover:opacity-20"
@@ -43,7 +43,7 @@ export default async function PalaceLandingPage() {
                       className="block h-auto w-full"
                     />
                   </div>
-                  <h2 className="max-md:mt-0 text-center text-xs leading-tight md:mt-0 md:text-md lg:absolute lg:inset-0 lg:flex lg:w-full lg:items-center lg:justify-center lg:text-xl lg:leading-tight lg:opacity-0 lg:transition-opacity lg:duration-150 lg:ease-in-out lg:group-hover:opacity-100">
+                  <h2 className="type-h2 max-md:mt-0 text-center text-xs leading-tight md:mt-0 md:text-md lg:absolute lg:inset-0 lg:flex lg:w-full lg:items-center lg:justify-center lg:text-xl lg:leading-tight lg:opacity-0 lg:transition-opacity lg:duration-150 lg:ease-in-out lg:group-hover:opacity-100">
        {/* <h2 className="max-md:mt-0 text-center text-xs leading-none md:mt-0 md:text-md lg:absolute lg:inset-0 lg:flex lg:w-full lg:items-center lg:justify-center lg:text-xl lg:opacity-0 lg:transition-opacity lg:duration-150 lg:ease-in-out lg:group-hover:opacity-100"> */}
                     {item.title}
                   </h2>

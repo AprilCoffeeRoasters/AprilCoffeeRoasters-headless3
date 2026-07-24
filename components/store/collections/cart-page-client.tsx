@@ -210,7 +210,7 @@ export default function CartPageClient() {
                     <button
                       type="button"
                       disabled={!termsAccepted}
-                      className="mx-auto mb-[18px] inline-block cursor-pointer items-center justify-center whitespace-nowrap border-2 bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black max-md:my-1 max-md:h-8 max-md:py-1 max-md:text-base text-base! disabled:cursor-not-allowed max-md:mb-[18px] md:mb-[18px]"
+                      className="btn-brand mx-auto mb-[18px] inline-block cursor-pointer items-center justify-center whitespace-nowrap border-[2pt] px-4 text-center text-sm font-bold uppercase max-md:my-1 max-md:h-8 max-md:py-1 max-md:text-base text-base! disabled:cursor-not-allowed max-md:mb-[18px] md:mb-[18px]"
                       aria-label="checkout-btn"
                     >
                       Checkout

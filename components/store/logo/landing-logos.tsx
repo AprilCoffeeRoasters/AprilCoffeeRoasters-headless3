@@ -1,9 +1,9 @@
 export const TRI_FERG_LOGOS = {
-  black: "/homelogos/black-april-crop.png",
-  blue: "/homelogos/blue-april-crop.png",
-  green: "/homelogos/green-april-crop.png",
-  red: "/homelogos/red-april-crop.png",
-  white: "/homelogos/white-april-crop.png",
+  black: "/homelogos/fouth-preview (1).png",
+  blue: "/homelogos/third-preview (1).png",
+  green: "/homelogos/fifth-preview (1).png",
+  red: "/homelogos/first-preview (1).png",
+  white: "/homelogos/second-preview (1).png",
 } as const;
 
 export type TriFergLogoId = keyof typeof TRI_FERG_LOGOS;

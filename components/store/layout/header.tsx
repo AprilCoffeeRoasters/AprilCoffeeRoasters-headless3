@@ -1,23 +1,19 @@
 "use client";
 
+import { defaultTriFergNav } from "lib/constants";
 import type { LandingLink } from "lib/landing-types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const defaultNavItems: LandingLink[] = [
-  { label: "Shops", href: "/shops", external: false },
-  { label: "Web Shop", href: "/collections/all", external: false },
-  { label: "Advice", href: "/advice", external: false },
-  {
-    label: "Manor Place",
-    href: "https://manorplace.com",
-    external: true,
-  },
-];
+const defaultNavItems: LandingLink[] = defaultTriFergNav.map((item) => ({
+  label: item.title,
+  href: item.href,
+  external: Boolean(item.external),
+}));
 
 const mobileLinkClass =
-  "block py-2 text-[14.4px] font-bold leading-4.5 no-underline text-black";
+  "type-h2 block py-2 text-[14.4px] leading-4.5 no-underline text-standard-grey";
 
 function menuItemTestId(label: string) {
   return `menu-item-${label.toLowerCase()}`;
@@ -80,7 +76,7 @@ export default function Header({
           </Link>
           <nav className="header-main-nav ml-auto flex max-md:invisible max-md:hidden">
             {navItems.map((item) => (
-              <h1 key={item.label} className="header-nav-item">
+              <h2 key={item.label} className="header-nav-item type-h2">
                 {item.external ? (
                   <a href={item.href} target="_blank" rel="noreferrer">
                     {item.label}
@@ -90,7 +86,7 @@ export default function Header({
                     {item.label}
                   </Link>
                 )}
-              </h1>
+              </h2>
             ))}
           </nav>
           <button

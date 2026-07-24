@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 const removeButtonClass =
-  "flex items-center justify-center whitespace-nowrap border-2 border-black bg-black px-4 text-center cursor-pointer text-sm font-bold uppercase text-white hover:bg-white hover:text-black max-md:my-1 max-md:h-8 max-md:py-1 max-md:h-5! max-md:w-14! max-md:text-sm";
+  "btn-brand flex items-center justify-center whitespace-nowrap border-[2pt] px-4 text-center cursor-pointer text-sm font-bold uppercase max-md:my-1 max-md:h-8 max-md:py-1 max-md:h-5! max-md:w-14! max-md:text-sm";
 
 export default function CartLineRemoveButton({
   lineId,
