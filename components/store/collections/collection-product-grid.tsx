@@ -230,7 +230,7 @@ export default function CollectionProductGrid({
                   type="button"
                   aria-label="filter-button"
                   onClick={onFilterClick}
-                  className="flex h-8 cursor-pointer items-center justify-center whitespace-nowrap border-2 border-black bg-black px-4 text-center text-sm font-bold uppercase text-white hover:bg-white hover:text-black lg:mb-1 max-md:my-0 max-md:h-8 max-md:py-1 max-md:text-base"
+                  className="btn-brand flex h-8 cursor-pointer items-center justify-center whitespace-nowrap border-[2pt] px-4 text-center text-sm font-bold uppercase lg:mb-1 max-md:my-0 max-md:h-8 max-md:py-1 max-md:text-base"
                 >
                   <span className="font-bold">Filter</span>
                 </button>

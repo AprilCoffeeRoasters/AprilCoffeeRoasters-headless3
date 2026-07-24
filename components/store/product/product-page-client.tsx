@@ -51,6 +51,7 @@ export type ProductPageClientProps = {
   rangeSlug?: string;
 };
 
+
 function CarouselArrow({ direction }: { direction: "left" | "right" }) {
   return (
     <svg
@@ -88,11 +89,9 @@ function ProductHeader({
         aria-label="product-title"
         {...(withIds ? { id: "product-title" } : {})}
         className="
+          type-h1
           text-[24px]
-          font-bold
-          italic
           leading-[24px]
-          text-black
 
           sm:text-[32px]
           sm:leading-[32px]
@@ -104,7 +103,7 @@ function ProductHeader({
       <h3
         aria-label="product-price"
         {...(withIds ? { id: "product-price" } : {})}
-        className="mt-0 text-[15px] font-bold"
+        className="type-text mt-0 text-[15px]"
       >
         <span>{price}</span>
       </h3>
@@ -142,6 +141,14 @@ export default function ProductPageClient({
   const mobileCarouselRef = useRef<HTMLDivElement>(null);
   const desktopCarouselRef = useRef<HTMLDivElement>(null);
   const [galleryMode, setGalleryMode] = useState(false);
+
+
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+const toggleAccordion = (id: string) => {
+  setOpenAccordion((prev) => (prev === id ? null : id));
+};
+
 
   const selectedVariant =
     variants.find((variant) => variant.id === selectedVariantId) ?? variants[0];
@@ -631,11 +638,11 @@ export default function ProductPageClient({
         id="product-description"
         aria-label="product-description"
         className="
+          type-text
           mt-5
           w-full
           select-none
           text-sm
-          font-normal
           uppercase
           leading-5
          sm:leading-[18px]
@@ -649,6 +656,305 @@ export default function ProductPageClient({
         </ul>
       </div>
     ) : null}
+
+
+
+<div className="mt-6 w-full">
+
+  {/* Coffee Details */}
+  <button
+    onClick={() => toggleAccordion("details")}
+    className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
+  >
+    <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
+      Coffee Details
+    </span>
+
+    <svg
+      className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
+        openAccordion === "details" ? "rotate-180" : ""
+      }`}
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path d="M5 7l5 6 5-6H5z" />
+    </svg>
+  </button>
+
+  {openAccordion === "details" && (
+  <div className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey">
+
+    {/* Top Section */}
+ <div
+      className="
+        type-text2
+        text-[13px]
+        leading-[1.35]
+        tracking-[-0.03em]
+
+        sm:text-[14px]
+        md:text-[15px]
+      "
+    >
+      <p>
+        <span className="font-medium">Farmer:</span>{" "}
+        Jose Roberto Monterroso Pineda
+      </p>
+
+      <p>
+        <span className="font-medium">Producer:</span>{" "}
+        El Morito
+      </p>
+
+      <p>
+        <span className="font-medium">Varietal:</span>{" "}
+        Washed Processed Yellow Geisha
+      </p>
+    </div>
+
+    {/* Divider */}
+    <div className="my-2 h-[2px] bg-[#d9d9d9]" />
+
+    {/* Bottom Section */}
+    <div className="type-text2 space-y-1 text-[13px] leading-[1.35]">
+      <p>
+        <span className="font-medium">Sweetness:</span>{" "}
+        ØØØOO
+      </p>
+
+      <p>
+        <span className="font-medium">Body:</span>{" "}
+        ØØØØØ
+      </p>
+
+      <p>
+        <span className="font-medium">Acidity:</span>{" "}
+        ØØOOO
+      </p>
+    </div>
+
+  </div>
+)}
+
+  {/* Recipe Filter */}
+  <button
+    onClick={() => toggleAccordion("filter")}
+    className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
+  >
+    <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
+      Recipe Filter
+    </span>
+
+    <svg
+      className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
+        openAccordion === "filter" ? "rotate-180" : ""
+      }`}
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path d="M5 7l5 6 5-6H5z" />
+    </svg>
+  </button>
+
+  {openAccordion === "filter" && (
+  <div
+    className="
+      border-x-[2pt]
+      border-b-[2pt]
+      border-hover-frame
+      px-3
+      pb-4
+      pt-3
+      text-standard-grey
+    "
+  >
+    {/* Brewer Icons */}
+    <div className="mb-4 flex items-center gap-0">
+      <img
+        src="/collections/cup.png"
+        alt="April Brewer"
+        className="h-[60px] w-[55px] "
+      />
+
+      <img
+        src="/collections/cup.png"
+        alt="April Brewer"
+        className="h-[60px] w-[55px]"
+      />
+
+      <img
+        src="/collections/cup.png"
+        alt="April Brewer"
+        className="h-[60px] w-[55px]"
+      />
+    </div>
+
+    {/* Recipe Details */}
+    <div
+      className="
+        type-text2
+        text-[13px]
+        leading-[1.35]
+        tracking-[-0.03em]
+
+        sm:text-[14px]
+        md:text-[15px]
+      "
+    >
+      <p>
+        <span className="font-medium">April Brewer:</span>{" "}
+        Plastic (Large Paper Filter)
+      </p>
+
+      <p>
+        <span className="font-medium">Coffee:</span>{" "}
+        12g (April Grinder setting 8)
+      </p>
+
+      <p>
+        <span className="font-medium">Water:</span>{" "}
+        200g (92°C celcius)
+      </p>
+
+      <p>
+        <span className="font-medium">April Water Minerals:</span>{" "}
+        2 drops in the cup
+        <br />
+        before brewing
+      </p>
+
+      {/* First Pour */}
+      <div className="mt-6">
+        <p>
+          00:00 - 00:10 100g water
+        </p>
+
+        <p>
+          (40g circle / 60g centre)
+        </p>
+      </div>
+
+      {/* Second Pour */}
+      <div className="mt-5">
+        <p>
+          00:35 - 00:45 100g water
+        </p>
+
+        <p>
+          (40g circle / 60g centre)
+        </p>
+      </div>
+
+      {/* Total Brew Time */}
+      <p className="mt-6">
+        <span className="font-medium uppercase">
+          Total Brew Time:
+        </span>{" "}
+        2:40
+      </p>
+    </div>
+  </div>
+)}
+
+  {/* Recipe Espresso */}
+  <button
+    onClick={() => toggleAccordion("espresso")}
+    className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
+  >
+    <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
+      Recipe Espresso
+    </span>
+
+    <svg
+      className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
+        openAccordion === "espresso" ? "rotate-180" : ""
+      }`}
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path d="M5 7l5 6 5-6H5z" />
+    </svg>
+  </button>
+
+  {openAccordion === "espresso" && (
+  <div
+    className="
+      border-x-[2pt]
+      border-b-[2pt]
+      border-hover-frame
+      px-3
+      pt-3
+      pb-5
+      text-standard-grey
+    "
+  >
+    {/* Espresso Icons */}
+    <div className="mb-5 flex items-center gap-0">
+      <img
+        src="/collections/espresso.png"
+        alt="Espresso"
+        className="h-[50px] w-[70px]"
+      />
+
+      <img
+        src="/collections/espresso.png"
+        alt="Espresso"
+        className="h-[50px] w-[70px]"
+      />
+
+      <img
+        src="/collections/espresso.png"
+        alt="Espresso"
+        className="h-[50px] w-[70px]"
+      />
+    </div>
+
+    {/* Espresso Content */}
+    <div
+      className="
+        type-text2
+        text-[13px]
+        leading-[1.4]
+        tracking-[-0.03em]
+        sm:text-[14px]
+        md:text-[15px]
+      "
+    >
+      <p className="font-medium">
+        Espresso Brewing Advice & Recipe:
+      </p>
+
+      <p className="mt-6">
+        All of our espresso recipes are designed using a Modbar AV, the model
+        of espresso machine that we use in our Showroom.
+      </p>
+
+      <p className="mt-6">
+        We recommend a dose of 19g of coffee, a final yield of 45g (1:2.4) in a
+        time of 25-30s.
+        <br />
+        We recommend a grind setting of 4,2.
+      </p>
+
+      <p className="mt-6">
+        Dose and distribute carefully using a scale capable of reading to an
+        accuracy of 0,1g.
+        <br />
+        You must first identify the size of your filter basket - preferably of
+        the brand and variety 'VST Ridgeless'. We recommend using a dosage
+        within +/-1g of the size of the basket.
+      </p>
+
+      <p className="mt-6">
+        Please note that all grind settings reference a Ditting Sweet Lab 804.
+        Please adjust your grind settings as necessary and use the recommended
+        brew time as a reference.
+      </p>
+    </div>
+  </div>
+)}
+
+</div>
 
     {/* LINKS — lg: after price; mobile: after description */}
     {(technicalDetails || sizeChart) ? (
@@ -742,7 +1048,7 @@ export default function ProductPageClient({
           product={product}
           selectedVariantId={selectedVariantId}
           variantLabel={selectedVariant?.label ?? "item"}
-          className="flex h-7 w-full items-center justify-center border-2 border-black bg-black px-4 text-sm font-bold uppercase text-white transition hover:bg-white hover:text-black  max-md:h-8 max-md:text-base"
+          className="btn-brand flex h-7 w-full items-center justify-center border-[2pt] px-4 text-sm font-bold uppercase max-md:h-8 max-md:text-base"
         />
       </div>
     ) : null}

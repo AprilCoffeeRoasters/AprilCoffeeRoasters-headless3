@@ -124,7 +124,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="h-12 w-full border-2 border-black bg-black text-sm font-bold uppercase tracking-tight text-white transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+        className="btn-brand h-12 w-full border-[2pt] text-sm font-bold uppercase tracking-brand disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting" ? "Sending…" : "Submit"}
       </button>

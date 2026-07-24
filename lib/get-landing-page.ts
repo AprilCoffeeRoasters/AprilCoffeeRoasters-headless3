@@ -19,12 +19,12 @@ const LATEST_ADVICE_SLOT = 2;
 
 const defaultHeaderLinks: LandingLink[] = [
   { label: LATEST_NAV_LABEL, href: "/advice", external: false },
-  { label: "Shops", href: "/shops", external: false },
+  { label: "LOCATIONS", href: "/shops", external: false },
   { label: "Web Shop", href: "/collections/all", external: false },
-  { label: "Advice", href: "/advice", external: false },
+  { label: "PROJECTS", href: "/advice", external: false },
   {
-    label: "Manor Place",
-    href: "https://manorplace.com",
+    label: "SP-COFFEE",
+    href: "https://sp-coffee.com",
     external: false,
   },
 ];
