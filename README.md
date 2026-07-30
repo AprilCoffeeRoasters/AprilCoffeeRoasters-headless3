@@ -17,7 +17,7 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 - **Seasonal range nav** — When a DatoCMS range is published, its title is prepended to the header (e.g. `SUMMER 2026 RANGE`)
 - **Web shop** — Collections, product detail, cart, and Shopify checkout
 - **Advice** — Editorial feed from DatoCMS (when configured) or Shopify blog posts / product grids
-- **Lookbook** — Shopify blog articles for seasonal lookbooks
+- **Lookbook** — Shopify blog asrticles for seasonal lookbooks
 - **Range** — Seasonal product ranges and lookbook-style product pages from DatoCMS
 - **Shops** — Retail location listings and galleries from DatoCMS
 - **On-demand revalidation** — Webhook endpoints for Shopify and DatoCMS cache invalidation
@@ -137,7 +137,7 @@ CONTACT_TO_EMAIL="support@aprilcoffeeroastery.freshdesk.com"
 ```bash
 pnpm install
 pnpm dev
-```
+s
 
 The app runs at [http://localhost:3000](http://localhost:3000).
 
