@@ -67,16 +67,9 @@ export function areCollectionFiltersEqual(
 }
 
 export const filterSizeOptions = [
-  "X-Small",
   "Small",
   "Medium",
   "Large",
-  "X-Large",
-  "2X-Large",
-  "30",
-  "32",
-  "34",
-  "36",
 ] as const;
 
 const SIZE_OPTION_NAMES = new Set(["size", "taille"]);
