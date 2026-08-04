@@ -185,7 +185,7 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
   },
  
   {
-    title: LATEST_NAV_LABEL,
+    title: "LATEST NEWS",
     href: "/advice",
     fillClass: "fill-tri-ferg-blue",
     ariaLabel: "latest-advice-tri-ferg-link",
