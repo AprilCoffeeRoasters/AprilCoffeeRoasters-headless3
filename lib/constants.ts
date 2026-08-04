@@ -191,7 +191,7 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
     ariaLabel: "latest-advice-tri-ferg-link",
   },
   {
-    title: "COFFEE INFO",
+    title: "PROJECTS",
     href: "/advice",
     fillClass: "",
     ariaLabel: "advice-tri-ferg-link",
