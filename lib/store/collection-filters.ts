@@ -68,8 +68,11 @@ export function areCollectionFiltersEqual(
 
 export const filterSizeOptions = [
   "Small",
-  "Medium",
   "Large",
+  "Kenya",
+  "Ethiopia",
+  "Costa Rica",
+  "Organic",
 ] as const;
 
 const SIZE_OPTION_NAMES = new Set(["size", "taille"]);
