@@ -113,24 +113,20 @@ export const shopLinks = [
 
 export const boringLinks: FooterLinkItem[] = [
   {
-    label: "Delivery Information",
-    href: "https://boring.palaceskateboards.com/row/delivery-information/",
+    label: "Terms Of Service",
+    href: "https://www.aprilcoffeeroasters.com/policies/terms-of-service",
   },
   {
-    label: "Returns Information",
+    label: "Returns & Refunds",
     href: "https://boring.palaceskateboards.com/row/returns-information/",
   },
   {
-    label: "Terms & Conditions",
-    href: "https://boring.palaceskateboards.com/row/terms-and-conditions",
-  },
-  {
-    label: "Terms of Use",
-    href: "https://boring.palaceskateboards.com/row/terms-of-use",
+    label: "Shipping Terms",
+    href: "https://www.aprilcoffeeroasters.com/pages/shipping-terms",
   },
   {
     label: "Privacy Policy",
-    href: "https://boring.palaceskateboards.com/row/privacy-policy",
+    href: "https://www.aprilcoffeeroasters.com/policies/privacy-policy",
   },
 ];
 
@@ -162,7 +158,7 @@ export const socialLinks: LandingLink[] = [
     external: false,
   },
   {
-    label: "Get in Contact",
+    label: "Get in Touch & FAQ",
     href: "/get-in-contact",
     external: false,
   },
