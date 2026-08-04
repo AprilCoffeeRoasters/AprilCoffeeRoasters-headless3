@@ -75,7 +75,7 @@ export const filterSizeOptions = [
   "Organic",
 ] as const;
 
-const SIZE_OPTION_NAMES = new Set(["size", "taille"]);
+const SIZE_OPTION_NAMES = new Set(["size", "taille", "Title"]);
 
 function productHasAvailableSize(product: Product, sizes: string[]) {
   return product.variants.some(
