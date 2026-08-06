@@ -175,7 +175,7 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
   },
   {
     title: "WEBSHOP",
-    href: "/collections/all",
+    href: "/collections/new",
     fillClass: "fill-tri-ferg-grey",
     ariaLabel: "web-shop-tri-ferg-link",
   },
