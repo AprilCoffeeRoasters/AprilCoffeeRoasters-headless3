@@ -132,6 +132,11 @@ export const boringLinks: FooterLinkItem[] = [
 
 export const socialLinks: LandingLink[] = [
   {
+    label: "Wholesale",
+    href: "https://wholesale-aprilcoffeeroastery.com/",
+    external: true,
+  },
+  {
     label: "Instagram",
     href: "https://www.instagram.com/aprilcoffeecph",
     external: true,
@@ -140,11 +145,6 @@ export const socialLinks: LandingLink[] = [
     label: "YouTube",
     href: "https://www.youtube.com/channel/UCPlsOYZ8ZEam57EUCf3DKjg",
     external: true,
-  },
-  {
-    label: "Wholesale",
-    href: "https://wholesale-aprilcoffeeroastery.com",
-    external: false,
   },
   {
     label: "SMILEY",
