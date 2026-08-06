@@ -154,8 +154,8 @@ export const socialLinks: LandingLink[] = [
  
   {
     label: "Mailing List",
-    href: "/mailing-list",
-    external: false,
+    href: "https://mailchi.mp/aprilcoffeeroastery.com/april-coffee-newsletter",
+    external: true ,
   },
   {
     label: "Get in Touch & FAQ",
