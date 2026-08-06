@@ -1,5 +1,4 @@
 export const collectionCategories = [
-  { label: "All", handle: "all" },
   { label: "New", handle: "new" },
   { label: "Filter Coffee", handle: "filter-coffee" },
   { label: "Espresso Coffee", handle: "espresso-coffee" },
@@ -16,6 +15,7 @@ export const collectionCategories = [
   { label: "Accessories", handle: "accessories" },
   { label: "Clothing", handle: "clothing" },
   { label: "Limited Projects", handle: "limited-projects" },
+  { label: "All", handle: "all" },
 ] as const;
 
 export type CollectionCategoryHandle =
