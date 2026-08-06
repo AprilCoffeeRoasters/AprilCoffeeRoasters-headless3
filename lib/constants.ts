@@ -168,7 +168,7 @@ export const LATEST_NAV_LABEL = "Latest";
 
 export const defaultTriFergNav: LandingTriFergNavItem[] = [
   {
-    title: "OUR LOCATIONS",
+    title: "LOCATIONS",
     href: "/shops",
     fillClass: "fill-tri-ferg-red",
     ariaLabel: "shops-tri-ferg-link",
@@ -181,19 +181,19 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
   },
  
   {
-    title: "LATEST NEWS",
+    title: "PROJECTS",
     href: "/advice",
     fillClass: "fill-tri-ferg-blue",
     ariaLabel: "latest-advice-tri-ferg-link",
   },
   {
-    title: "PROJECTS",
+    title: "COFFEE & INFO",
     href: "/advice",
     fillClass: "",
     ariaLabel: "advice-tri-ferg-link",
   },
   {
-    title: "SUSTAINABLE PROFILE",
+    title: "INFO SP",
     href: "https://sustainableprofilecoffee.com/",
     fillClass: "fill-tri-ferg-lime-green",
     ariaLabel: "manor-place-tri-ferg-link",
