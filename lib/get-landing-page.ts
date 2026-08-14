@@ -23,8 +23,8 @@ const defaultHeaderLinks: LandingLink[] = [
   { label: "Web Shop", href: "/collections/all", external: false },
   { label: "PROJECTS", href: "/advice", external: false },
   {
-    label: "SP-COFFEE",
-    href: "https://sp-coffee.com",
+    label: "Sustainable Profile",
+    href: "https://sustainableprofilecoffee.com",
     external: false,
   },
 ];
@@ -69,9 +69,11 @@ function injectFeaturedIntoTriFerg(
     index === slot
       ? {
           ...item,
-          title: featuredNavLabel(featured),
-          href: featured.href,
-          external: featured.href.startsWith("http"),
+          // title: featuredNavLabel(featured),
+          // href: featured.href,
+          // external: featured.href.startsWith("http"),
+          href: "/advice",
+          external: false,
         }
       : item,
   );

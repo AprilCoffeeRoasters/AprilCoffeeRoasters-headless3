@@ -169,6 +169,8 @@ export type ShopifyProduct = {
   updatedAt: string;
   technicalDetails?: ProductMetafield;
   sizeChart?: ProductMetafield;
+  recipeFilter?: ProductMetafield;
+  recipeEspresso?: ProductMetafield;
 };
 
 export type ShopifyCartOperation = {

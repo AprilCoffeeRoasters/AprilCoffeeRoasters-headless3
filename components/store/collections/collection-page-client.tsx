@@ -191,14 +191,9 @@ h-[calc(100vh-30px)]
         onShowSoldOutChange={(showSoldOut) =>
           setFilters((current) => ({ ...current, showSoldOut }))
         }
-        selectedSizes={filters.sizes}
-        onToggleSize={(size) =>
-          setFilters((current) => {
-            const sizes = current.sizes.includes(size)
-              ? current.sizes.filter((value) => value !== size)
-              : [...current.sizes, size];
-            return { ...current, sizes };
-          })
+        query={filters.query}
+        onQueryChange={(query) =>
+          setFilters((current) => ({ ...current, query }))
         }
         onClear={clearFilters}
       />

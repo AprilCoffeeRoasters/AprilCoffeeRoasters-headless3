@@ -7,6 +7,7 @@ import ProductMetafieldModal from "components/store/product/product-metafield-mo
 import ProductPageAddToCart from "components/store/product/product-page-add-to-cart";
 import type { Product } from "lib/shopify/types";
 import type {
+  ParsedRecipeContent,
   ParsedSizeChart,
   ParsedTechnicalDetails,
 } from "lib/store/parse-product-metafields";
@@ -44,6 +45,8 @@ export type ProductPageClientProps = {
   descriptionLines: string[];
   technicalDetails: ParsedTechnicalDetails | null;
   sizeChart: ParsedSizeChart | null;
+  recipeFilter: ParsedRecipeContent | null;
+  recipeEspresso: ParsedRecipeContent | null;
   images: ProductPageImage[];
   variants: ProductPageVariant[];
   relatedProducts: ProductPageRelated[];
@@ -117,6 +120,43 @@ function productHref(handle: string, rangeSlug?: string): string {
     : `/product/${handle}`;
 }
 
+function RecipeMetafieldBody({
+  content,
+  className,
+}: {
+  content: ParsedRecipeContent;
+  className?: string;
+}) {
+  if (content.html) {
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: content.html }}
+      />
+    );
+  }
+
+  return (
+    <div className={className}>
+      {content.lines.map((line) => {
+        const separatorIndex = line.indexOf(":");
+        if (separatorIndex > 0) {
+          const label = line.slice(0, separatorIndex + 1);
+          const value = line.slice(separatorIndex + 1).trim();
+          return (
+            <p key={line}>
+              <span className="font-medium">{label}</span>
+              {value ? <> {value}</> : null}
+            </p>
+          );
+        }
+
+        return <p key={line}>{line}</p>;
+      })}
+    </div>
+  );
+}
+
 export default function ProductPageClient({
   product,
   productId,
@@ -124,6 +164,8 @@ export default function ProductPageClient({
   descriptionLines,
   technicalDetails,
   sizeChart,
+  recipeFilter,
+  recipeEspresso,
   images,
   variants,
   relatedProducts,
@@ -632,328 +674,224 @@ const toggleAccordion = (id: string) => {
       className="max-md:hidden"
     />
 
-      {/* DESCRIPTION — mobile: after related products */}
-      {descriptionLines.length > 0 ? (
-      <div
-        id="product-description"
-        aria-label="product-description"
-        className="
-          type-text
-          mt-5
-          w-full
-          select-none
-          text-sm
-          uppercase
-          leading-5
-         sm:leading-[18px]
-          max-md:order-3
-        "
+<div className="mt-6 w-full max-md:order-3">
+
+  {/* Coffee Details — product description/content */}
+  {descriptionLines.length > 0 ? (
+    <>
+      <button
+        type="button"
+        onClick={() => toggleAccordion("details")}
+        className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
       >
-        <ul className="list-disc pl-4">
-          {descriptionLines.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ul>
-      </div>
-    ) : null}
+        <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
+          Coffee Details
+        </span>
 
+        <svg
+          className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
+            openAccordion === "details" ? "rotate-180" : ""
+          }`}
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M5 7l5 6 5-6H5z" />
+        </svg>
+      </button>
 
+      {openAccordion === "details" ? (
+        <div
+          id="product-description"
+          aria-label="product-description"
+          className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey"
+        >
+          <div
+            className="
+              type-text2
+              space-y-1
+              text-[13px]
+              leading-[1.35]
+              tracking-[-0.03em]
 
-<div className="mt-6 w-full">
+              sm:text-[14px]
+              md:text-[15px]
+            "
+          >
+            {descriptionLines.map((line) => {
+              const separatorIndex = line.indexOf(":");
+              if (separatorIndex > 0) {
+                const label = line.slice(0, separatorIndex + 1);
+                const value = line.slice(separatorIndex + 1).trim();
+                return (
+                  <p key={line}>
+                    <span className="font-medium">{label}</span>
+                    {value ? <> {value}</> : null}
+                  </p>
+                );
+              }
 
-  {/* Coffee Details */}
-  <button
-    onClick={() => toggleAccordion("details")}
-    className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
-  >
-    <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-      Coffee Details
-    </span>
-
-    <svg
-      className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
-        openAccordion === "details" ? "rotate-180" : ""
-      }`}
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path d="M5 7l5 6 5-6H5z" />
-    </svg>
-  </button>
-
-  {openAccordion === "details" && (
-  <div className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey">
-
-    {/* Top Section */}
- <div
-      className="
-        type-text2
-        text-[13px]
-        leading-[1.35]
-        tracking-[-0.03em]
-
-        sm:text-[14px]
-        md:text-[15px]
-      "
-    >
-      <p>
-        <span className="font-medium">Farmer:</span>{" "}
-        Jose Roberto Monterroso Pineda
-      </p>
-
-      <p>
-        <span className="font-medium">Producer:</span>{" "}
-        El Morito
-      </p>
-
-      <p>
-        <span className="font-medium">Varietal:</span>{" "}
-        Washed Processed Yellow Geisha
-      </p>
-    </div>
-
-    {/* Divider */}
-    <div className="my-2 h-[2px] bg-[#d9d9d9]" />
-
-    {/* Bottom Section */}
-    <div className="type-text2 space-y-1 text-[13px] leading-[1.35]">
-      <p>
-        <span className="font-medium">Sweetness:</span>{" "}
-        ØØØOO
-      </p>
-
-      <p>
-        <span className="font-medium">Body:</span>{" "}
-        ØØØØØ
-      </p>
-
-      <p>
-        <span className="font-medium">Acidity:</span>{" "}
-        ØØOOO
-      </p>
-    </div>
-
-  </div>
-)}
+              return <p key={line}>{line}</p>;
+            })}
+          </div>
+        </div>
+      ) : null}
+    </>
+  ) : null}
 
   {/* Recipe Filter */}
-  <button
-    onClick={() => toggleAccordion("filter")}
-    className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
-  >
-    <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-      Recipe Filter
-    </span>
+  {recipeFilter ? (
+    <>
+      <button
+        type="button"
+        onClick={() => toggleAccordion("filter")}
+        className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
+      >
+        <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
+          Recipe Filter
+        </span>
 
-    <svg
-      className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
-        openAccordion === "filter" ? "rotate-180" : ""
-      }`}
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path d="M5 7l5 6 5-6H5z" />
-    </svg>
-  </button>
+        <svg
+          className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
+            openAccordion === "filter" ? "rotate-180" : ""
+          }`}
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M5 7l5 6 5-6H5z" />
+        </svg>
+      </button>
 
-  {openAccordion === "filter" && (
-  <div
-    className="
-      border-x-[2pt]
-      border-b-[2pt]
-      border-hover-frame
-      px-3
-      pb-4
-      pt-3
-      text-standard-grey
-    "
-  >
-    {/* Brewer Icons */}
-    <div className="mb-4 flex items-center gap-0">
-      <img
-        src="/collections/cup.png"
-        alt="April Brewer"
-        className="h-[60px] w-[55px] "
-      />
+      {openAccordion === "filter" ? (
+        <div
+          className="
+            border-x-[2pt]
+            border-b-[2pt]
+            border-hover-frame
+            px-3
+            pb-4
+            pt-3
+            text-standard-grey
+          "
+        >
+          {/* Brewer Icons */}
+          <div className="mb-4 flex items-center gap-0">
+            <img
+              src="/collections/cup.png"
+              alt="April Brewer"
+              className="h-[60px] w-[55px] "
+            />
 
-      <img
-        src="/collections/cup.png"
-        alt="April Brewer"
-        className="h-[60px] w-[55px]"
-      />
+            <img
+              src="/collections/cup.png"
+              alt="April Brewer"
+              className="h-[60px] w-[55px]"
+            />
 
-      <img
-        src="/collections/cup.png"
-        alt="April Brewer"
-        className="h-[60px] w-[55px]"
-      />
-    </div>
+            <img
+              src="/collections/cup.png"
+              alt="April Brewer"
+              className="h-[60px] w-[55px]"
+            />
+          </div>
 
-    {/* Recipe Details */}
-    <div
-      className="
-        type-text2
-        text-[13px]
-        leading-[1.35]
-        tracking-[-0.03em]
+          <RecipeMetafieldBody
+            content={recipeFilter}
+            className="
+              type-text2
+              space-y-1
+              text-[13px]
+              leading-[1.35]
+              tracking-[-0.03em]
 
-        sm:text-[14px]
-        md:text-[15px]
-      "
-    >
-      <p>
-        <span className="font-medium">April Brewer:</span>{" "}
-        Plastic (Large Paper Filter)
-      </p>
+              sm:text-[14px]
+              md:text-[15px]
 
-      <p>
-        <span className="font-medium">Coffee:</span>{" "}
-        12g (April Grinder setting 8)
-      </p>
-
-      <p>
-        <span className="font-medium">Water:</span>{" "}
-        200g (92°C celcius)
-      </p>
-
-      <p>
-        <span className="font-medium">April Water Minerals:</span>{" "}
-        2 drops in the cup
-        <br />
-        before brewing
-      </p>
-
-      {/* First Pour */}
-      <div className="mt-6">
-        <p>
-          00:00 - 00:10 100g water
-        </p>
-
-        <p>
-          (40g circle / 60g centre)
-        </p>
-      </div>
-
-      {/* Second Pour */}
-      <div className="mt-5">
-        <p>
-          00:35 - 00:45 100g water
-        </p>
-
-        <p>
-          (40g circle / 60g centre)
-        </p>
-      </div>
-
-      {/* Total Brew Time */}
-      <p className="mt-6">
-        <span className="font-medium uppercase">
-          Total Brew Time:
-        </span>{" "}
-        2:40
-      </p>
-    </div>
-  </div>
-)}
+              [&_p]:mt-0
+              [&_p+p]:mt-1
+              [&_br]:block
+            "
+          />
+        </div>
+      ) : null}
+    </>
+  ) : null}
 
   {/* Recipe Espresso */}
-  <button
-    onClick={() => toggleAccordion("espresso")}
-    className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
-  >
-    <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-      Recipe Espresso
-    </span>
+  {recipeEspresso ? (
+    <>
+      <button
+        type="button"
+        onClick={() => toggleAccordion("espresso")}
+        className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
+      >
+        <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
+          Recipe Espresso
+        </span>
 
-    <svg
-      className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
-        openAccordion === "espresso" ? "rotate-180" : ""
-      }`}
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path d="M5 7l5 6 5-6H5z" />
-    </svg>
-  </button>
+        <svg
+          className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
+            openAccordion === "espresso" ? "rotate-180" : ""
+          }`}
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M5 7l5 6 5-6H5z" />
+        </svg>
+      </button>
 
-  {openAccordion === "espresso" && (
-  <div
-    className="
-      border-x-[2pt]
-      border-b-[2pt]
-      border-hover-frame
-      px-3
-      pt-3
-      pb-5
-      text-standard-grey
-    "
-  >
-    {/* Espresso Icons */}
-    <div className="mb-5 flex items-center gap-0">
-      <img
-        src="/collections/espresso.png"
-        alt="Espresso"
-        className="h-[50px] w-[70px]"
-      />
+      {openAccordion === "espresso" ? (
+        <div
+          className="
+            border-x-[2pt]
+            border-b-[2pt]
+            border-hover-frame
+            px-3
+            pt-3
+            pb-5
+            text-standard-grey
+          "
+        >
+          {/* Espresso Icons */}
+          <div className="mb-5 flex items-center gap-0">
+            <img
+              src="/collections/espresso.png"
+              alt="Espresso"
+              className="h-[50px] w-[70px]"
+            />
 
-      <img
-        src="/collections/espresso.png"
-        alt="Espresso"
-        className="h-[50px] w-[70px]"
-      />
+            <img
+              src="/collections/espresso.png"
+              alt="Espresso"
+              className="h-[50px] w-[70px]"
+            />
 
-      <img
-        src="/collections/espresso.png"
-        alt="Espresso"
-        className="h-[50px] w-[70px]"
-      />
-    </div>
+            <img
+              src="/collections/espresso.png"
+              alt="Espresso"
+              className="h-[50px] w-[70px]"
+            />
+          </div>
 
-    {/* Espresso Content */}
-    <div
-      className="
-        type-text2
-        text-[13px]
-        leading-[1.4]
-        tracking-[-0.03em]
-        sm:text-[14px]
-        md:text-[15px]
-      "
-    >
-      <p className="font-medium">
-        Espresso Brewing Advice & Recipe:
-      </p>
+          <RecipeMetafieldBody
+            content={recipeEspresso}
+            className="
+              type-text2
+              space-y-1
+              text-[13px]
+              leading-[1.4]
+              tracking-[-0.03em]
+              sm:text-[14px]
+              md:text-[15px]
 
-      <p className="mt-6">
-        All of our espresso recipes are designed using a Modbar AV, the model
-        of espresso machine that we use in our Showroom.
-      </p>
-
-      <p className="mt-6">
-        We recommend a dose of 19g of coffee, a final yield of 45g (1:2.4) in a
-        time of 25-30s.
-        <br />
-        We recommend a grind setting of 4,2.
-      </p>
-
-      <p className="mt-6">
-        Dose and distribute carefully using a scale capable of reading to an
-        accuracy of 0,1g.
-        <br />
-        You must first identify the size of your filter basket - preferably of
-        the brand and variety 'VST Ridgeless'. We recommend using a dosage
-        within +/-1g of the size of the basket.
-      </p>
-
-      <p className="mt-6">
-        Please note that all grind settings reference a Ditting Sweet Lab 804.
-        Please adjust your grind settings as necessary and use the recommended
-        brew time as a reference.
-      </p>
-    </div>
-  </div>
-)}
-
+              [&_p]:mt-0
+              [&_p+p]:mt-6
+              [&_br]:block
+            "
+          />
+        </div>
+      ) : null}
+    </>
+  ) : null}
 </div>
 
     {/* LINKS — lg: after price; mobile: after description */}
@@ -1054,7 +992,7 @@ const toggleAccordion = (id: string) => {
     ) : null}
 
     {/* RELATED PRODUCTS — mobile: after add to cart */}
-    {relatedProducts.length > 0 ? (
+    {/* {relatedProducts.length > 0 ? (
       <div
         aria-label="product-selector-grid"
         id="product-selector-grid"
@@ -1084,7 +1022,7 @@ const toggleAccordion = (id: string) => {
           ))}
         </div>
       </div>
-    ) : null}
+    ) : null} */}
 
   
   </div>

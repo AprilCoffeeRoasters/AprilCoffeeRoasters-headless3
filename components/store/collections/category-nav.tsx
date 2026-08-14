@@ -66,7 +66,7 @@ export default function CategoryNav({
               onClick={onFilterClick}
               className="type-h2 block w-full cursor-pointer text-right text-sm uppercase leading-[18px] text-standard-grey no-underline transition duration-150 ease-in-out hover:text-hover-frame"
             >
-              Filter
+Search
             </button>
           </li>
         ) : null}

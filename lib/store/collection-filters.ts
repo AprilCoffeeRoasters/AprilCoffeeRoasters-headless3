@@ -3,15 +3,18 @@ import type { Product } from "lib/shopify/types";
 export type CollectionFilters = {
   showSoldOut: boolean;
   sizes: string[];
+  query: string;
 };
 
 export const defaultCollectionFilters: CollectionFilters = {
   showSoldOut: true,
   sizes: [],
+  query: "",
 };
 
 const HIDE_SOLD_OUT_PARAM = "hideSoldOut";
 const SIZE_PARAM = "size";
+const QUERY_PARAM = "q";
 
 type SearchParamsReader = Pick<URLSearchParams, "get" | "getAll">;
 
@@ -28,14 +31,16 @@ export function collectionFiltersFromSearchParams(
     .filter((size): size is (typeof filterSizeOptions)[number] =>
       validSizes.has(size),
     );
+  const query = searchParams.get(QUERY_PARAM)?.trim() ?? "";
 
-  if (!hideSoldOut && sizes.length === 0) {
+  if (!hideSoldOut && sizes.length === 0 && !query) {
     return defaultCollectionFilters;
   }
 
   return {
     showSoldOut: !hideSoldOut,
     sizes,
+    query,
   };
 }
 
@@ -52,6 +57,11 @@ export function searchParamsFromCollectionFilters(
     params.append(SIZE_PARAM, size);
   }
 
+  const query = filters.query.trim();
+  if (query) {
+    params.set(QUERY_PARAM, query);
+  }
+
   return params;
 }
 
@@ -59,7 +69,11 @@ export function areCollectionFiltersEqual(
   a: CollectionFilters,
   b: CollectionFilters,
 ): boolean {
-  if (a.showSoldOut !== b.showSoldOut || a.sizes.length !== b.sizes.length) {
+  if (
+    a.showSoldOut !== b.showSoldOut ||
+    a.sizes.length !== b.sizes.length ||
+    a.query.trim() !== b.query.trim()
+  ) {
     return false;
   }
 
@@ -96,6 +110,22 @@ function isProductSoldOut(product: Product) {
   );
 }
 
+function productMatchesQuery(product: Product, query: string) {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return true;
+
+  const haystack = [
+    product.title,
+    product.handle,
+    product.description,
+    ...product.tags,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return haystack.includes(needle);
+}
+
 export function applyCollectionFilters(
   products: Product[],
   filters: CollectionFilters,
@@ -106,6 +136,10 @@ export function applyCollectionFilters(
     }
 
     if (filters.sizes.length > 0 && !productHasAvailableSize(product, filters.sizes)) {
+      return false;
+    }
+
+    if (!productMatchesQuery(product, filters.query)) {
       return false;
     }
 

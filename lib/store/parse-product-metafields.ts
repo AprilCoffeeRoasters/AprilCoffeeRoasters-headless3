@@ -65,6 +65,15 @@ export function parseTechnicalDetails(value: string | null | undefined): ParsedT
   };
 }
 
+/** Multi-line / rich-text recipe body from Shopify metafields. */
+export type ParsedRecipeContent = ParsedTechnicalDetails;
+
+export function parseRecipeContent(
+  value: string | null | undefined,
+): ParsedRecipeContent | null {
+  return parseTechnicalDetails(value);
+}
+
 export function parseSizeChart(value: string | null | undefined): ParsedSizeChart | null {
   if (!value?.trim()) return null;
 

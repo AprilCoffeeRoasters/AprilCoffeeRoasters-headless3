@@ -1,9 +1,34 @@
 "use client";
 
 import type { ShopGalleryImage } from "lib/cms/shops";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 const MAX_HEIGHT = 540;
+const DESKTOP_VISIBLE = 3;
+const DESKTOP_MQ = "(min-width: 768px)";
+
+function subscribeDesktop(onStoreChange: () => void) {
+  const mq = window.matchMedia(DESKTOP_MQ);
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+}
+
+function getDesktopSnapshot() {
+  return window.matchMedia(DESKTOP_MQ).matches;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function useVisibleCount(imageCount: number) {
+  const isDesktop = useSyncExternalStore(
+    subscribeDesktop,
+    getDesktopSnapshot,
+    getServerSnapshot,
+  );
+  return Math.min(isDesktop ? DESKTOP_VISIBLE : 1, Math.max(imageCount, 1));
+}
 
 function GalleryArrow({ direction }: { direction: "left" | "right" }) {
   return (
@@ -31,17 +56,29 @@ export default function ShopGalleryCarousel({
 }) {
   const [index, setIndex] = useState(0);
   const count = images.length;
+  const visibleCount = useVisibleCount(count);
+  const maxIndex = Math.max(0, count - visibleCount);
+  const showControls = count > visibleCount;
+
+  useEffect(() => {
+    setIndex((current) => Math.min(current, maxIndex));
+  }, [maxIndex]);
 
   const goTo = useCallback(
     (next: number) => {
       if (count === 0) return;
-      setIndex(((next % count) + count) % count);
+      if (visibleCount === 1) {
+        setIndex(((next % count) + count) % count);
+        return;
+      }
+      setIndex(Math.min(Math.max(next, 0), maxIndex));
     },
-    [count],
+    [count, maxIndex, visibleCount],
   );
 
   if (count === 0) return null;
 
+  const trackWidthPercent = (count / visibleCount) * 100;
   const slidePercent = 100 / count;
   const trackOffset = index * slidePercent;
 
@@ -51,12 +88,13 @@ export default function ShopGalleryCarousel({
         className="relative flex w-full items-center overflow-hidden transition-[height] duration-300"
         style={{ maxHeight: MAX_HEIGHT }}
       >
-        {count > 1 ? (
+        {showControls ? (
           <button
             type="button"
             aria-label="left-gallery-button"
-            className="z-10 shrink-0 cursor-pointer bg-white p-2 max-md:absolute max-md:left-0 max-md:h-full max-md:bg-transparent"
+            className="z-10 shrink-0 cursor-pointer bg-white p-2 max-md:absolute max-md:left-0 max-md:h-full max-md:bg-transparent disabled:cursor-default disabled:opacity-40"
             onClick={() => goTo(index - 1)}
+            disabled={visibleCount > 1 && index === 0}
           >
             <GalleryArrow direction="left" />
           </button>
@@ -67,7 +105,7 @@ export default function ShopGalleryCarousel({
             aria-label="gallery-images"
             className="flex transition-transform duration-500 ease-in-out"
             style={{
-              width: `${count * 100}%`,
+              width: `${trackWidthPercent}%`,
               transform: `translateX(-${trackOffset}%)`,
             }}
           >
@@ -75,7 +113,7 @@ export default function ShopGalleryCarousel({
               <div
                 key={image.src}
                 aria-label={`image-${image.src}`}
-                className="shrink-0"
+                className={`shrink-0 ${visibleCount > 1 ? "px-1.5" : ""}`}
                 style={{ flex: `0 0 ${slidePercent}%` }}
               >
                 <div
@@ -86,7 +124,7 @@ export default function ShopGalleryCarousel({
                   <img
                     src={image.src}
                     srcSet={image.srcSet}
-                    sizes="(min-width: 768px) 1024px, 100vw"
+                    sizes="(min-width: 768px) 33vw, 100vw"
                     alt={alt}
                     className="mx-auto block h-auto w-full max-h-[540px] object-contain"
                     width={image.width}
@@ -98,19 +136,20 @@ export default function ShopGalleryCarousel({
           </div>
         </div>
 
-        {count > 1 ? (
+        {showControls ? (
           <button
             type="button"
             aria-label="right-gallery-button"
-            className="z-10 shrink-0 cursor-pointer bg-white p-2 max-md:absolute max-md:right-0 max-md:h-full max-md:bg-transparent"
+            className="z-10 shrink-0 cursor-pointer bg-white p-2 max-md:absolute max-md:right-0 max-md:h-full max-md:bg-transparent disabled:cursor-default disabled:opacity-40"
             onClick={() => goTo(index + 1)}
+            disabled={visibleCount > 1 && index >= maxIndex}
           >
             <GalleryArrow direction="right" />
           </button>
         ) : null}
       </div>
 
-      {count > 1 ? (
+      {showControls ? (
         <div
           aria-label="gallery-index"
           className="mt-3 flex w-full justify-end text-sm text-[#9ca3af] max-md:justify-center"

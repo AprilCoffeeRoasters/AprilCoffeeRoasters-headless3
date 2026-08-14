@@ -7,6 +7,7 @@ import type {
 import type { Product, ProductVariant } from "lib/shopify/types";
 import { shopifyImageUrl } from "lib/shopify-image-url";
 import {
+  parseRecipeContent,
   parseSizeChart,
   parseTechnicalDetails,
 } from "lib/store/parse-product-metafields";
@@ -89,6 +90,8 @@ export function mapProductPageData(
     ),
     technicalDetails: parseTechnicalDetails(product.technicalDetails?.value),
     sizeChart: parseSizeChart(product.sizeChart?.value),
+    recipeFilter: parseRecipeContent(product.recipeFilter?.value),
+    recipeEspresso: parseRecipeContent(product.recipeEspresso?.value),
     images,
     variants,
     relatedProducts,

@@ -2,7 +2,6 @@
 
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import clsx from "clsx";
-import { filterSizeOptions } from "lib/store/collection-filters";
 
 const filterBtnClass =
   "flex items-center justify-center whitespace-nowrap border-2 border-black px-4 text-center cursor-pointer text-[10px] leading-[15px] font-bold uppercase max-md:my-1 max-md:h-8 max-md:py-1 max-md:text-[13px] max-md:leading-[18px]";
@@ -12,8 +11,8 @@ type CollectionFilterModalProps = {
   onClose: () => void;
   showSoldOut: boolean;
   onShowSoldOutChange: (show: boolean) => void;
-  selectedSizes: string[];
-  onToggleSize: (size: string) => void;
+  query: string;
+  onQueryChange: (query: string) => void;
   onClear: () => void;
 };
 
@@ -22,8 +21,8 @@ export default function CollectionFilterModal({
   onClose,
   showSoldOut,
   onShowSoldOutChange,
-  selectedSizes,
-  onToggleSize,
+  query,
+  onQueryChange,
   onClear,
 }: CollectionFilterModalProps) {
   return (
@@ -95,30 +94,19 @@ export default function CollectionFilterModal({
 
               <div className="my-4">
                 <h3 className="select-none text-[13px] leading-[18px] font-bold uppercase">
-                  In-Stock
+                  Search
                 </h3>
 
-                <div className="mt-2 grid grid-cols-5 gap-2">
-                  {filterSizeOptions.map((size) => {
-                    const selected = selectedSizes.includes(size);
-
-                    return (
-                      <button
-                        key={size}
-                        type="button"
-                        onClick={() => onToggleSize(size)}
-                        className={clsx(
-                          filterBtnClass,
-                          "py-1",
-                          selected
-                            ? "bg-black text-white hover:bg-black hover:text-white"
-                            : "bg-white text-black hover:bg-black hover:text-white"
-                        )}
-                      >
-                        {size}
-                      </button>
-                    );
-                  })}
+                <div className="mt-2">
+                  <input
+                    type="search"
+                    value={query}
+                    onChange={(event) => onQueryChange(event.target.value)}
+                    placeholder="Search products"
+                    aria-label="search-products"
+                    autoComplete="off"
+                    className="w-full border-2 border-black bg-white px-3 py-2 text-[13px] leading-[18px] text-black outline-none placeholder:text-standard-grey placeholder:normal-case"
+                  />
                 </div>
               </div>
 

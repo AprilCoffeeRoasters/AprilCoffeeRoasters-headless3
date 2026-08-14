@@ -40,13 +40,13 @@ const homepageQuery = gql`
   }
 `;
 
-function slugFromTitle(title: string): string {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+// function slugFromTitle(title: string): string {
+//   return title
+//     .toLowerCase()
+//     .trim()
+//     .replace(/[^a-z0-9]+/g, "-")
+//     .replace(/^-+|-+$/g, "");
+// }
 
 function normalizeHomepage(
   raw: DatoHomepageRaw | null,
@@ -56,14 +56,14 @@ function normalizeHomepage(
   const title = raw.herotitle?.trim();
   if (!title) return null;
 
-  const adviceSlug =
-    raw.featuredcontent?.trim() || slugFromTitle(title);
+  // const adviceSlug =
+  //   raw.featuredcontent?.trim() || slugFromTitle(title);
 
   return {
     featured: {
       title,
       description: raw.herodescription?.trim() || null,
-      href: `/advice/${adviceSlug}`,
+      href: `/advice/`,
       image: raw.heroimage?.responsiveImage ?? null,
     },
     headerLinks: [],
