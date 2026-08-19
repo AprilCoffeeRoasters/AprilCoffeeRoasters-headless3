@@ -10,10 +10,10 @@ export const collectionCategories = [
   { label: "Compostable Capsules", handle: "compostable-capsules" },
   { label: "Brewers", handle: "brewers" },
   { label: "Paper Filter", handle: "paper-filter" },
-  { label: "Cups", handle: "cups" },
-  { label: "Mugs", handle: "mugs" },
+  { label: "Cups & Mugs", handle: "cupsandmugs" },
   { label: "Thermos", handle: "thermos" },
   { label: "Accessories", handle: "accessories" },
+  { label: "Bundles", handle: "bundles" },
   { label: "Clothing", handle: "clothing" },
   { label: "Limited Projects", handle: "limited-projects" },
 ] as const;
