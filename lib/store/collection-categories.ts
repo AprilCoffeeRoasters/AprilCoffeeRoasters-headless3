@@ -6,6 +6,7 @@ export const collectionCategories = [
   { label: "Limited Coffee", handle: "limited-coffee" },
   { label: "Organic Coffee", handle: "organic-coffee" },
   { label: "Coffee Subscriptions", handle: "coffee-subscriptions" },
+  { label: "Sample Box", handle: "samplebox" },
   { label: "Filter Drip Packs", handle: "filter-drip-packs" },
   { label: "Compostable Capsules", handle: "compostable-capsules" },
   { label: "Brewers", handle: "brewers" },
