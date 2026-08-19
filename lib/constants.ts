@@ -164,7 +164,7 @@ export const socialLinks: LandingLink[] = [
   },
   {
     label: "Tasting Menu Booking",
-    href: "/april-tasting-menu",
+    href: "/product/april-tasting-menu",
     external: false,
   },
 ];
