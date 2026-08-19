@@ -1,17 +1,11 @@
 @import "tailwindcss";
 
-/* Futura Medium Italic — H1, TEXT, TEXT2
-   Drop a licensed file at /fonts/futura-medium-italic.ttf for cross-browser embedding.
-   local() covers macOS system Futura when available. */
+/* Futura Medium — H1, TEXT, TEXT2 */
 @font-face {
-  font-family: "Futura Medium Italic";
-  src:
-    local("Futura Medium Italic"),
-    local("Futura-MediumItalic"),
-    local("Futura Md BT Italic"),
-    url("/fonts/futura-medium-italic.ttf") format("truetype");
+  font-family: "Futura Medium";
+  src: url("/fonts/FUTURAM.TTF") format("truetype");
   font-weight: 500;
-  font-style: italic;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -27,7 +21,7 @@
 :root,
 :host {
   --font-sans:
-    "Futura Medium Italic", Futura, "Helvetica Neue", Helvetica, Arial,
+    "Futura Medium", Futura, "Helvetica Neue", Helvetica, Arial,
     ui-sans-serif, sans-serif;
 
   --font-mono:
@@ -46,7 +40,7 @@
   --color-gray-400: oklch(70.7% 0.022 261.325);
 
   --color-white: #fff;
-  --color-black: #000;
+  --color-black: var(--color-standard-grey);
 
   /* Brand palette */
   --color-standard-grey: #666666;
@@ -115,7 +109,7 @@
 
 @theme {
   --font-sans:
-    "Futura Medium Italic", Futura, "Helvetica Neue", Helvetica, Arial,
+    "Futura Medium", Futura, "Helvetica Neue", Helvetica, Arial,
     sans-serif;
 
   --font-header:
@@ -123,7 +117,7 @@
     Helvetica, Arial, sans-serif;
 
   --font-body:
-    "Futura Medium Italic", Futura, "Helvetica Neue", Helvetica, Arial,
+    "Futura Medium", Futura, "Helvetica Neue", Helvetica, Arial,
     sans-serif;
 
   --color-tri-ferg-blue: #34398d;
@@ -132,6 +126,7 @@
   --color-tri-ferg-red: #cd1417;
 
   --color-standard-grey: #666666;
+  --color-black: var(--color-standard-grey);
   --color-active: #f97613;
   --color-hover-frame: #666666;
   --color-amber-500: #f97613;
@@ -168,20 +163,20 @@
   html,
   body {
     font-family: var(--font-body);
-    font-style: italic;
+    font-style: normal;
     font-weight: 500;
     letter-spacing: var(--tracking-brand);
     background: var(--color-white);
     color: var(--color-standard-grey);
   }
 
-  /* H1 / TEXT / TEXT2 — Futura Medium Italic, tracking -30 */
+  /* H1 / TEXT / TEXT2 — Futura Medium, tracking -30 */
   h1,
   .type-h1,
   .type-text,
   .type-text2 {
     font-family: var(--font-body);
-    font-style: italic;
+    font-style: normal;
     font-weight: 500;
     letter-spacing: var(--tracking-brand);
     color: var(--color-standard-grey);
@@ -195,6 +190,7 @@
     font-weight: 800;
     letter-spacing: var(--tracking-brand);
     font-synthesis: none;
+    color: var(--color-standard-grey);
   }
 }
 
@@ -299,8 +295,8 @@
     font-weight: 800;
     letter-spacing: var(--tracking-brand);
     font-synthesis: none;
-    border: 2pt solid #000;
-    background: #000;
+    border: 2pt solid var(--color-standard-grey);
+    background: var(--color-standard-grey);
     color: #fff;
     transition:
       background-color 150ms ease-in-out,
@@ -311,7 +307,7 @@
   .btn-brand:hover {
     border-color: var(--color-hover-frame);
     background: #fff;
-    color: #000;
+    color: var(--color-standard-grey);
   }
 
   .btn-brand:active {

@@ -32,7 +32,7 @@ export default async function PalaceLandingPage() {
                   aria-label={item.ariaLabel}
                   // target={item.external ? "_blank" : undefined}
                   // rel={item.external ? "noopener noreferrer" : undefined}
-                  className="group relative block shrink-0 w-[135px] leading-none md:w-[220px]"
+                  className="group relative block shrink-0 w-[140px] leading-none md:w-[225px]"
                 >
                   <div
                     className="w-full leading-none transition-opacity duration-150 ease-in-out lg:group-hover:opacity-20"

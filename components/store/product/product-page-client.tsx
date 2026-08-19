@@ -12,7 +12,6 @@ import type {
   ParsedTechnicalDetails,
 } from "lib/store/parse-product-metafields";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef, useState, type UIEvent } from "react";
 import Footer from "../layout/footer";
 
