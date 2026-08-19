@@ -39,7 +39,7 @@ function FaqItem({
         type="button"
         aria-expanded={open}
         onClick={onToggle}
-        className="flex w-full items-start gap-3 py-3.5 text-left text-[13px] font-bold uppercase leading-[18px] tracking-tight"
+        className="type-text flex w-full items-start gap-3 py-3.5 text-left text-[13px] uppercase leading-[18px] outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame active:text-active"
       >
         <ChevronIcon open={open} />
         <span>{question}</span>
@@ -64,11 +64,11 @@ export function FaqAccordion({ sections }: FaqAccordionProps) {
           <section key={section.title} aria-labelledby={headingId}>
             <h2
               id={headingId}
-              className="mb-1 text-sm font-bold uppercase tracking-tight"
+              className="type-h2 mb-1 text-sm uppercase"
             >
               {section.title}
             </h2>
-            <p className="mb-3 text-[13px] leading-[18px] text-neutral-600">
+            <p className="type-text mb-3 text-[13px] leading-[18px]">
               {section.description}
             </p>
             <div>

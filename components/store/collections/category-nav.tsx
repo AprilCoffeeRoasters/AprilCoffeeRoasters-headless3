@@ -33,7 +33,7 @@ export default function CategoryNav({
             <li key={item.handle} aria-label={`menu-item-${item.handle}`}>
               <Link
                 href={href}
-                className={`type-h2 block text-sm leading-[18px] no-underline transition duration-150 ease-in-out hover:text-hover-frame max-md:py-2 ${
+                className={`type-h2 block text-sm leading-[18px] no-underline outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame max-md:py-2 ${
                   isActive ? "text-active" : "text-standard-grey"
                 }`}
                 {...(isActive
@@ -49,7 +49,7 @@ export default function CategoryNav({
           <li aria-label="menu-item-cart">
             <Link
               href="/cart"
-              className="type-h2 block text-sm leading-[18px] text-standard-grey no-underline transition duration-150 ease-in-out hover:text-hover-frame max-md:py-2"
+              className="type-h2 block text-sm leading-[18px] text-standard-grey no-underline outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame active:text-active max-md:py-2"
             >
               Cart
             </Link>
@@ -64,7 +64,7 @@ export default function CategoryNav({
               type="button"
               aria-label="filter-button"
               onClick={onFilterClick}
-              className="type-h2 block w-full cursor-pointer text-right text-sm uppercase leading-[18px] text-standard-grey no-underline transition duration-150 ease-in-out hover:text-hover-frame"
+              className="type-h2 block w-full cursor-pointer text-right text-sm uppercase leading-[18px] text-standard-grey no-underline outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame active:text-active"
             >
 Search
             </button>

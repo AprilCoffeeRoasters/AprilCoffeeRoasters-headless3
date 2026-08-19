@@ -58,7 +58,7 @@ export function FaqAnswer({ answer }: FaqAnswerProps) {
   const paragraphs = answer.split(/\n\n+/);
 
   return (
-    <div className="space-y-3 text-[13px] leading-[18px] text-black">
+    <div className="type-text space-y-3 text-[13px] leading-[18px]">
       {paragraphs.map((paragraph, index) => {
         const lines = paragraph.split("\n");
         return (

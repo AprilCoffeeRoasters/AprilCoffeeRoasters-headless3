@@ -30,10 +30,10 @@ export function ArticleDetail({
           aria-label="advice-item-view"
           className="w-full pb-4 uppercase"
         >
-          <div className="flex flex-row font-bold max-md:flex-col">
+          <div className="flex flex-row max-md:flex-col">
             <h1
               aria-label="advice-item-title"
-              className="w-3/4 py-2 text-[17.6px] sm:text-[18px] sm:leading-[26px] max-md:w-full"
+              className="type-h1 w-3/4 py-2 text-[17.6px] sm:text-[18px] sm:leading-[26px] max-md:w-full"
             >
               {article.title}
             </h1>

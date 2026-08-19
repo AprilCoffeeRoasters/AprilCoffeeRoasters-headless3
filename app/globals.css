@@ -166,6 +166,7 @@
     font-style: normal;
     font-weight: 500;
     letter-spacing: var(--tracking-brand);
+    font-synthesis: none;
     background: var(--color-white);
     color: var(--color-standard-grey);
   }
@@ -173,13 +174,25 @@
   /* H1 / TEXT / TEXT2 — Futura Medium, tracking -30 */
   h1,
   .type-h1,
+  p,
   .type-text,
-  .type-text2 {
+  .type-text2,
+  label,
+  input,
+  textarea,
+  select {
     font-family: var(--font-body);
     font-style: normal;
     font-weight: 500;
     letter-spacing: var(--tracking-brand);
+    font-synthesis: none;
     color: var(--color-standard-grey);
+  }
+
+  /* TEXT2 — small letters */
+  .type-text2 {
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
   }
 
   /* H2 — Futura Condensed ExtraBold, tracking -30 */
@@ -247,19 +260,7 @@
     white-space: nowrap;
     font-synthesis: none;
     -webkit-font-smoothing: antialiased;
-    transition:
-      color 150ms ease-in-out,
-      opacity 150ms ease-in-out;
-  }
-
-  .header-nav-item:hover {
-    color: var(--color-hover-frame);
-    opacity: 0.85;
-  }
-
-  .header-nav-item:active,
-  .header-nav-item[data-active="true"] {
-    color: var(--color-active);
+    transition: color 150ms ease-in-out;
   }
 
   .header-nav-item a {
@@ -267,6 +268,21 @@
     text-decoration: none;
     font: inherit;
     letter-spacing: inherit;
+    outline: 2pt solid transparent;
+    outline-offset: 3px;
+    transition:
+      color 150ms ease-in-out,
+      outline-color 150ms ease-in-out;
+  }
+
+  .header-nav-item a:hover {
+    outline-color: var(--color-hover-frame);
+  }
+
+  .header-nav-item a:active,
+  .header-nav-item[data-active="true"] a {
+    color: var(--color-active);
+    outline-color: transparent;
   }
 
   #mobile-menu a {
@@ -280,15 +296,24 @@
     font-synthesis: none;
     -webkit-font-smoothing: antialiased;
     text-decoration: none;
-    transition: color 150ms ease-in-out;
+    outline: 2pt solid transparent;
+    outline-offset: 3px;
+    transition:
+      color 150ms ease-in-out,
+      outline-color 150ms ease-in-out;
+  }
+
+  #mobile-menu a:hover {
+    outline-color: var(--color-hover-frame);
   }
 
   #mobile-menu a:active,
   #mobile-menu a[data-active="true"] {
     color: var(--color-active);
+    outline-color: transparent;
   }
 
-  /* Primary click buttons — active fill #F97613, hover frame 2pt #666666 */
+  /* Primary buttons — grey fill, hover 2pt #666 frame, click #F97613 */
   .btn-brand {
     font-family: var(--font-header);
     font-style: normal;
