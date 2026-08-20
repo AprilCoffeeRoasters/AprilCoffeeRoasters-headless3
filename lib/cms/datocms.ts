@@ -26,6 +26,7 @@ export type DatoArticleRecord = {
   updatedAt: string | null;
   youtubeVideoId: string | null;
   info: string | null;
+  externalAssetUrl: string | null;
   textDescriptionField: { value: DatoStructuredTextValue } | null;
   images: Array<{ responsiveImage: DatoResponsiveImage | null }>;
 };
@@ -38,6 +39,7 @@ const articleFields = gql`
     updatedAt: _updatedAt
     youtubeVideoId
     info
+    externalAssetUrl
     textDescriptionField {
       value
     }

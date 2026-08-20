@@ -119,6 +119,90 @@ function productHref(handle: string, rangeSlug?: string): string {
     : `/product/${handle}`;
 }
 
+function QuantityInput({
+  quantity,
+  setQuantity,
+}: {
+  quantity: number;
+  setQuantity: (next: number) => void;
+}) {
+  const [value, setValue] = useState(String(quantity));
+
+  useEffect(() => {
+    setValue(String(quantity));
+  }, [quantity]);
+
+  const clamp = (next: number) => Math.min(99, Math.max(1, next));
+
+  const applyQuantity = (next: number) => {
+    const clamped = clamp(Math.floor(next));
+    if (clamped === quantity) return;
+    setQuantity(clamped);
+  };
+
+  const handleInputBlur = () => {
+    const parsed = parseInt(value, 10);
+    if (Number.isNaN(parsed) || parsed < 1) {
+      setValue(String(quantity));
+      return;
+    }
+
+    applyQuantity(parsed);
+  };
+
+  const quantityButtonClass =
+    "btn-brand flex h-full w-5 shrink-0 cursor-pointer items-center justify-center border-[2pt] text-sm font-bold uppercase disabled:cursor-not-allowed disabled:opacity-50 max-md:w-8";
+
+  return (
+    <div
+      aria-label="quantity-controls"
+      className="inline-flex h-7 items-center max-md:h-8"
+    >
+      <button
+        type="button"
+        aria-label="decrease-quantity"
+        disabled={quantity <= 1}
+        className={quantityButtonClass}
+        onClick={() => applyQuantity(quantity - 1)}
+      >
+        −
+      </button>
+      <input
+        aria-label="quantity-input"
+        type="number"
+        min={1}
+        inputMode="numeric"
+        value={value}
+        disabled={false}
+        onChange={(event) => {
+          const nextValue = event.target.value;
+          setValue(nextValue);
+
+          const parsed = parseInt(nextValue, 10);
+          if (Number.isNaN(parsed)) return;
+
+          applyQuantity(parsed);
+        }}
+        onBlur={handleInputBlur}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            event.currentTarget.blur();
+          }
+        }}
+        className="h-full w-12 border-y-[2pt] border-black bg-white text-center text-sm font-bold [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      />
+      <button
+        type="button"
+        aria-label="increase-quantity"
+        className={quantityButtonClass}
+        onClick={() => applyQuantity(quantity + 1)}
+      >
+        +
+      </button>
+    </div>
+  );
+}
+
 function RecipeMetafieldBody({
   content,
   className,
@@ -179,6 +263,12 @@ export default function ProductPageClient({
   const [selectedVariantId, setSelectedVariantId] = useState(
     variants[0]?.id ?? "",
   );
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    // Reset quantity when switching variants to avoid accidental oversells.
+    setQuantity(1);
+  }, [selectedVariantId]);
   const mobileCarouselRef = useRef<HTMLDivElement>(null);
   const desktopCarouselRef = useRef<HTMLDivElement>(null);
   const [galleryMode, setGalleryMode] = useState(false);
@@ -877,13 +967,14 @@ const toggleAccordion = (id: string) => {
               type-text2
               space-y-1
               text-[13px]
-              leading-[1.4]
+              leading-[1.35]
               tracking-[-0.03em]
+
               sm:text-[14px]
               md:text-[15px]
 
               [&_p]:mt-0
-              [&_p+p]:mt-6
+              [&_p+p]:mt-1
               [&_br]:block
             "
           />
@@ -927,7 +1018,7 @@ const toggleAccordion = (id: string) => {
           mt-6
           grid
           w-full
-          grid-cols-2
+          grid-cols-3
           gap-2
 
           max-md:order-1
@@ -936,7 +1027,7 @@ const toggleAccordion = (id: string) => {
       >
         <div
           aria-label="product-variant-select-wrapper"
-          className="w-full"
+          className="col-span-2 w-full"
         >
           <select
             id="variant-selector"
@@ -981,12 +1072,22 @@ const toggleAccordion = (id: string) => {
           </select>
         </div>
 
-        <ProductPageAddToCart
-          product={product}
-          selectedVariantId={selectedVariantId}
-          variantLabel={selectedVariant?.label ?? "item"}
-          className="btn-brand flex h-7 w-full items-center justify-center border-[2pt] px-4 text-sm font-bold uppercase max-md:h-8 max-md:text-base"
-        />
+        <div aria-label="product-quantity-wrapper" className="col-span-1">
+          <QuantityInput
+            quantity={quantity}
+            setQuantity={(next) => setQuantity(next)}
+          />
+        </div>
+
+        <div className="col-span-3">
+          <ProductPageAddToCart
+            product={product}
+            selectedVariantId={selectedVariantId}
+            variantLabel={selectedVariant?.label ?? "item"}
+            quantity={quantity}
+            className="btn-brand flex h-7 w-full items-center justify-center border-[2pt] px-4 text-sm font-bold uppercase max-md:h-8 max-md:text-base"
+          />
+        </div>
       </div>
     ) : null}
 

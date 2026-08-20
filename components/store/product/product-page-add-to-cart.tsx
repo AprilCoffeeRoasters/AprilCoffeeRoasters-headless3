@@ -4,23 +4,25 @@ import { addVariantToCart } from "components/cart/actions";
 import { useCart } from "components/cart/cart-context";
 import type { Product } from "lib/shopify/types";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 export default function ProductPageAddToCart({
   product,
   selectedVariantId,
   variantLabel,
+  quantity = 1,
   className,
   onAdded,
 }: {
   product: Product;
   selectedVariantId: string;
   variantLabel: string;
+  quantity?: number;
   className: string;
   onAdded?: () => void;
 }) {
   const router = useRouter();
-  const { cart, addCartItem } = useCart();
+  const { addCartItem } = useCart();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -28,26 +30,20 @@ export default function ProductPageAddToCart({
     (variant) => variant.id === selectedVariantId,
   );
 
-  const isInCart = useMemo(
-    () =>
-      cart?.lines.some(
-        (line) => line.merchandise.id === selectedVariantId,
-      ) ?? false,
-    [cart?.lines, selectedVariantId],
-  );
+  const quantityToAdd = Math.max(1, Math.floor(quantity));
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
 
-    if (!selectedVariant || !product.availableForSale || isInCart) {
+    if (!selectedVariant || !product.availableForSale || quantityToAdd < 1) {
       return;
     }
 
     startTransition(async () => {
-      addCartItem(selectedVariant, product);
+      addCartItem(selectedVariant, product, quantityToAdd);
 
-      const result = await addVariantToCart(selectedVariantId);
+      const result = await addVariantToCart(selectedVariantId, quantityToAdd);
       if (result.error) {
         setError(result.error);
         return;
@@ -65,22 +61,22 @@ export default function ProductPageAddToCart({
           !selectedVariant ||
           !product.availableForSale ||
           isPending ||
-          isInCart
+          quantityToAdd < 1
         }
         className={className}
         aria-label={
-          isInCart
-            ? `${variantLabel}-in-cart`
+          quantityToAdd > 1
+            ? `add-${variantLabel}-${quantityToAdd}-to-cart`
             : `add-${variantLabel}-to-cart`
         }
       >
         {isPending
           ? "Adding…"
-          : isInCart
-            ? "IN CART"
-            : product.availableForSale
-              ? "Add to Cart"
-              : "Sold Out"}
+          : product.availableForSale
+            ? quantityToAdd > 1
+              ? `Add ${quantityToAdd} to Cart`
+              : "Add to Cart"
+            : "Sold Out"}
       </button>
       {error ? (
         <p className="mt-1 text-xs font-bold uppercase text-red-600" role="alert">

@@ -20,19 +20,24 @@ export async function addItem(
     return "Error adding item to cart";
   }
 
-  const result = await addVariantToCart(selectedVariantId);
+  const result = await addVariantToCart(selectedVariantId, 1);
   return result.error ?? null;
 }
 
 export async function addVariantToCart(
-  variantId: string
+  variantId: string,
+  quantity: number = 1
 ): Promise<{ error?: string }> {
   if (!variantId) {
     return { error: "No variant selected" };
   }
 
+  if (!Number.isFinite(quantity) || quantity < 1) {
+    return { error: "Invalid quantity" };
+  }
+
   try {
-    await addToCart([{ merchandiseId: variantId, quantity: 1 }]);
+    await addToCart([{ merchandiseId: variantId, quantity }]);
     updateTag(TAGS.cart);
     return {};
   } catch (e) {

@@ -12,6 +12,25 @@ import { structuredTextToHtml } from "lib/cms/structured-text";
 
 export { isDatoCmsConfigured };
 
+function externalImageSrcSet(url: string): string {
+  const base = url.split("?")[0];
+  const widths = [200, 400, 600, 800, 1200, 1600, 2400];
+  return widths.map((w) => `${base}?width=${w} ${w}w`).join(", ");
+}
+
+function normalizeExternalImageUrl(url: string | null | undefined): string | null {
+  const trimmed = url?.trim();
+  if (!trimmed) return null;
+
+  try {
+    const parsed = new URL(trimmed);
+    if (!["http:", "https:"].includes(parsed.protocol)) return null;
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
 function firstImage(
   record: DatoArticleRecord,
 ): DatoResponsiveImage | null {
@@ -21,20 +40,51 @@ function firstImage(
   return null;
 }
 
+function articleGalleryImages(record: DatoArticleRecord) {
+  const seenUrls = new Set<string>();
+  const gallery = record.images.flatMap((item) => {
+    const image = item.responsiveImage;
+    if (!image || seenUrls.has(image.src)) return [];
+    seenUrls.add(image.src);
+    return [
+      {
+        url: image.src,
+        srcSet: image.srcSet,
+        width: image.width,
+        height: image.height,
+      },
+    ];
+  });
+
+  const externalUrl = normalizeExternalImageUrl(record.externalAssetUrl);
+  if (externalUrl && !seenUrls.has(externalUrl)) {
+    gallery.push({
+      url: externalUrl,
+      srcSet: externalImageSrcSet(externalUrl),
+      width: 800,
+      height: 800,
+    });
+  }
+
+  return gallery;
+}
+
 function recordToFeedItem(record: DatoArticleRecord): AdviceFeedItem | null {
   const image = firstImage(record);
-  if (!image) return null;
+  const externalUrl = normalizeExternalImageUrl(record.externalAssetUrl);
+  const imageUrl = image?.src ?? externalUrl;
+  if (!imageUrl) return null;
 
-  const width = image.width || 800;
-  const height = image.height || 800;
+  const width = image?.width || 800;
+  const height = image?.height || 800;
 
   return {
     id: record.id,
     title: record.title,
     path: `/advice/${record.slug}`,
     slug: record.slug,
-    image: image.src,
-    srcSet: image.srcSet,
+    image: imageUrl,
+    srcSet: image?.srcSet ?? externalImageSrcSet(imageUrl),
     width,
     height,
     aspectRatio: width / height,
@@ -98,27 +148,16 @@ export async function fetchDatoAdviceDetail(
     record.textDescriptionField?.value,
   );
   const info = record.info?.trim() || undefined;
-
-  const seenUrls = new Set<string>();
-  const galleryImages = record.images.flatMap((item) => {
-    const image = item.responsiveImage;
-    if (!image || seenUrls.has(image.src)) return [];
-    seenUrls.add(image.src);
-    return [
-      {
-        url: image.src,
-        srcSet: image.srcSet,
-        width: image.width,
-        height: image.height,
-      },
-    ];
-  });
+  const galleryImages = articleGalleryImages(record);
+  const externalUrl = normalizeExternalImageUrl(record.externalAssetUrl);
 
   return {
     title: record.title,
     image: hero
       ? { url: hero.src, altText: record.title }
-      : undefined,
+      : externalUrl
+        ? { url: externalUrl, altText: record.title }
+        : undefined,
     info,
     contentHtml,
     youtubeVideoId: record.youtubeVideoId,
