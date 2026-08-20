@@ -684,7 +684,7 @@ const toggleAccordion = (id: string) => {
         className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
       >
         <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-          Coffee Details
+          Details
         </span>
 
         <svg
