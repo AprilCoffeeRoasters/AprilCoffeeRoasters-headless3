@@ -1,7 +1,6 @@
 # April Coffee
 An April Coffee headless storefront. It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
 Built with the Next.js App Router, React Server Components, Server Actions, `Suspense`, and component-level caching.
-
 ## How it works
 **Commerce (Shopify)** — Products, collections, cart, and checkout are powered by the Shopify Storefront API. Customers browse and buy through standard shop routes; checkout redirects to Shopify.
 
