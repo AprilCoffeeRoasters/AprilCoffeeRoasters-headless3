@@ -17,7 +17,7 @@ export const collectionCategories = [
   { label: "Bundles", handle: "bundles" },
   { label: "Clothing", handle: "clothing" },
   { label: "Limited Projects", handle: "limited-projects" },
-  { label: "Tasting Menu", handle: "tasting-menu " }
+  { label: "Tasting Menu", handle: "tasting-menu" }
 ] as const;
 
 export type CollectionCategoryHandle =
