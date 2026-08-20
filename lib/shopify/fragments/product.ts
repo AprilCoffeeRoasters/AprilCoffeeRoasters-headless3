@@ -68,6 +68,9 @@ const productFragment = /* GraphQL */ `
     recipeEspresso: metafield(namespace: "custom", key: "recipe_espresso") {
       value
     }
+    supplierInformation: metafield(namespace: "custom", key: "supplier_information") {
+      value
+    }
   }
   ${imageFragment}
   ${seoFragment}

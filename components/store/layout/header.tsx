@@ -66,7 +66,7 @@ export default function Header({
               aria-label="logo"
             >
               <Image
-                src="/images/april-orange-logoo.png"
+                src="/images/april-website-logo-three.svg"
                 alt="Black April Logo"
                 fill
                 priority

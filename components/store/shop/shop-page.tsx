@@ -45,15 +45,15 @@ export default function ShopPage({
                 {phone ? <p>{phone}</p> : null}
 
                 {timing ? <div>{timing}</div> : null}
-
-                {miscInformationHtml ? (
-                  <div
-                
-                    dangerouslySetInnerHTML={{ __html: miscInformationHtml }}
-                  />
-                ) : null}
               </div>
             </div>
+
+            {miscInformationHtml ? (
+              <div
+                className="px-16 pb-6 text-sm max-md:px-0 max-md:text-xs"
+                dangerouslySetInnerHTML={{ __html: miscInformationHtml }}
+              />
+            ) : null}
 
             <ShopGalleryCarousel images={images} alt={name} />
           </div>

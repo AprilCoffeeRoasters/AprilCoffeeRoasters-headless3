@@ -46,6 +46,7 @@ export type ProductPageClientProps = {
   sizeChart: ParsedSizeChart | null;
   recipeFilter: ParsedRecipeContent | null;
   recipeEspresso: ParsedRecipeContent | null;
+  supplierInformation: ParsedRecipeContent | null;
   images: ProductPageImage[];
   variants: ProductPageVariant[];
   relatedProducts: ProductPageRelated[];
@@ -249,6 +250,7 @@ export default function ProductPageClient({
   sizeChart,
   recipeFilter,
   recipeEspresso,
+  supplierInformation,
   images,
   variants,
   relatedProducts,
@@ -765,7 +767,7 @@ const toggleAccordion = (id: string) => {
 
 <div className="mt-6 w-full max-md:order-3">
 
-  {/* Coffee Details — product description/content */}
+  {/* Product Details — product description/content */}
   {descriptionLines.length > 0 ? (
     <>
       <button
@@ -774,7 +776,7 @@ const toggleAccordion = (id: string) => {
         className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
       >
         <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-         Product Details
+          Product Details
         </span>
 
         <svg
@@ -822,6 +824,55 @@ const toggleAccordion = (id: string) => {
               return <p key={line}>{line}</p>;
             })}
           </div>
+        </div>
+      ) : null}
+    </>
+  ) : null}
+
+  {/* Supplier Information */}
+  {supplierInformation ? (
+    <>
+      <button
+        type="button"
+        onClick={() => toggleAccordion("supplier")}
+        className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
+      >
+        <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
+          Supplier Information
+        </span>
+
+        <svg
+          className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
+            openAccordion === "supplier" ? "rotate-180" : ""
+          }`}
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M5 7l5 6 5-6H5z" />
+        </svg>
+      </button>
+
+      {openAccordion === "supplier" ? (
+        <div
+          className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey"
+        >
+          <RecipeMetafieldBody
+            content={supplierInformation}
+            className="
+              type-text2
+              space-y-1
+              text-[13px]
+              leading-[1.35]
+              tracking-[-0.03em]
+
+              sm:text-[14px]
+              md:text-[15px]
+
+              [&_p]:mt-0
+              [&_p+p]:mt-1
+              [&_br]:block
+            "
+          />
         </div>
       ) : null}
     </>

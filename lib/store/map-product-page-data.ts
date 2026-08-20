@@ -92,6 +92,7 @@ export function mapProductPageData(
     sizeChart: parseSizeChart(product.sizeChart?.value),
     recipeFilter: parseRecipeContent(product.recipeFilter?.value),
     recipeEspresso: parseRecipeContent(product.recipeEspresso?.value),
+    supplierInformation: parseRecipeContent(product.supplierInformation?.value),
     images,
     variants,
     relatedProducts,

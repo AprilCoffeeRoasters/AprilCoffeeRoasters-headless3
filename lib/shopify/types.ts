@@ -171,6 +171,7 @@ export type ShopifyProduct = {
   sizeChart?: ProductMetafield;
   recipeFilter?: ProductMetafield;
   recipeEspresso?: ProductMetafield;
+  supplierInformation?: ProductMetafield;
 };
 
 export type ShopifyCartOperation = {
