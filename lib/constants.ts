@@ -118,7 +118,7 @@ export const boringLinks: FooterLinkItem[] = [
   },
   {
     label: "Returns & Refunds",
-    href: "https://boring.palaceskateboards.com/row/returns-information/",
+    href: "https://www.aprilcoffeeroasters.com/pages/shipping-terms",
   },
   {
     label: "Shipping Terms",
