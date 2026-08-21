@@ -45,7 +45,7 @@ function articlePath(article: Article): string {
   if (lookbookHandle && blogHandle === lookbookHandle) {
     return `/lookbook/${article.handle}`;
   }
-  return `/advice/${article.handle}`;
+  return `/projects/${article.handle}`;
 }
 
 function articleContentType(article: Article): AdviceFeedItem["contentType"] {

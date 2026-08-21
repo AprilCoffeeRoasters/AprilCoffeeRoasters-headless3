@@ -3,6 +3,25 @@ export default {
   experimental: {
     inlineCss: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/advice",
+        destination: "/projects",
+        permanent: true,
+      },
+      {
+        source: "/advice/:slug",
+        destination: "/projects/:slug",
+        permanent: true,
+      },
+      {
+        source: "/pages/coffee-inf-recipes",
+        destination: "/coffee-inf-recipes",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

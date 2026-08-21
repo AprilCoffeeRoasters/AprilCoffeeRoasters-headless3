@@ -19,11 +19,12 @@ const LATEST_ADVICE_SLOT = 2;
 const defaultHeaderLinks: LandingLink[] = [
   { label: "LOCATIONS", href: "/shops", external: false },
   { label: "Web Shop", href: "/collections/all", external: false },
-  { label: "PROJECTS", href: "/advice", external: false },
+  { label: "PROJECTS", href: "/projects", external: false },
+  { label: "COFFEE & INFO", href: "/coffee-inf-recipes", external: false },
   {
     label: "Sustainable Profile",
     href: "https://sustainableprofilecoffee.com",
-    external: false,
+    external: true,
   },
 ];
 
@@ -63,7 +64,7 @@ function injectFeaturedIntoTriFerg(
     index === slot
       ? {
           ...item,
-          href: "/advice",
+          href: "/projects",
           external: false,
         }
       : item,
@@ -77,10 +78,15 @@ function triFergFromHeaderLinks(
     headerLinks.find((l) => l.href === "/shops"),
     headerLinks.find((l) => l.href === "/collections/all"),
     headerLinks.find(
-      (l) => l.href.startsWith("/advice/") && l.href !== "/advice",
+      (l) => l.href.startsWith("/projects/") && l.href !== "/projects",
     ),
-    headerLinks.find((l) => l.href === "/advice"),
-    headerLinks.find((l) => l.external && l.href.includes("manorplace")),
+    headerLinks.find((l) => l.href === "/coffee-inf-recipes"),
+    headerLinks.find(
+      (l) =>
+        l.external &&
+        (l.href.includes("sustainableprofilecoffee") ||
+          l.href.includes("manorplace")),
+    ),
   ].filter((item): item is LandingLink => Boolean(item));
 
   const source = pick.length >= 4 ? pick : headerLinks.slice(0, 5);

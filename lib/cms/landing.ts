@@ -63,7 +63,7 @@ function normalizeHomepage(
     featured: {
       title,
       description: raw.herodescription?.trim() || null,
-      href: `/advice/`,
+      href: `/projects/`,
       image: raw.heroimage?.responsiveImage ?? null,
     },
     headerLinks: [],

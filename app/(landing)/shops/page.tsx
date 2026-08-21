@@ -48,7 +48,7 @@ export default async function Page() {
         id="mainContent"
         className="flex min-h-screen flex-col bg-white text-black"
       >
-        <div className="flex flex-1 grow justify-center">
+        <div className="flex flex-1 grow justify-center pt-0 sm:pt-12">
         <div className="mx-5 flex w-full max-w-5xl">
           <div
             className="flex w-full flex-wrap max-md:flex-col"

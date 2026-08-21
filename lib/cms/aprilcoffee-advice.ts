@@ -81,7 +81,7 @@ function recordToFeedItem(record: DatoArticleRecord): AdviceFeedItem | null {
   return {
     id: record.id,
     title: record.title,
-    path: `/advice/${record.slug}`,
+    path: `/projects/${record.slug}`,
     slug: record.slug,
     image: imageUrl,
     srcSet: image?.srcSet ?? externalImageSrcSet(imageUrl),

@@ -34,12 +34,16 @@ function FaqItem({
   onToggle: () => void;
 }) {
   return (
-    <div className="border-b border-[#d7d7d7]">
+    <div className="border-b border-[#d7d7d7] [overflow-anchor:none]">
       <button
         type="button"
         aria-expanded={open}
+        onMouseDown={(event) => {
+          // Avoid focus scroll jump when toggling with the mouse
+          event.preventDefault();
+        }}
         onClick={onToggle}
-        className="type-text flex w-full items-start gap-3 py-3.5 text-left text-[13px] uppercase leading-[18px] outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame active:text-active"
+        className="type-text flex w-full items-start gap-3 py-3.5 text-left text-[13px] uppercase leading-[18px] outline-none transition duration-150 ease-in-out active:text-active"
       >
         <ChevronIcon open={open} />
         <span>{question}</span>

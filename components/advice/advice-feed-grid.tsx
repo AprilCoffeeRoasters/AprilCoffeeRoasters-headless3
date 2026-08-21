@@ -68,7 +68,7 @@ export function AdviceFeedGrid({
     setLoading(true);
     try {
       const params = new URLSearchParams({ cursor: metadata.endCursor });
-      const res = await fetch(`/api/advice?${params}`);
+      const res = await fetch(`/api/projects?${params}`);
       if (!res.ok) return;
 
       const data = (await res.json()) as {
