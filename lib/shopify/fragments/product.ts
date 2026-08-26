@@ -56,16 +56,21 @@ const productFragment = /* GraphQL */ `
     }
     tags
     updatedAt
+    collections(first: 25) {
+      edges {
+        node {
+          handle
+          title
+        }
+      }
+    }
     technicalDetails: metafield(namespace: "custom", key: "technical_details") {
       value
     }
     sizeChart: metafield(namespace: "custom", key: "size_chart") {
       value
     }
-    recipeFilter: metafield(namespace: "custom", key: "recipe_filter") {
-      value
-    }
-    recipeEspresso: metafield(namespace: "custom", key: "recipe_espresso") {
+    recommendations: metafield(namespace: "custom", key: "recommendations") {
       value
     }
     supplierInformation: metafield(namespace: "custom", key: "supplier_information") {

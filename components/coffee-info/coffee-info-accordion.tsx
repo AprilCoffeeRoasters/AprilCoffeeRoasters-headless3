@@ -1,7 +1,8 @@
 "use client";
 
+import { CoffeeInfoPhotoLightbox } from "components/coffee-info/coffee-info-photo-lightbox";
 import type { CoffeeInfoFarm } from "lib/coffee-info/content";
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
 function ChevronIcon({ open }: { open: boolean }) {
   return (
@@ -48,17 +49,7 @@ function AccordionItem({
   );
 }
 
-function EmptyCopy() {
-  return (
-    <p className="type-text text-[13px] uppercase leading-[18px]">No data</p>
-  );
-}
-
 function TextBlocks({ text }: { text: string }) {
-  if (!text.trim()) {
-    return <EmptyCopy />;
-  }
-
   return (
     <div className="type-text space-y-3 text-[13px] leading-[18px]">
       {text.split(/\n\n+/).map((paragraph) => (
@@ -71,47 +62,65 @@ function TextBlocks({ text }: { text: string }) {
 }
 
 function RecipeBlock({ title, body }: { title: string; body: string }) {
+  if (!body.trim()) return null;
+
   return (
     <div className="space-y-2">
       <p className="type-text text-[13px] font-medium uppercase leading-[18px]">
         {title}
       </p>
-      {body.trim() ? <TextBlocks text={body} /> : <EmptyCopy />}
+      <TextBlocks text={body} />
     </div>
   );
 }
 
 function PhotoGallery({ photos }: { photos: CoffeeInfoFarm["photos"] }) {
-  if (photos.length === 0) {
-    return <EmptyCopy />;
-  }
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
-    <div
-      className="flex gap-2 overflow-x-auto overscroll-x-contain pb-2 pe-3 [-webkit-overflow-scrolling:touch] [scrollbar-width:thin]"
-      role="list"
-      aria-label={`${photos.length} photos`}
-    >
-      {photos.map((photo, index) => (
-        <div
-          key={`${index}-${photo.src}`}
-          role="listitem"
-          className="relative h-36 w-24 shrink-0 overflow-hidden bg-[#e9e9e9] sm:h-44 sm:w-28"
-        >
-          {/* External URLs from Dato image_url may be any host */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={photo.src}
-            alt={photo.alt || `Photo ${index + 1}`}
-            className="absolute inset-0 h-full w-full object-cover"
-            loading={index < 4 ? "eager" : "lazy"}
-          />
-        </div>
-      ))}
-      {/* Spacer so the last image can scroll fully into view */}
-      <div aria-hidden className="w-1 shrink-0" />
-    </div>
+    <>
+      <div
+        className="flex gap-2 overflow-x-auto overscroll-x-contain pb-2 pe-3 [-webkit-overflow-scrolling:touch] [scrollbar-width:thin]"
+        role="list"
+        aria-label={`${photos.length} photos`}
+      >
+        {photos.map((photo, index) => (
+          <button
+            key={`${index}-${photo.src}`}
+            type="button"
+            role="listitem"
+            aria-label={`Open photo ${index + 1} of ${photos.length}`}
+            className="relative h-36 w-24 shrink-0 cursor-zoom-in overflow-hidden bg-[#e9e9e9] sm:h-44 sm:w-28"
+            onClick={() => setLightboxIndex(index)}
+          >
+            {/* External URLs from Dato image_url may be any host */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={photo.src}
+              alt={photo.alt || `Photo ${index + 1}`}
+              className="absolute inset-0 h-full w-full object-cover"
+              loading={index < 4 ? "eager" : "lazy"}
+            />
+          </button>
+        ))}
+        {/* Spacer so the last image can scroll fully into view */}
+        <div aria-hidden className="w-1 shrink-0" />
+      </div>
+
+      {lightboxIndex !== null ? (
+        <CoffeeInfoPhotoLightbox
+          photos={photos}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onIndexChange={setLightboxIndex}
+        />
+      ) : null}
+    </>
   );
+}
+
+function coffeeHasContent(coffee: CoffeeInfoFarm["coffees"][number]) {
+  return Boolean(coffee.recipeFilter.trim() || coffee.recipeEspresso.trim());
 }
 
 type CoffeeInfoFarmAccordionProps = {
@@ -119,59 +128,72 @@ type CoffeeInfoFarmAccordionProps = {
 };
 
 export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) {
-  const [openKey, setOpenKey] = useState<string | null>("general");
+  const hasGeneral = Boolean(farm.generalInformation.trim());
+  const hasPhotos = farm.photos.length > 0;
+  const coffees = useMemo(
+    () => farm.coffees.filter(coffeeHasContent),
+    [farm.coffees],
+  );
+
+  const defaultOpenKey = hasGeneral
+    ? "general"
+    : hasPhotos
+      ? "photos"
+      : coffees[0]
+        ? `coffee::${coffees[0].name}`
+        : null;
+
+  const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey);
 
   function toggle(key: string) {
     setOpenKey((current) => (current === key ? null : key));
   }
 
+  if (!hasGeneral && !hasPhotos && coffees.length === 0) {
+    return null;
+  }
+
   return (
     <div>
-      <AccordionItem
-        label="General Information"
-        open={openKey === "general"}
-        onToggle={() => toggle("general")}
-      >
-        <TextBlocks text={farm.generalInformation} />
-      </AccordionItem>
-
-      <AccordionItem
-        label="Photos"
-        open={openKey === "photos"}
-        onToggle={() => toggle("photos")}
-      >
-        <PhotoGallery photos={farm.photos} />
-      </AccordionItem>
-
-      {farm.coffees.length === 0 ? (
+      {hasGeneral ? (
         <AccordionItem
-          label="Coffees"
-          open={openKey === "coffees"}
-          onToggle={() => toggle("coffees")}
+          label="General Information"
+          open={openKey === "general"}
+          onToggle={() => toggle("general")}
         >
-          <EmptyCopy />
+          <TextBlocks text={farm.generalInformation} />
         </AccordionItem>
-      ) : (
-        farm.coffees.map((coffee) => {
-          const key = `coffee::${coffee.name}`;
-          return (
-            <AccordionItem
-              key={key}
-              label={coffee.name}
-              open={openKey === key}
-              onToggle={() => toggle(key)}
-            >
-              <div className="space-y-5">
-                <RecipeBlock title="Recipe Filter" body={coffee.recipeFilter} />
-                <RecipeBlock
-                  title="Recipe Espresso"
-                  body={coffee.recipeEspresso}
-                />
-              </div>
-            </AccordionItem>
-          );
-        })
-      )}
+      ) : null}
+
+      {hasPhotos ? (
+        <AccordionItem
+          label="Photos"
+          open={openKey === "photos"}
+          onToggle={() => toggle("photos")}
+        >
+          <PhotoGallery photos={farm.photos} />
+        </AccordionItem>
+      ) : null}
+
+      {coffees.map((coffee) => {
+        const key = `coffee::${coffee.name}`;
+        return (
+          <AccordionItem
+            key={key}
+            label={coffee.name}
+            open={openKey === key}
+            onToggle={() => toggle(key)}
+          >
+            <div className="space-y-5">
+              <RecipeBlock title="Recipe Filter" body={coffee.recipeFilter} />
+              <RecipeBlock
+                title="Recipe Espresso"
+                body={coffee.recipeEspresso}
+              />
+            </div>
+          </AccordionItem>
+        );
+      })}
     </div>
   );
 }

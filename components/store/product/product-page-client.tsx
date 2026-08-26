@@ -44,8 +44,7 @@ export type ProductPageClientProps = {
   descriptionLines: string[];
   technicalDetails: ParsedTechnicalDetails | null;
   sizeChart: ParsedSizeChart | null;
-  recipeFilter: ParsedRecipeContent | null;
-  recipeEspresso: ParsedRecipeContent | null;
+  recommendations: ParsedRecipeContent | null;
   supplierInformation: ParsedRecipeContent | null;
   images: ProductPageImage[];
   variants: ProductPageVariant[];
@@ -204,7 +203,7 @@ function QuantityInput({
   );
 }
 
-function RecipeMetafieldBody({
+function MetafieldContentBody({
   content,
   className,
 }: {
@@ -248,8 +247,7 @@ export default function ProductPageClient({
   descriptionLines,
   technicalDetails,
   sizeChart,
-  recipeFilter,
-  recipeEspresso,
+  recommendations,
   supplierInformation,
   images,
   variants,
@@ -856,7 +854,7 @@ const toggleAccordion = (id: string) => {
         <div
           className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey"
         >
-          <RecipeMetafieldBody
+          <MetafieldContentBody
             content={supplierInformation}
             className="
               type-text2
@@ -878,21 +876,21 @@ const toggleAccordion = (id: string) => {
     </>
   ) : null}
 
-  {/* Recipe Filter */}
-  {recipeFilter ? (
+  {/* Recommendations — Filter Coffee & Limited Coffee only */}
+  {recommendations ? (
     <>
       <button
         type="button"
-        onClick={() => toggleAccordion("filter")}
+        onClick={() => toggleAccordion("recommendations")}
         className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
       >
         <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-          Recipe Filter
+          Recommendations
         </span>
 
         <svg
           className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
-            openAccordion === "filter" ? "rotate-180" : ""
+            openAccordion === "recommendations" ? "rotate-180" : ""
           }`}
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -901,119 +899,12 @@ const toggleAccordion = (id: string) => {
         </svg>
       </button>
 
-      {openAccordion === "filter" ? (
+      {openAccordion === "recommendations" ? (
         <div
-          className="
-            border-x-[2pt]
-            border-b-[2pt]
-            border-hover-frame
-            px-3
-            pb-4
-            pt-3
-            text-standard-grey
-          "
+          className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey"
         >
-          {/* Brewer Icons */}
-          <div className="mb-4 flex items-center gap-0">
-            <img
-              src="/collections/cup.png"
-              alt="April Brewer"
-              className="h-[60px] w-[55px] "
-            />
-
-            <img
-              src="/collections/cup.png"
-              alt="April Brewer"
-              className="h-[60px] w-[55px]"
-            />
-
-            <img
-              src="/collections/cup.png"
-              alt="April Brewer"
-              className="h-[60px] w-[55px]"
-            />
-          </div>
-
-          <RecipeMetafieldBody
-            content={recipeFilter}
-            className="
-              type-text2
-              space-y-1
-              text-[13px]
-              leading-[1.35]
-              tracking-[-0.03em]
-
-              sm:text-[14px]
-              md:text-[15px]
-
-              [&_p]:mt-0
-              [&_p+p]:mt-1
-              [&_br]:block
-            "
-          />
-        </div>
-      ) : null}
-    </>
-  ) : null}
-
-  {/* Recipe Espresso */}
-  {recipeEspresso ? (
-    <>
-      <button
-        type="button"
-        onClick={() => toggleAccordion("espresso")}
-        className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
-      >
-        <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-          Recipe Espresso
-        </span>
-
-        <svg
-          className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
-            openAccordion === "espresso" ? "rotate-180" : ""
-          }`}
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path d="M5 7l5 6 5-6H5z" />
-        </svg>
-      </button>
-
-      {openAccordion === "espresso" ? (
-        <div
-          className="
-            border-x-[2pt]
-            border-b-[2pt]
-            border-hover-frame
-            px-3
-            pt-3
-            pb-5
-            text-standard-grey
-          "
-        >
-          {/* Espresso Icons */}
-          <div className="mb-5 flex items-center gap-0">
-            <img
-              src="/collections/espresso.png"
-              alt="Espresso"
-              className="h-[50px] w-[70px]"
-            />
-
-            <img
-              src="/collections/espresso.png"
-              alt="Espresso"
-              className="h-[50px] w-[70px]"
-            />
-
-            <img
-              src="/collections/espresso.png"
-              alt="Espresso"
-              className="h-[50px] w-[70px]"
-            />
-          </div>
-
-          <RecipeMetafieldBody
-            content={recipeEspresso}
+          <MetafieldContentBody
+            content={recommendations}
             className="
               type-text2
               space-y-1

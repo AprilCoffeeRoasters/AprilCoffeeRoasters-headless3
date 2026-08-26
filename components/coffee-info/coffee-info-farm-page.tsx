@@ -1,4 +1,5 @@
 import { CoffeeInfoFarmAccordion } from "components/coffee-info/coffee-info-accordion";
+import { CoffeeInfoFarmVideo } from "components/coffee-info/coffee-info-farm-video";
 import Footer from "components/store/layout/footer";
 import Header from "components/store/layout/header";
 import type { CoffeeInfoFarm } from "lib/coffee-info/content";
@@ -37,21 +38,21 @@ export function CoffeeInfoFarmPage({
 
           <header className="mb-6">
             <h1 className="type-h2 text-sm uppercase">{farm.title}</h1>
-            <div className="type-text mt-3 max-w-2xl space-y-3 text-[13px] leading-[18px]">
-              {farm.description.trim() ? (
-                farm.description.split(/\n\n+/).map((paragraph) => (
+            {farm.description.trim() ? (
+              <div className="type-text mt-3 max-w-2xl space-y-3 text-[13px] leading-[18px]">
+                {farm.description.split(/\n\n+/).map((paragraph) => (
                   <p
                     key={paragraph.slice(0, 48)}
                     className="whitespace-pre-line"
                   >
                     {paragraph}
                   </p>
-                ))
-              ) : (
-                <p className="uppercase">No data</p>
-              )}
-            </div>
+                ))}
+              </div>
+            ) : null}
           </header>
+
+          {farm.video ? <CoffeeInfoFarmVideo video={farm.video} /> : null}
 
           <CoffeeInfoFarmAccordion farm={farm} />
         </div>

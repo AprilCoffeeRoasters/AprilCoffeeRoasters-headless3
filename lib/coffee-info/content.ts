@@ -1,6 +1,17 @@
 export type CoffeeInfoPhoto = {
+  /** Thumbnail / strip preview */
   src: string;
+  /** Larger image for lightbox (falls back to src) */
+  fullSrc: string;
   alt: string;
+};
+
+export type CoffeeInfoVideo = {
+  url: string;
+  title: string;
+  provider: string;
+  providerUid: string;
+  thumbnailUrl: string | null;
 };
 
 export type CoffeeInfoCoffee = {
@@ -17,6 +28,8 @@ export type CoffeeInfoFarm = {
   /** Free-form text for General Information accordion. */
   generalInformation: string;
   photos: CoffeeInfoPhoto[];
+  /** DatoCMS External Video (`video_url`), typically YouTube. */
+  video: CoffeeInfoVideo | null;
   coffees: CoffeeInfoCoffee[];
 };
 

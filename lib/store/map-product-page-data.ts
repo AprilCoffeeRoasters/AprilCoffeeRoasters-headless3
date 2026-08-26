@@ -13,6 +13,12 @@ import {
 } from "lib/store/parse-product-metafields";
 import { parseProductDescriptionLines } from "lib/store/parse-product-description";
 
+/** Collections that may show the product `recommendations` metafield. */
+const RECOMMENDATIONS_COLLECTION_HANDLES = new Set([
+  "filter-coffee",
+  "limited-coffee",
+]);
+
 function formatVariantPrice(variant: ProductVariant): string {
   const { amount, currencyCode } = variant.price;
 
@@ -43,9 +49,15 @@ function mapProductImages(
   }));
 }
 
+function productAllowsRecommendations(product: Product): boolean {
+  return product.collections.some((collection) =>
+    RECOMMENDATIONS_COLLECTION_HANDLES.has(collection.handle),
+  );
+}
+
 export function mapProductPageData(
   product: Product,
-  recommendations: Product[],
+  relatedRecommendationProducts: Product[],
 ): ProductPageClientProps {
   const images = mapProductImages(product, product.handle);
 
@@ -56,7 +68,7 @@ export function mapProductPageData(
     priceAmount: variant.price.amount,
   }));
 
-  const relatedProducts: ProductPageRelated[] = recommendations
+  const relatedProducts: ProductPageRelated[] = relatedRecommendationProducts
     .filter((item) => item.featuredImage?.url)
     .slice(0, 4)
     .map((item) => ({
@@ -79,6 +91,10 @@ export function mapProductPageData(
     });
   }
 
+  const recommendations = productAllowsRecommendations(product)
+    ? parseRecipeContent(product.recommendations?.value)
+    : null;
+
   return {
     product,
     productId: product.id,
@@ -90,8 +106,7 @@ export function mapProductPageData(
     ),
     technicalDetails: parseTechnicalDetails(product.technicalDetails?.value),
     sizeChart: parseSizeChart(product.sizeChart?.value),
-    recipeFilter: parseRecipeContent(product.recipeFilter?.value),
-    recipeEspresso: parseRecipeContent(product.recipeEspresso?.value),
+    recommendations,
     supplierInformation: parseRecipeContent(product.supplierInformation?.value),
     images,
     variants,
