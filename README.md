@@ -1,18 +1,20 @@
 # April Coffee
 An April Coffee headless storefront. It combines a Shopify-powered web shop with editorial content from DatoCMS and Shopify blogs.
 Built with the Next.js App Router, React Server Components, Server Actions, `Suspense`, and component-level caching.
+
 ## How it works
+
 **Commerce (Shopify)** — Products, collections, cart, and checkout are powered by the Shopify Storefront API. Customers browse and buy through standard shop routes; checkout redirects to Shopify.
 
 **Editorial content** — The advice feed and article pages prefer DatoCMS when `DATOCMS_API_TOKEN` is set. If DatoCMS is unavailable or not configured, the app falls back to Shopify blog posts (advice and lookbook handles) or a product grid from a collection.
 
-**CMS pages (DatoCMS)** — When configured, DatoCMS also supplies the landing page hero and featured content, seasonal product ranges, and retail shop listings with galleries. Without DatoCMS, those sections use app defaults or Shopify data.
+**CMS pages (DatoCMS)** — When configured, DatoCMS also supplies the landing page hero and featured content, seasonal product ranges, retail shop listings, and coffee info / farm recipe pages. Without DatoCMS, those sections use app defaults or Shopify data.
 
 **Cache revalidation** — Webhook endpoints invalidate cached Shopify and DatoCMS content on publish, so updates appear without a full redeploy.
 
 ## Features
 - **Landing page** — Tri-Ferg navigation linking to shops, web shop, advice, and external destinations
-- **Dynamic header nav** — The third nav slot shows the latest advice article title and links to that article; if no article is available, it falls back to **Latest** linking to `/advice`
+- **Dynamic header nav** — The third nav slot shows the latest advice article title and links to that article; if no article is available, it falls back to **Latest** linking to `/projects`
 - **Seasonal range nav** — When a DatoCMS range is published, its title is prepended to the header (e.g. `SUMMER 2026 RANGE`)
 - **Web shop** — Collections, product detail, cart, and Shopify checkout
 - **Advice** — Editorial feed from DatoCMS (when configured) or Shopify blog posts / product grids
@@ -39,11 +41,13 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 | `/product/[handle]`              | Standard product page           |
 | `/range/[slug]`                  | DatoCMS seasonal range          |
 | `/range/[slug]/product/[handle]` | Range product detail            |
-| `/advice`                        | Advice feed                     |
-| `/advice/[slug]`                 | Advice article                  |
+| `/projects`                      | Projects feed                   |
+| `/projects/[slug]`               | Project article                 |
 | `/lookbook/[slug]`               | Lookbook article (Shopify blog) |
 | `/shops`                         | Shop directory                  |
 | `/shops/[slug]`                  | Shop detail                     |
+| `/coffee-inf-recipes`            | Coffee info farm index          |
+| `/coffee-inf-recipes/[slug]`     | Farm info & recipes (DatoCMS)   |
 | `/cart`                          | Shopping cart                   |
 | `/checkout`                      | Checkout redirect               |
 
@@ -51,8 +55,8 @@ Built with the Next.js App Router, React Server Components, Server Actions, `Sus
 
 | Endpoint                        | Purpose                          |
 | ------------------------------- | -------------------------------- |
-| `GET /api/advice`               | Paginated advice feed            |
-| `GET /api/advice/[slug]`        | Single advice article            |
+| `GET /api/projects`             | Paginated projects feed          |
+| `GET /api/projects/[slug]`      | Single project article           |
 | `GET /api/collections/products` | Collection products (pagination) |
 | `POST /api/revalidate`          | Shopify on-demand revalidation   |
 | `POST /api/revalidate-dato`     | DatoCMS on-demand revalidation   |
@@ -82,9 +86,9 @@ Header and Tri-Ferg nav are built in `lib/get-landing-page.ts`.
 
 **When content is available:**
 
-1. **Latest advice article** — The **Latest** slot is replaced with the article title and links to `/advice/[slug]`. The article is taken from the first item in the advice feed, or from the DatoCMS homepage featured content if the feed is empty.
+1. **Latest advice article** — The **Latest** slot is replaced with the article title and links to `/projects/[slug]`. The article is taken from the first item in the advice feed, or from the DatoCMS homepage featured content if the feed is empty.
 2. **Seasonal range** — The latest DatoCMS range title is prepended to the header (e.g. `SUMMER 2026 RANGE` → `/range/summer-2026`).
-3. **Fallback** — If no valid article is found, the slot stays as **Latest** and links to `/advice`.
+3. **Fallback** — If no valid article is found, the slot stays as **Latest** and links to `/projects`.
 
 ## Environment variables
 
@@ -126,9 +130,25 @@ RESEND_API_KEY=""
 CONTACT_FROM_EMAIL="April Coffee <hello@your-verified-domain.com>"
 CONTACT_TO_EMAIL="support@aprilcoffeeroastery.freshdesk.com"
 
-**Required DatoCMS models (API keys):** `article`, `homepage`, `shop`, `range`, `product`
+**Required DatoCMS models (API keys):** `article`, `homepage`, `shop`, `range`, `product`, `coffee_farm` (+ block `coffee_farm_coffee`)
 
 **Homepage model fields:** `herotitle`, `herodescription`, `heroimage`, `featuredcontent` (article slug). Header and footer links use app defaults until those fields exist in DatoCMS.
+
+**Coffee Info (`coffee_farm`) fields:**
+
+| API key | Type | Use |
+| --- | --- | --- |
+| `title` | Single-line string | Farm heading, e.g. `VOLCAN AZUL –` |
+| `slug` | SEO slug | `/coffee-inf-recipes/[slug]` |
+| `description` | Multiple-paragraph text | Intro under the farm title |
+| `generalinformation` | Multiple-paragraph text | General Information accordion |
+| `photos` | Asset gallery (images) | Uploaded photos |
+| `image_url` | Multiple-paragraph text | Optional image URLs, one per line |
+| `coffees` | Modular content → `coffee_farm_coffee` | Coffee recipe accordions |
+
+**`coffee_farm_coffee` block fields:** `name`, `recipefilter`, `recipeespresso` (all text).
+
+Without DatoCMS (or if the model has no published records), Coffee Info shows **No data**.
 
 ## Running locally
 
@@ -155,7 +175,7 @@ pnpm test     # Prettier check
 - `blog` — Shopify blog articles (`SHOPIFY_ADVICE_BLOG_HANDLE` and `SHOPIFY_LOOKBOOK_BLOG_HANDLE`)
 - `products` — Product grid from `SHOPIFY_ADVICE_COLLECTION_HANDLE`
 
-**Ranges and shops** — Require DatoCMS. Range slugs are used for static generation when the API token is present.
+**Ranges, shops, and coffee info farms** — Prefer DatoCMS when configured. Coffee Info shows **No data** when there are no published `coffee_farm` records.
 
 ## Deployment
 

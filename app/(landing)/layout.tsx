@@ -8,7 +8,7 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
   return (
     <div
       aria-label="layout"
-      className="flex min-h-dvh flex-col bg-white text-black"
+      className="flex min-h-dvh flex-col bg-white text-standard-grey"
     >
       {children}
     </div>

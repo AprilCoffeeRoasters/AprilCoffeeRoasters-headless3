@@ -30,7 +30,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={GeistSans.variable}>
-      <body className="bg-white text-black selection:bg-teal-300">
+      <body className="bg-white text-standard-grey selection:bg-teal-300">
         <CartProvider cartPromise={cart}>
           <Suspense fallback={null}>{children}</Suspense>
         </CartProvider>

@@ -12,7 +12,6 @@ import type {
   ParsedTechnicalDetails,
 } from "lib/store/parse-product-metafields";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef, useState, type UIEvent } from "react";
 import Footer from "../layout/footer";
 
@@ -45,8 +44,8 @@ export type ProductPageClientProps = {
   descriptionLines: string[];
   technicalDetails: ParsedTechnicalDetails | null;
   sizeChart: ParsedSizeChart | null;
-  recipeFilter: ParsedRecipeContent | null;
-  recipeEspresso: ParsedRecipeContent | null;
+  recommendations: ParsedRecipeContent | null;
+  supplierInformation: ParsedRecipeContent | null;
   images: ProductPageImage[];
   variants: ProductPageVariant[];
   relatedProducts: ProductPageRelated[];
@@ -120,7 +119,91 @@ function productHref(handle: string, rangeSlug?: string): string {
     : `/product/${handle}`;
 }
 
-function RecipeMetafieldBody({
+function QuantityInput({
+  quantity,
+  setQuantity,
+}: {
+  quantity: number;
+  setQuantity: (next: number) => void;
+}) {
+  const [value, setValue] = useState(String(quantity));
+
+  useEffect(() => {
+    setValue(String(quantity));
+  }, [quantity]);
+
+  const clamp = (next: number) => Math.min(99, Math.max(1, next));
+
+  const applyQuantity = (next: number) => {
+    const clamped = clamp(Math.floor(next));
+    if (clamped === quantity) return;
+    setQuantity(clamped);
+  };
+
+  const handleInputBlur = () => {
+    const parsed = parseInt(value, 10);
+    if (Number.isNaN(parsed) || parsed < 1) {
+      setValue(String(quantity));
+      return;
+    }
+
+    applyQuantity(parsed);
+  };
+
+  const quantityButtonClass =
+    "btn-brand flex h-full w-5 shrink-0 cursor-pointer items-center justify-center border-[2pt] text-sm font-bold uppercase disabled:cursor-not-allowed disabled:opacity-50 max-md:w-8";
+
+  return (
+    <div
+      aria-label="quantity-controls"
+      className="inline-flex h-7 items-center max-md:h-8"
+    >
+      <button
+        type="button"
+        aria-label="decrease-quantity"
+        disabled={quantity <= 1}
+        className={quantityButtonClass}
+        onClick={() => applyQuantity(quantity - 1)}
+      >
+        −
+      </button>
+      <input
+        aria-label="quantity-input"
+        type="number"
+        min={1}
+        inputMode="numeric"
+        value={value}
+        disabled={false}
+        onChange={(event) => {
+          const nextValue = event.target.value;
+          setValue(nextValue);
+
+          const parsed = parseInt(nextValue, 10);
+          if (Number.isNaN(parsed)) return;
+
+          applyQuantity(parsed);
+        }}
+        onBlur={handleInputBlur}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            event.currentTarget.blur();
+          }
+        }}
+        className="h-full w-12 border-y-[2pt] border-black bg-white text-center text-sm font-bold [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      />
+      <button
+        type="button"
+        aria-label="increase-quantity"
+        className={quantityButtonClass}
+        onClick={() => applyQuantity(quantity + 1)}
+      >
+        +
+      </button>
+    </div>
+  );
+}
+
+function MetafieldContentBody({
   content,
   className,
 }: {
@@ -164,8 +247,8 @@ export default function ProductPageClient({
   descriptionLines,
   technicalDetails,
   sizeChart,
-  recipeFilter,
-  recipeEspresso,
+  recommendations,
+  supplierInformation,
   images,
   variants,
   relatedProducts,
@@ -180,6 +263,12 @@ export default function ProductPageClient({
   const [selectedVariantId, setSelectedVariantId] = useState(
     variants[0]?.id ?? "",
   );
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    // Reset quantity when switching variants to avoid accidental oversells.
+    setQuantity(1);
+  }, [selectedVariantId]);
   const mobileCarouselRef = useRef<HTMLDivElement>(null);
   const desktopCarouselRef = useRef<HTMLDivElement>(null);
   const [galleryMode, setGalleryMode] = useState(false);
@@ -676,7 +765,7 @@ const toggleAccordion = (id: string) => {
 
 <div className="mt-6 w-full max-md:order-3">
 
-  {/* Coffee Details — product description/content */}
+  {/* Product Details — product description/content */}
   {descriptionLines.length > 0 ? (
     <>
       <button
@@ -685,7 +774,7 @@ const toggleAccordion = (id: string) => {
         className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
       >
         <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-         Product Details
+          Product Details
         </span>
 
         <svg
@@ -738,21 +827,21 @@ const toggleAccordion = (id: string) => {
     </>
   ) : null}
 
-  {/* Recipe Filter */}
-  {recipeFilter ? (
+  {/* Supplier Information */}
+  {supplierInformation ? (
     <>
       <button
         type="button"
-        onClick={() => toggleAccordion("filter")}
+        onClick={() => toggleAccordion("supplier")}
         className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
       >
         <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-          Recipe Filter
+          Supplier Information
         </span>
 
         <svg
           className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
-            openAccordion === "filter" ? "rotate-180" : ""
+            openAccordion === "supplier" ? "rotate-180" : ""
           }`}
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -761,41 +850,12 @@ const toggleAccordion = (id: string) => {
         </svg>
       </button>
 
-      {openAccordion === "filter" ? (
+      {openAccordion === "supplier" ? (
         <div
-          className="
-            border-x-[2pt]
-            border-b-[2pt]
-            border-hover-frame
-            px-3
-            pb-4
-            pt-3
-            text-standard-grey
-          "
+          className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey"
         >
-          {/* Brewer Icons */}
-          <div className="mb-4 flex items-center gap-0">
-            <img
-              src="/collections/cup.png"
-              alt="April Brewer"
-              className="h-[60px] w-[55px] "
-            />
-
-            <img
-              src="/collections/cup.png"
-              alt="April Brewer"
-              className="h-[60px] w-[55px]"
-            />
-
-            <img
-              src="/collections/cup.png"
-              alt="April Brewer"
-              className="h-[60px] w-[55px]"
-            />
-          </div>
-
-          <RecipeMetafieldBody
-            content={recipeFilter}
+          <MetafieldContentBody
+            content={supplierInformation}
             className="
               type-text2
               space-y-1
@@ -816,21 +876,21 @@ const toggleAccordion = (id: string) => {
     </>
   ) : null}
 
-  {/* Recipe Espresso */}
-  {recipeEspresso ? (
+  {/* Recommendations — Filter Coffee & Limited Coffee only */}
+  {recommendations ? (
     <>
       <button
         type="button"
-        onClick={() => toggleAccordion("espresso")}
+        onClick={() => toggleAccordion("recommendations")}
         className="relative w-full border-b-[2pt] border-hover-frame pt-4 pb-1 text-left text-standard-grey"
       >
         <span className="type-h2 block text-[18px] uppercase leading-none ml-2">
-          Recipe Espresso
+          Recommendations
         </span>
 
         <svg
           className={`absolute right-0 bottom-[10px] h-3 w-3 transition-transform duration-200 ${
-            openAccordion === "espresso" ? "rotate-180" : ""
+            openAccordion === "recommendations" ? "rotate-180" : ""
           }`}
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -839,52 +899,24 @@ const toggleAccordion = (id: string) => {
         </svg>
       </button>
 
-      {openAccordion === "espresso" ? (
+      {openAccordion === "recommendations" ? (
         <div
-          className="
-            border-x-[2pt]
-            border-b-[2pt]
-            border-hover-frame
-            px-3
-            pt-3
-            pb-5
-            text-standard-grey
-          "
+          className="border-x-[2pt] border-b-[2pt] border-hover-frame px-2 py-4 text-standard-grey"
         >
-          {/* Espresso Icons */}
-          <div className="mb-5 flex items-center gap-0">
-            <img
-              src="/collections/espresso.png"
-              alt="Espresso"
-              className="h-[50px] w-[70px]"
-            />
-
-            <img
-              src="/collections/espresso.png"
-              alt="Espresso"
-              className="h-[50px] w-[70px]"
-            />
-
-            <img
-              src="/collections/espresso.png"
-              alt="Espresso"
-              className="h-[50px] w-[70px]"
-            />
-          </div>
-
-          <RecipeMetafieldBody
-            content={recipeEspresso}
+          <MetafieldContentBody
+            content={recommendations}
             className="
               type-text2
               space-y-1
               text-[13px]
-              leading-[1.4]
+              leading-[1.35]
               tracking-[-0.03em]
+
               sm:text-[14px]
               md:text-[15px]
 
               [&_p]:mt-0
-              [&_p+p]:mt-6
+              [&_p+p]:mt-1
               [&_br]:block
             "
           />
@@ -928,7 +960,7 @@ const toggleAccordion = (id: string) => {
           mt-6
           grid
           w-full
-          grid-cols-2
+          grid-cols-3
           gap-2
 
           max-md:order-1
@@ -937,7 +969,7 @@ const toggleAccordion = (id: string) => {
       >
         <div
           aria-label="product-variant-select-wrapper"
-          className="w-full"
+          className="col-span-2 w-full"
         >
           <select
             id="variant-selector"
@@ -982,12 +1014,22 @@ const toggleAccordion = (id: string) => {
           </select>
         </div>
 
-        <ProductPageAddToCart
-          product={product}
-          selectedVariantId={selectedVariantId}
-          variantLabel={selectedVariant?.label ?? "item"}
-          className="btn-brand flex h-7 w-full items-center justify-center border-[2pt] px-4 text-sm font-bold uppercase max-md:h-8 max-md:text-base"
-        />
+        <div aria-label="product-quantity-wrapper" className="col-span-1">
+          <QuantityInput
+            quantity={quantity}
+            setQuantity={(next) => setQuantity(next)}
+          />
+        </div>
+
+        <div className="col-span-3">
+          <ProductPageAddToCart
+            product={product}
+            selectedVariantId={selectedVariantId}
+            variantLabel={selectedVariant?.label ?? "item"}
+            quantity={quantity}
+            className="btn-brand flex h-7 w-full items-center justify-center border-[2pt] px-4 text-sm font-bold uppercase max-md:h-8 max-md:text-base"
+          />
+        </div>
       </div>
     ) : null}
 

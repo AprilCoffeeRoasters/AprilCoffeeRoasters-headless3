@@ -28,12 +28,12 @@ export default async function GetInContactPage() {
       >
         <div className="mx-5 flex w-full min-w-0 max-w-3xl flex-col py-10 md:py-14">
           <header className="mb-10 text-center">
-            <h1 className="text-2xl font-bold uppercase tracking-tight md:text-3xl">
+            <h1 className="type-h1 text-2xl uppercase md:text-3xl">
               FAQ &amp;
               <br />
               Contact Form
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-[13px] leading-[18px]">
+            <p className="type-text mx-auto mt-5 max-w-xl text-[13px] leading-[18px]">
               {contactIntro}
             </p>
           </header>
@@ -60,7 +60,7 @@ export default async function GetInContactPage() {
           <section className="mt-10" aria-labelledby="contact-form-heading">
             <h2
               id="contact-form-heading"
-              className="mb-5 text-sm font-bold uppercase tracking-tight"
+              className="type-h2 mb-5 text-sm uppercase"
             >
               Contact form
             </h2>

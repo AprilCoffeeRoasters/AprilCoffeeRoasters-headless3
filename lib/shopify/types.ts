@@ -93,9 +93,18 @@ export type ArticlesPage = {
   pageInfo: PageInfo;
 };
 
-export type Product = Omit<ShopifyProduct, "variants" | "images"> & {
+export type ProductCollection = {
+  handle: string;
+  title: string;
+};
+
+export type Product = Omit<
+  ShopifyProduct,
+  "variants" | "images" | "collections"
+> & {
   variants: ProductVariant[];
   images: Image[];
+  collections: ProductCollection[];
 };
 
 export type ProductsPage = {
@@ -167,10 +176,11 @@ export type ShopifyProduct = {
   seo: SEO;
   tags: string[];
   updatedAt: string;
+  collections?: Connection<ProductCollection>;
   technicalDetails?: ProductMetafield;
   sizeChart?: ProductMetafield;
-  recipeFilter?: ProductMetafield;
-  recipeEspresso?: ProductMetafield;
+  recommendations?: ProductMetafield;
+  supplierInformation?: ProductMetafield;
 };
 
 export type ShopifyCartOperation = {

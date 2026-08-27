@@ -126,7 +126,7 @@ export const faqSections: FaqSection[] = [
     "items": [
       {
         "question": "How should I brew my coffee?",
-        "answer": "You will find the recipes and informations for each of our coffees [here](https://www.aprilcoffeeroasters.com/pages/coffee-inf-recipes).\n\nPlease note those recipes are based on what we serve in our Store, they might need time to be updated after the release of a new coffee. As we understand that our Store's setup is professional, you are welcome to use these recipes as a guide, and tune your equipment to achieve your perfect cup.\n\nWe are not able to give tailored recipes based on your equipment."
+        "answer": "You will find the recipes and informations for each of our coffees [here](/coffee-inf-recipes).\n\nPlease note those recipes are based on what we serve in our Store, they might need time to be updated after the release of a new coffee. As we understand that our Store's setup is professional, you are welcome to use these recipes as a guide, and tune your equipment to achieve your perfect cup.\n\nWe are not able to give tailored recipes based on your equipment."
       },
       {
         "question": "Special recipes - particule size, water composition etc.",

@@ -110,13 +110,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (safeRevalidateTag(globalTag) ? revalidatedTags : failedTags).push(
       globalTag,
     );
+    (safeRevalidateTag("dato:coffee-farms")
+      ? revalidatedTags
+      : failedTags
+    ).push("dato:coffee-farms");
 
-    const paths = ["/", "/advice", "/shops", "/collections/all"];
+    const paths = [
+      "/",
+      "/projects",
+      "/shops",
+      "/collections/all",
+      "/coffee-inf-recipes",
+    ];
     if (slug) {
-      paths.push(`/advice/${slug}`);
+      paths.push(`/projects/${slug}`);
       paths.push(`/shops/${slug}`);
       paths.push(`/range/${slug}`);
       paths.push(`/range/${slug}/product/${slug}`);
+      paths.push(`/coffee-inf-recipes/${slug}`);
     }
 
     for (const path of paths) {

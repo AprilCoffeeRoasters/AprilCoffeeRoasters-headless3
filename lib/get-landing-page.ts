@@ -5,7 +5,6 @@ import { getLatestRange, isDatoCmsConfigured } from "lib/cms/range";
 import {
   socialLinks as defaultFooterLinks,
   defaultTriFergNav,
-  LATEST_NAV_LABEL,
 } from "lib/constants";
 import type {
   LandingFeaturedContent,
@@ -18,14 +17,14 @@ import { cache } from "react";
 const LATEST_ADVICE_SLOT = 2;
 
 const defaultHeaderLinks: LandingLink[] = [
-  { label: LATEST_NAV_LABEL, href: "/advice", external: false },
   { label: "LOCATIONS", href: "/shops", external: false },
   { label: "Web Shop", href: "/collections/all", external: false },
-  { label: "PROJECTS", href: "/advice", external: false },
+  { label: "PROJECTS", href: "/projects", external: false },
+  { label: "COFFEE & INFO", href: "/coffee-inf-recipes", external: false },
   {
     label: "Sustainable Profile",
     href: "https://sustainableprofilecoffee.com",
-    external: false,
+    external: true,
   },
 ];
 
@@ -33,10 +32,6 @@ function isValidFeatured(
   featured: LandingFeaturedContent | null,
 ): featured is LandingFeaturedContent {
   return Boolean(featured?.title?.trim() && featured?.href?.trim());
-}
-
-function featuredNavLabel(featured: LandingFeaturedContent): string {
-  return featured.title.trim() || LATEST_NAV_LABEL;
 }
 
 function feedItemToFeatured(item: AdviceFeedItem): LandingFeaturedContent {
@@ -69,44 +64,11 @@ function injectFeaturedIntoTriFerg(
     index === slot
       ? {
           ...item,
-          // title: featuredNavLabel(featured),
-          // href: featured.href,
-          // external: featured.href.startsWith("http"),
-          href: "/advice",
+          href: "/projects",
           external: false,
         }
       : item,
   );
-}
-
-function injectFeaturedIntoHeader(
-  links: LandingLink[],
-  featured: LandingFeaturedContent,
-): LandingLink[] {
-  const latestLink: LandingLink = {
-    label: featuredNavLabel(featured),
-    href: featured.href,
-    external: featured.href.startsWith("http"),
-  };
-
-  const latestIndex = links.findIndex(
-    (link) =>
-      link.label === LATEST_NAV_LABEL ||
-      link.href === featured.href ||
-      (link.href.startsWith("/advice/") && link.href !== "/advice"),
-  );
-
-  if (latestIndex !== -1) {
-    return links.map((link, index) =>
-      index === latestIndex ? latestLink : link,
-    );
-  }
-
-  const adviceIndex = links.findIndex((link) => link.href === "/advice");
-  const insertAt = adviceIndex === -1 ? links.length : adviceIndex;
-  const next = [...links];
-  next.splice(insertAt, 0, latestLink);
-  return next;
 }
 
 function triFergFromHeaderLinks(
@@ -116,10 +78,15 @@ function triFergFromHeaderLinks(
     headerLinks.find((l) => l.href === "/shops"),
     headerLinks.find((l) => l.href === "/collections/all"),
     headerLinks.find(
-      (l) => l.href.startsWith("/advice/") && l.href !== "/advice",
+      (l) => l.href.startsWith("/projects/") && l.href !== "/projects",
     ),
-    headerLinks.find((l) => l.href === "/advice"),
-    headerLinks.find((l) => l.external && l.href.includes("manorplace")),
+    headerLinks.find((l) => l.href === "/coffee-inf-recipes"),
+    headerLinks.find(
+      (l) =>
+        l.external &&
+        (l.href.includes("sustainableprofilecoffee") ||
+          l.href.includes("manorplace")),
+    ),
   ].filter((item): item is LandingLink => Boolean(item));
 
   const source = pick.length >= 4 ? pick : headerLinks.slice(0, 5);
@@ -190,12 +157,8 @@ async function loadLandingPageData(): Promise<LandingPageData> {
   const footerLinks =
     cmsLanding?.footerLinks.length ? cmsLanding.footerLinks : defaultFooterLinks;
 
-  const headerWithFeatured = isValidFeatured(featured)
-    ? injectFeaturedIntoHeader(headerLinks, featured)
-    : headerLinks;
-
   const triFergBase = cmsLanding?.headerLinks.length
-    ? triFergFromHeaderLinks(headerWithFeatured)
+    ? triFergFromHeaderLinks(headerLinks)
     : defaultTriFergNav;
 
   const triFergNav = isValidFeatured(featured)
@@ -204,7 +167,7 @@ async function loadLandingPageData(): Promise<LandingPageData> {
 
   return {
     featured,
-    headerLinks: headerWithFeatured,
+    headerLinks,
     footerLinks,
     triFergNav,
   };

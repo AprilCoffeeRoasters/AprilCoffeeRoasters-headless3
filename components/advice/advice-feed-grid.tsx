@@ -68,7 +68,7 @@ export function AdviceFeedGrid({
     setLoading(true);
     try {
       const params = new URLSearchParams({ cursor: metadata.endCursor });
-      const res = await fetch(`/api/advice?${params}`);
+      const res = await fetch(`/api/projects?${params}`);
       if (!res.ok) return;
 
       const data = (await res.json()) as {
@@ -103,7 +103,7 @@ export function AdviceFeedGrid({
       {/* md+: 3-column masonry */}
       <div
         aria-label="advice-view"
-        className="hidden w-full min-w-0 md:mt-14 md:flex lg:mt-14"
+        className="hidden w-full min-w-0 md:flex"
       >
         {columns.map((column, columnIndex) => (
           <div key={columnIndex} className="min-w-0 flex-1 basis-0 pl-0">

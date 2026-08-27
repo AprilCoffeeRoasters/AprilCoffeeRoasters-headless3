@@ -187,13 +187,13 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
  
   {
     title: "PROJECTS",
-    href: "/advice",
+    href: "/projects",
     fillClass: "fill-tri-ferg-blue",
     ariaLabel: "latest-advice-tri-ferg-link",
   },
   {
     title: "COFFEE & INFO",
-    href: "/advice",
+    href: "/coffee-inf-recipes",
     fillClass: "",
     ariaLabel: "advice-tri-ferg-link",
   },

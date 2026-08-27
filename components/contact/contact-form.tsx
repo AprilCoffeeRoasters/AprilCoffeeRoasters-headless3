@@ -9,7 +9,7 @@ const inputClass =
 const textareaClass =
   "mt-1.5 w-full border border-[#d7d7d7] bg-white px-4 py-3 text-[14px] outline-none focus:border-black";
 
-const labelClass = "block text-[13px] font-bold uppercase tracking-tight";
+const labelClass = "type-text2 block text-[13px] uppercase";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
@@ -130,7 +130,7 @@ export function ContactForm() {
       </button>
 
       {status === "success" ? (
-        <p className="text-[13px] font-bold uppercase tracking-tight text-black">
+        <p className="type-text2 text-[13px] uppercase text-standard-grey">
           Thank you — your message has been sent.
         </p>
       ) : null}

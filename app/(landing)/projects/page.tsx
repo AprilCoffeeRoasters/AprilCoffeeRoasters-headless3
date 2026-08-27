@@ -17,12 +17,14 @@ export default async function AdvicePage() {
         id="mainContent"
         className="flex w-full min-w-0 flex-1 grow justify-center overflow-x-hidden"
       >
-        <div className="mx-5 flex w-full min-w-0 max-w-5xl">
-          <div className="block min-w-0 w-full">
-            <AdviceFeedGrid
-              initialFeed={adviceFeed}
-              initialMetadata={adviceFeedMetadata}
-            />
+        <div className="flex w-full min-w-0 flex-1 grow justify-center pt-0 sm:pt-12">
+          <div className="mx-5 flex w-full min-w-0 max-w-5xl">
+            <div className="block min-w-0 w-full">
+              <AdviceFeedGrid
+                initialFeed={adviceFeed}
+                initialMetadata={adviceFeedMetadata}
+              />
+            </div>
           </div>
         </div>
       </main>

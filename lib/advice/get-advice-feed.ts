@@ -29,7 +29,7 @@ export async function getAdviceFeed(
       headersList.get("x-forwarded-proto") ??
       (process.env.NODE_ENV === "production" ? "https" : "http");
 
-    const url = new URL(`${protocol}://${host}/api/advice`);
+    const url = new URL(`${protocol}://${host}/api/projects`);
     if (cursor) url.searchParams.set("cursor", cursor);
 
     const res = await fetch(url, { next: { revalidate: 300 } });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "components/cart/cart-context";
+import CartLineQuantity from "components/store/collections/cart-line-quantity";
 import CartLineRemoveButton from "components/store/collections/cart-line-remove-button";
 import CategoryNav from "components/store/collections/category-nav";
 import Footer from "components/store/layout/footer";
@@ -13,7 +14,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const TERMS_URL =
-  "https://boring.palaceskateboards.com/row/terms-and-conditions";
+  "https://www.aprilcoffeeroasters.com/policies/terms-of-service";
 
 function CartLineRow({ line }: { line: CartItem }) {
   const variantLabel =
@@ -69,6 +70,10 @@ function CartLineRow({ line }: { line: CartItem }) {
               <div className="flex space-x-1">
                 <div>{unitAmount}</div>
               </div>
+              <CartLineQuantity
+                merchandiseId={line.merchandise.id}
+                quantity={line.quantity}
+              />
             </div>
             <div
               aria-label="delete-button"
@@ -217,9 +222,9 @@ export default function CartPageClient() {
                     </button>
                   </a>
 
-                  <div className="mt-1 leading-none text-gray-400">
+                  {/* <div className="mt-1 leading-none text-gray-400">
                     Limited to 1 per size / item
-                  </div>
+                  </div> */}
                   <div className="text-gray-400">*Some exceptions apply</div>
                 </div>
               </>

@@ -23,8 +23,12 @@ type CartAction =
       payload: { merchandiseId: string; updateType: UpdateType };
     }
   | {
+      type: "SET_QUANTITY";
+      payload: { merchandiseId: string; quantity: number };
+    }
+  | {
       type: "ADD_ITEM";
-      payload: { variant: ProductVariant; product: Product };
+      payload: { variant: ProductVariant; product: Product; quantity: number };
     };
 
 type CartContextType = {
@@ -37,15 +41,11 @@ function calculateItemCost(quantity: number, price: string): string {
   return (Number(price) * quantity).toString();
 }
 
-function updateCartItem(
+function updateCartLineQuantity(
   item: CartItem,
-  updateType: UpdateType,
+  newQuantity: number,
 ): CartItem | null {
-  if (updateType === "delete") return null;
-
-  const newQuantity =
-    updateType === "plus" ? item.quantity + 1 : item.quantity - 1;
-  if (newQuantity === 0) return null;
+  if (newQuantity <= 0) return null;
 
   const singleItemAmount = Number(item.cost.totalAmount.amount) / item.quantity;
   const newTotalAmount = calculateItemCost(
@@ -66,12 +66,27 @@ function updateCartItem(
   };
 }
 
+function updateCartItem(
+  item: CartItem,
+  updateType: UpdateType,
+): CartItem | null {
+  if (updateType === "delete") return null;
+
+  const newQuantity =
+    updateType === "plus" ? item.quantity + 1 : item.quantity - 1;
+
+  return updateCartLineQuantity(item, newQuantity);
+}
+
 function createOrUpdateCartItem(
   existingItem: CartItem | undefined,
   variant: ProductVariant,
   product: Product,
+  addQuantity: number,
 ): CartItem {
-  const quantity = existingItem ? existingItem.quantity + 1 : 1;
+  const quantity = existingItem
+    ? existingItem.quantity + addQuantity
+    : addQuantity;
   const totalAmount = calculateItemCost(quantity, variant.price.amount);
 
   return {
@@ -135,14 +150,19 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
   const currentCart = state || createEmptyCart();
 
   switch (action.type) {
-    case "UPDATE_ITEM": {
-      const { merchandiseId, updateType } = action.payload;
+    case "UPDATE_ITEM":
+    case "SET_QUANTITY": {
+      const { merchandiseId } = action.payload;
       const updatedLines = currentCart.lines
-        .map((item) =>
-          item.merchandise.id === merchandiseId
-            ? updateCartItem(item, updateType)
-            : item,
-        )
+        .map((item) => {
+          if (item.merchandise.id !== merchandiseId) return item;
+
+          if (action.type === "UPDATE_ITEM") {
+            return updateCartItem(item, action.payload.updateType);
+          }
+
+          return updateCartLineQuantity(item, action.payload.quantity);
+        })
         .filter(Boolean) as CartItem[];
 
       if (updatedLines.length === 0) {
@@ -164,7 +184,7 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
       };
     }
     case "ADD_ITEM": {
-      const { variant, product } = action.payload;
+      const { variant, product, quantity } = action.payload;
       const existingItem = currentCart.lines.find(
         (item) => item.merchandise.id === variant.id,
       );
@@ -172,6 +192,7 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
         existingItem,
         variant,
         product,
+        quantity,
       );
 
       const updatedLines = existingItem
@@ -227,11 +248,24 @@ export function useCart() {
     });
   };
 
-  const addCartItem = (variant: ProductVariant, product: Product) => {
+  const setCartItemQuantity = (merchandiseId: string, quantity: number) => {
+    startTransition(() => {
+      updateOptimisticCart({
+        type: "SET_QUANTITY",
+        payload: { merchandiseId, quantity },
+      });
+    });
+  };
+
+  const addCartItemWithQuantity = (
+    variant: ProductVariant,
+    product: Product,
+    quantity: number = 1,
+  ) => {
     startTransition(() => {
       updateOptimisticCart({
         type: "ADD_ITEM",
-        payload: { variant, product },
+        payload: { variant, product, quantity },
       });
     });
   };
@@ -240,7 +274,8 @@ export function useCart() {
     () => ({
       cart: optimisticCart,
       updateCartItem,
-      addCartItem,
+      setCartItemQuantity,
+      addCartItem: addCartItemWithQuantity,
     }),
     [optimisticCart],
   );
