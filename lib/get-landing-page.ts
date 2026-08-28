@@ -18,7 +18,7 @@ const LATEST_ADVICE_SLOT = 2;
 
 const defaultHeaderLinks: LandingLink[] = [
   { label: "LOCATIONS", href: "/shops", external: false },
-  { label: "Web Shop", href: "/collections/everything", external: false },
+  { label: "WEBSHOP", href: "/collections/everything", external: false },
   { label: "PROJECTS", href: "/projects", external: false },
   { label: "COFFEE & INFO", href: "/coffee-inf-recipes", external: false },
   {
