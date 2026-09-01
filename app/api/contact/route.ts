@@ -1,4 +1,4 @@
-import { CONTACT_TO_EMAIL } from "lib/contact/faq-content";
+import { createFreshdeskTicket } from "lib/freshdesk";
 import { NextRequest, NextResponse } from "next/server";
 
 type ContactPayload = {
@@ -44,13 +44,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const fromEmail =
-    process.env.CONTACT_FROM_EMAIL ?? "April Coffee <onboarding@resend.dev>";
-  const toEmail = process.env.CONTACT_TO_EMAIL ?? CONTACT_TO_EMAIL;
-
-  if (!resendApiKey) {
-    console.error("RESEND_API_KEY is not configured");
+  if (!process.env.FRESHDESK_API_KEY?.trim()) {
+    console.error("FRESHDESK_API_KEY is not configured");
     return NextResponse.json(
       {
         error:
@@ -61,7 +56,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const subject = `Contact form — ${fullName} — Order ${orderNumber}`;
-  const text = [
+  const description = [
     `Full name: ${fullName}`,
     `Email: ${email}`,
     `Order number: ${orderNumber}`,
@@ -70,34 +65,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     message,
   ].join("\n");
 
-  const html = `
-    <p><strong>Full name:</strong> ${escapeHtml(fullName)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-    <p><strong>Order number:</strong> ${escapeHtml(orderNumber)}</p>
-    <p><strong>Message:</strong></p>
-    <p>${escapeHtml(message).replace(/\n/g, "<br />")}</p>
-  `;
-
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: fromEmail,
-        to: [toEmail],
-        reply_to: email,
-        subject,
-        text,
-        html,
-      }),
+    const result = await createFreshdeskTicket({
+      email,
+      name: fullName,
+      subject,
+      description,
     });
 
-    if (!response.ok) {
-      const detail = await response.json();
-      console.error("Resend error:", response.status, detail);
+    if (!result.ok) {
+      console.error("Freshdesk error:", result.status, result.detail);
       return NextResponse.json(
         { error: "Failed to send message. Please try again." },
         { status: 502 },
@@ -112,13 +89,4 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 502 },
     );
   }
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
 }

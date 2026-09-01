@@ -125,10 +125,14 @@ When `DATOCMS_API_TOKEN` is set, the app loads homepage content, advice articles
 | `DATOCMS_API_TOKEN`      | Content Delivery API read token        |
 | `DATOCMS_WEBHOOK_SECRET` | Secret for `POST /api/revalidate-dato` |
 
-# Contact form (Resend) — emails go to Freshdesk support inbox
-RESEND_API_KEY=""
-CONTACT_FROM_EMAIL="April Coffee <hello@your-verified-domain.com>"
-CONTACT_TO_EMAIL="support@aprilcoffeeroastery.freshdesk.com"
+### Contact form (Freshdesk)
+
+Submissions from `/get-in-contact` create tickets in [Freshdesk](https://aprilcoffeeroastery.freshdesk.com/).
+
+| Variable            | Description                                              |
+| ------------------- | -------------------------------------------------------- |
+| `FRESHDESK_API_KEY` | Freshdesk API key (Profile → View profile → Your API key) |
+| `FRESHDESK_DOMAIN`  | Freshdesk domain (default: `aprilcoffeeroastery.freshdesk.com`) |
 
 **Required DatoCMS models (API keys):** `article`, `homepage`, `shop`, `range`, `product`, `coffee_farm` (+ block `coffee_farm_coffee`)
 
