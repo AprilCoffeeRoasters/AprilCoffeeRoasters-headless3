@@ -120,7 +120,7 @@ function PhotoGallery({ photos }: { photos: CoffeeInfoFarm["photos"] }) {
 }
 
 function coffeeHasContent(coffee: CoffeeInfoFarm["coffees"][number]) {
-  return Boolean(coffee.recipeFilter.trim() || coffee.recipeEspresso.trim() || coffee.lotinformations.trim());
+  return Boolean(coffee.recipeFilter.trim() || coffee.recipeEspresso.trim());
 }
 
 type CoffeeInfoFarmAccordionProps = {
@@ -189,8 +189,6 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
               <RecipeBlock
                 title="Recipe Espresso"
                 body={coffee.recipeEspresso}
-                 title="Lot Informations"
-                body={coffee.lotinformations}
               />
             </div>
           </AccordionItem>
