@@ -120,7 +120,7 @@ function PhotoGallery({ photos }: { photos: CoffeeInfoFarm["photos"] }) {
 }
 
 function coffeeHasContent(coffee: CoffeeInfoFarm["coffees"][number]) {
-  return Boolean(coffee.recipeFilter.trim() || coffee.recipeEspresso.trim());
+  return Boolean(coffee.recipeFilter.trim() || coffee.recipeEspresso.trim() || coffee.lotinformations.trim());
 }
 
 type CoffeeInfoFarmAccordionProps = {
