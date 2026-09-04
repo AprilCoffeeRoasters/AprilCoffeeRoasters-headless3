@@ -189,6 +189,8 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
               <RecipeBlock
                 title="Recipe Espresso"
                 body={coffee.recipeEspresso}
+                 title="Lot Informations"
+                body={coffee.lotinformations}
               />
             </div>
           </AccordionItem>
