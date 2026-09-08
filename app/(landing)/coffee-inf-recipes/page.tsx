@@ -20,10 +20,14 @@ export const metadata = {
 export default async function CoffeeInfRecipesPage() {
   await connection();
 
-  const [{ headerLinks, footerLinks }, farms] = await Promise.all([
-    getLandingPageData(),
-    getAllCoffeeInfoFarms(),
-  ]);
+  const { headerLinks, footerLinks } = await getLandingPageData();
+
+  let farms: Awaited<ReturnType<typeof getAllCoffeeInfoFarms>> = [];
+  try {
+    farms = await getAllCoffeeInfoFarms();
+  } catch (error) {
+    console.error("Failed to load coffee info farms:", error);
+  }
 
   const brewingSections: FaqSection[] = [
     {

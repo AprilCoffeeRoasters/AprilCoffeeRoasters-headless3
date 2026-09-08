@@ -1,15 +1,15 @@
 import { gql } from "graphql-request";
-import type {
-  CoffeeInfoCoffee,
-  CoffeeInfoFarm,
-  CoffeeInfoPhoto,
-  CoffeeInfoVideo,
-} from "lib/coffee-info/content";
 import {
-  datoRequest,
-  isDatoCmsConfigured,
-  type DatoResponsiveImage,
+    datoRequest,
+    isDatoCmsConfigured,
+    type DatoResponsiveImage,
 } from "lib/cms/datocms";
+import type {
+    CoffeeInfoCoffee,
+    CoffeeInfoFarm,
+    CoffeeInfoPhoto,
+    CoffeeInfoVideo,
+} from "lib/coffee-info/content";
 
 export { isDatoCmsConfigured };
 
@@ -26,13 +26,14 @@ export { isDatoCmsConfigured };
  * video_url: External Video (YouTube / Vimeo)
  *
  * coffee_farm_coffee:
- *   name, recipefilter, recipeespresso
+ *   name, recipefilter, recipeespresso, lotinformations
  */
 
 type DatoCoffeeFarmCoffeeRaw = {
   name: string | null;
   recipefilter: string | null;
   recipeespresso: string | null;
+  lotinformations: string | null;
 };
 
 type DatoExternalVideoRaw = {
@@ -92,6 +93,7 @@ const coffeeFarmFields = gql`
         name
         recipefilter
         recipeespresso
+        lotinformations
       }
     }
   }
@@ -158,15 +160,14 @@ function buildCoffees(raw: DatoCoffeeFarmRecordRaw): CoffeeInfoCoffee[] {
         name,
         recipeFilter: coffee.recipefilter?.trim() || "",
         recipeEspresso: coffee.recipeespresso?.trim() || "",
+        lotInformation: coffee.lotinformations?.trim() || "",
       };
     })
     .filter((coffee): coffee is CoffeeInfoCoffee => Boolean(coffee));
 }
 
 function normalizeCoffeeFarm(raw: DatoCoffeeFarmRecordRaw): CoffeeInfoFarm {
-  const title = raw.title.trim().endsWith("–")
-    ? raw.title.trim()
-    : `${raw.title.trim()} –`;
+  const title = raw.title.trim().replace(/\s*–\s*$/, "");
 
   return {
     slug: raw.slug,

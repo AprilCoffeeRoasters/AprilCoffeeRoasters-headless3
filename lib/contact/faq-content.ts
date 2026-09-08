@@ -121,7 +121,7 @@ export const faqSections: FaqSection[] = [
     ]
   },
   {
-    "title": "Brewing April –",
+    "title": "Brewing April",
     "description": "Focuses on any coffee-related questions. If you can't find the information you need, feel free to reach out using the form below",
     "items": [
       {

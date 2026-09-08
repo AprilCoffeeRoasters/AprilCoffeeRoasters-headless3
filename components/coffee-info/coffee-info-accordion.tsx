@@ -52,8 +52,8 @@ function AccordionItem({
 function TextBlocks({ text }: { text: string }) {
   return (
     <div className="type-text space-y-3 text-[13px] leading-[18px]">
-      {text.split(/\n\n+/).map((paragraph) => (
-        <p key={paragraph.slice(0, 48)} className="whitespace-pre-line">
+      {text.split(/\n\n+/).map((paragraph, index) => (
+        <p key={index} className="whitespace-pre-line">
           {paragraph}
         </p>
       ))}
@@ -61,8 +61,8 @@ function TextBlocks({ text }: { text: string }) {
   );
 }
 
-function RecipeBlock({ title, body }: { title: string; body: string }) {
-  if (!body.trim()) return null;
+function RecipeBlock({ title, body }: { title: string; body?: string }) {
+  if (!body?.trim()) return null;
 
   return (
     <div className="space-y-2">
@@ -120,7 +120,11 @@ function PhotoGallery({ photos }: { photos: CoffeeInfoFarm["photos"] }) {
 }
 
 function coffeeHasContent(coffee: CoffeeInfoFarm["coffees"][number]) {
-  return Boolean(coffee.recipeFilter.trim() || coffee.recipeEspresso.trim());
+  return Boolean(
+    coffee.recipeFilter?.trim() ||
+      coffee.recipeEspresso?.trim() ||
+      coffee.lotInformation?.trim(),
+  );
 }
 
 type CoffeeInfoFarmAccordionProps = {
@@ -189,6 +193,10 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
               <RecipeBlock
                 title="Recipe Espresso"
                 body={coffee.recipeEspresso}
+              />
+              <RecipeBlock
+                title="Lot Information"
+                body={coffee.lotInformation}
               />
             </div>
           </AccordionItem>

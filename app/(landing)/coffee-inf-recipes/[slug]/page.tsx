@@ -1,8 +1,8 @@
 import { CoffeeInfoFarmPage } from "components/coffee-info/coffee-info-farm-page";
 import {
-  getCoffeeInfoFarmBySlug,
-  getCoffeeInfoFarmSlugs,
-  isDatoCmsConfigured,
+    getCoffeeInfoFarmBySlug,
+    getCoffeeInfoFarmSlugs,
+    isDatoCmsConfigured,
 } from "lib/cms/coffee-info";
 import { FALLBACK_STATIC_PARAMS } from "lib/constants";
 import { getLandingPageData } from "lib/get-landing-page";

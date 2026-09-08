@@ -142,7 +142,7 @@ Submissions from `/get-in-contact` create tickets in [Freshdesk](https://aprilco
 
 | API key | Type | Use |
 | --- | --- | --- |
-| `title` | Single-line string | Farm heading, e.g. `VOLCAN AZUL –` |
+| `title` | Single-line string | Farm heading, e.g. `VOLCAN AZUL` |
 | `slug` | SEO slug | `/coffee-inf-recipes/[slug]` |
 | `description` | Multiple-paragraph text | Intro under the farm title |
 | `generalinformation` | Multiple-paragraph text | General Information accordion |
@@ -150,7 +150,7 @@ Submissions from `/get-in-contact` create tickets in [Freshdesk](https://aprilco
 | `image_url` | Multiple-paragraph text | Optional image URLs, one per line |
 | `coffees` | Modular content → `coffee_farm_coffee` | Coffee recipe accordions |
 
-**`coffee_farm_coffee` block fields:** `name`, `recipefilter`, `recipeespresso` (all text).
+**`coffee_farm_coffee` block fields:** `name`, `recipefilter`, `recipeespresso`, `lotinformations` (all text).
 
 Without DatoCMS (or if the model has no published records), Coffee Info shows **No data**.
 

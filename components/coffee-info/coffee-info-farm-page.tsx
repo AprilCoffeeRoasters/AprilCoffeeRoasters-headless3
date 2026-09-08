@@ -40,11 +40,8 @@ export function CoffeeInfoFarmPage({
             <h1 className="type-h2 text-sm uppercase">{farm.title}</h1>
             {farm.description.trim() ? (
               <div className="type-text mt-3 max-w-2xl space-y-3 text-[13px] leading-[18px]">
-                {farm.description.split(/\n\n+/).map((paragraph) => (
-                  <p
-                    key={paragraph.slice(0, 48)}
-                    className="whitespace-pre-line"
-                  >
+                {farm.description.split(/\n\n+/).map((paragraph, index) => (
+                  <p key={index} className="whitespace-pre-line">
                     {paragraph}
                   </p>
                 ))}
