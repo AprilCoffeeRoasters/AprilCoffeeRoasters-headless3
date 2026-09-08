@@ -22,7 +22,7 @@ export type CoffeeInfoCoffee = {
 
 export type CoffeeInfoFarm = {
   slug: string;
-  /** Display title, e.g. "VOLCAN AZUL –" */
+  /** Display title, e.g. "VOLCAN AZUL" */
   title: string;
   description: string;
   /** Free-form text for General Information accordion. */
@@ -38,7 +38,7 @@ export const coffeeInfoPageIntro =
 
 /** FAQ-style intro block shown above the farm list (same pattern as Get in Contact). */
 export const coffeeInfoBrewingSection = {
-  title: "BREWING APRIL –",
+  title: "BREWING APRIL",
   description:
     "Focuses on any coffee-related questions. If you can't find the information you need, feel free to reach out using the form below",
   items: [

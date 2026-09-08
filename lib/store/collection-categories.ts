@@ -16,7 +16,7 @@ export const collectionCategories = [
   { label: "Accessories", handle: "accessories" },
   { label: "Bundles", handle: "bundles" },
   { label: "Clothing", handle: "clothing" },
-  { label: "Limited Projects", handle: "limited-projects" },
+  { label: "Projects", handle: "projects" },
   { label: "Tasting Menu", handle: "tasting-menu" }
 ] as const;
 

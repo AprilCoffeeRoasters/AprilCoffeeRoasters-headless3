@@ -180,7 +180,7 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
   },
   {
     title: "WEBSHOP",
-    href: "/collections/new",
+    href: "/collections/everything",
     fillClass: "fill-tri-ferg-grey",
     ariaLabel: "web-shop-tri-ferg-link",
   },
