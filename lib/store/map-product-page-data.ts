@@ -3,7 +3,7 @@ import type {
     ProductPageImage,
     ProductPageRelated,
     ProductPageVariant,
-} from "components/store/product/product-page-client";
+} from "components/store/product/product-page-types";
 import type { Product, ProductVariant } from "lib/shopify/types";
 import { shopifyImageUrl } from "lib/shopify-image-url";
 import {

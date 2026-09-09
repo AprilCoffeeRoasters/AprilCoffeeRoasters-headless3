@@ -95,6 +95,7 @@ export function getShopifyAdviceFeedSource(): ShopifyAdviceFeedSource {
 
 export const ADVICE_PAGE_SIZE = 24;
 export const SHOPIFY_ADVICE_PAGE_SIZE = ADVICE_PAGE_SIZE;
+export const PARTNERS_PAGE_SIZE = 24;
 
 export type FooterLinkItem = {
   label: string;
@@ -160,6 +161,11 @@ export const socialLinks: LandingLink[] = [
   {
     label: "Get in Touch & FAQ",
     href: "/get-in-contact",
+    external: false,
+  },
+  {
+    label: "Partners",
+    href: "/partners",
     external: false,
   },
   {

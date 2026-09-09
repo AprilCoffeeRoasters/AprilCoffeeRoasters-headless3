@@ -5,7 +5,6 @@ import {
   TAGS,
 } from "lib/constants";
 import { isShopifyError } from "lib/type-guards";
-import { withCheckoutReturnUrl } from "lib/checkout-url";
 import { ensureStartsWith } from "lib/utils";
 import {
   cacheLife,
@@ -20,13 +19,13 @@ import {
   editCartItemsMutation,
   removeFromCartMutation,
 } from "./mutations/cart";
+import { getArticleQuery, getBlogArticlesQuery } from "./queries/blog";
 import { getCartQuery } from "./queries/cart";
 import {
   getCollectionProductsQuery,
   getCollectionQuery,
   getCollectionsQuery,
 } from "./queries/collection";
-import { getArticleQuery, getBlogArticlesQuery } from "./queries/blog";
 import { getMenuQuery } from "./queries/menu";
 import { getPageQuery, getPagesQuery } from "./queries/page";
 import {
@@ -172,7 +171,7 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
 
   return {
     ...cart,
-    checkoutUrl: withCheckoutReturnUrl(cart.checkoutUrl),
+    checkoutUrl: cart.checkoutUrl,
     lines: removeEdgesAndNodes(cart.lines),
   };
 };

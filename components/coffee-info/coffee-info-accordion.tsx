@@ -127,6 +127,8 @@ function coffeeHasContent(coffee: CoffeeInfoFarm["coffees"][number]) {
   );
 }
 
+const COFFEES_PER_PAGE = 10;
+
 type CoffeeInfoFarmAccordionProps = {
   farm: CoffeeInfoFarm;
 };
@@ -139,12 +141,21 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
     [farm.coffees],
   );
 
+  const totalPages = Math.max(1, Math.ceil(coffees.length / COFFEES_PER_PAGE));
+  const [page, setPage] = useState(1);
+
+  const pagedCoffees = useMemo(() => {
+    const safePage = Math.min(page, totalPages);
+    const start = (safePage - 1) * COFFEES_PER_PAGE;
+    return coffees.slice(start, start + COFFEES_PER_PAGE);
+  }, [coffees, page, totalPages]);
+
   const defaultOpenKey = hasGeneral
     ? "general"
     : hasPhotos
       ? "photos"
-      : coffees[0]
-        ? `coffee::${coffees[0].name}`
+      : pagedCoffees[0]
+        ? `coffee::${pagedCoffees[0].name}`
         : null;
 
   const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey);
@@ -153,9 +164,18 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
     setOpenKey((current) => (current === key ? null : key));
   }
 
+  function goToPage(nextPage: number) {
+    const clamped = Math.min(Math.max(1, nextPage), totalPages);
+    setPage(clamped);
+    setOpenKey(null);
+  }
+
   if (!hasGeneral && !hasPhotos && coffees.length === 0) {
     return null;
   }
+
+  const showPagination = coffees.length > COFFEES_PER_PAGE;
+  const safePage = Math.min(page, totalPages);
 
   return (
     <div>
@@ -179,7 +199,7 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
         </AccordionItem>
       ) : null}
 
-      {coffees.map((coffee) => {
+      {pagedCoffees.map((coffee) => {
         const key = `coffee::${coffee.name}`;
         return (
           <AccordionItem
@@ -202,6 +222,33 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
           </AccordionItem>
         );
       })}
+
+      {showPagination ? (
+        <nav
+          aria-label="Coffee list pagination"
+          className="mt-6 flex items-center justify-between gap-4"
+        >
+          <button
+            type="button"
+            onClick={() => goToPage(safePage - 1)}
+            disabled={safePage <= 1}
+            className="type-text text-[12px] uppercase leading-[16px] underline underline-offset-2 outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame disabled:cursor-not-allowed disabled:no-underline disabled:opacity-40 disabled:hover:outline-transparent"
+          >
+            Previous
+          </button>
+          <p className="type-text text-[12px] uppercase leading-[16px]">
+            Page {safePage} of {totalPages}
+          </p>
+          <button
+            type="button"
+            onClick={() => goToPage(safePage + 1)}
+            disabled={safePage >= totalPages}
+            className="type-text text-[12px] uppercase leading-[16px] underline underline-offset-2 outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame disabled:cursor-not-allowed disabled:no-underline disabled:opacity-40 disabled:hover:outline-transparent"
+          >
+            Next
+          </button>
+        </nav>
+      ) : null}
     </div>
   );
 }

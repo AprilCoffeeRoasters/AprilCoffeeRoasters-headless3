@@ -1,14 +1,14 @@
 import { gql } from "graphql-request";
 import {
-    datoRequest,
-    isDatoCmsConfigured,
-    type DatoResponsiveImage,
+  datoRequest,
+  isDatoCmsConfigured,
+  type DatoResponsiveImage,
 } from "lib/cms/datocms";
 import type {
-    CoffeeInfoCoffee,
-    CoffeeInfoFarm,
-    CoffeeInfoPhoto,
-    CoffeeInfoVideo,
+  CoffeeInfoCoffee,
+  CoffeeInfoFarm,
+  CoffeeInfoPhoto,
+  CoffeeInfoVideo,
 } from "lib/coffee-info/content";
 
 export { isDatoCmsConfigured };
@@ -214,22 +214,58 @@ function isMissingCoffeeFarmModel(error: unknown): boolean {
   );
 }
 
+const COFFEE_FARMS_PAGE_SIZE = 100;
+
+async function fetchCoffeeFarmsPageFromDato(options: {
+  first: number;
+  skip: number;
+}): Promise<{ farms: DatoCoffeeFarmRecordRaw[]; totalCount: number }> {
+  const query = gql`
+    ${coffeeFarmFields}
+    query CoffeeFarmsPage($first: IntType!, $skip: IntType!) {
+      allCoffeeFarms(first: $first, skip: $skip, orderBy: title_ASC) {
+        ...CoffeeFarmFields
+      }
+      _allCoffeeFarmsMeta {
+        count
+      }
+    }
+  `;
+
+  const data = await datoRequest<{
+    allCoffeeFarms: DatoCoffeeFarmRecordRaw[];
+    _allCoffeeFarmsMeta: { count: number };
+  }>(query, { first: options.first, skip: options.skip });
+
+  return {
+    farms: data.allCoffeeFarms,
+    totalCount: data._allCoffeeFarmsMeta.count,
+  };
+}
+
 async function fetchAllCoffeeFarmsFromDato(): Promise<CoffeeInfoFarm[]> {
   try {
-    const query = gql`
-      ${coffeeFarmFields}
-      query AllCoffeeFarms {
-        allCoffeeFarms(orderBy: title_ASC) {
-          ...CoffeeFarmFields
-        }
+    const farms: CoffeeInfoFarm[] = [];
+    let skip = 0;
+    let totalCount = Number.POSITIVE_INFINITY;
+
+    while (skip < totalCount) {
+      const page = await fetchCoffeeFarmsPageFromDato({
+        first: COFFEE_FARMS_PAGE_SIZE,
+        skip,
+      });
+      totalCount = page.totalCount;
+
+      if (page.farms.length === 0) break;
+
+      for (const raw of page.farms) {
+        farms.push(normalizeCoffeeFarm(raw));
       }
-    `;
 
-    const data = await datoRequest<{
-      allCoffeeFarms: DatoCoffeeFarmRecordRaw[];
-    }>(query);
+      skip += page.farms.length;
+    }
 
-    return data.allCoffeeFarms.map(normalizeCoffeeFarm);
+    return farms;
   } catch (error) {
     if (isMissingCoffeeFarmModel(error)) {
       return [];
