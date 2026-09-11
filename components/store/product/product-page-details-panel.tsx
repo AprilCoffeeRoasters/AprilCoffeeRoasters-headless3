@@ -258,47 +258,69 @@ export default function ProductPageDetailsPanel({
             aria-label="product-variant-select-wrapper"
             className="col-span-2 w-full"
           >
-            <select
-              id="variant-selector"
-              aria-label="product-select"
-              role="combobox"
-              value={selectedVariantId}
-              onChange={(event) =>
-                onSelectedVariantIdChange(event.target.value)
-              }
-              className="
-              h-7
-              w-full
-              cursor-pointer
-              appearance-none
-              border-2
-              border-black
-              bg-[image:var(--background-image-selector-icon)]
-              bg-[top_50%_left_95%]
-              bg-no-repeat
-              pl-2
-              text-sm
-              uppercase
-              outline-hidden
+            {variants.length > 1 ? (
+              <select
+                id="variant-selector"
+                aria-label="product-select"
+                role="combobox"
+                value={selectedVariantId}
+                onChange={(event) =>
+                  onSelectedVariantIdChange(event.target.value)
+                }
+                className="
+                h-7
+                w-full
+                cursor-pointer
+                appearance-none
+                border-2
+                border-black
+                bg-[image:var(--background-image-selector-icon)]
+                bg-[top_50%_left_95%]
+                bg-no-repeat
+                pl-2
+                text-sm
+                uppercase
+                outline-hidden
 
-              hover:bg-white
-              hover:text-black
-              focus:ring-0
+                hover:bg-white
+                hover:text-black
+                focus:ring-0
 
-              max-md:h-8
-              max-md:text-base
-            "
-            >
-              {variants.map((variant) => (
-                <option
-                  key={variant.id}
-                  value={variant.id}
-                  className="uppercase"
-                >
-                  {variant.label}
-                </option>
-              ))}
-            </select>
+                max-md:h-8
+                max-md:text-base
+              "
+              >
+                {variants.map((variant) => (
+                  <option
+                    key={variant.id}
+                    value={variant.id}
+                    className="uppercase"
+                  >
+                    {variant.label}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div
+                aria-label="product-variant"
+                className="
+                flex
+                h-7
+                w-full
+                items-center
+                border-2
+                border-black
+                pl-2
+                text-sm
+                uppercase
+
+                max-md:h-8
+                max-md:text-base
+              "
+              >
+                {selectedVariant?.label}
+              </div>
+            )}
           </div>
 
           <div aria-label="product-quantity-wrapper" className="col-span-1">

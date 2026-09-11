@@ -1,5 +1,5 @@
 import { getAllShops, isDatoCmsConfigured } from "lib/cms/datocms";
-import { shopCoverSrc } from "lib/cms/shops";
+import { toLocationCards } from "lib/cms/shops";
 import { getLandingPageData } from "lib/get-landing-page";
 import Link from "next/link";
 import { connection } from "next/server";
@@ -35,11 +35,7 @@ export default async function Page() {
     emptyMessage = "No shops available.";
   }
 
-  const shops = records.map((shop) => ({
-    title: shop.title,
-    image: shopCoverSrc(shop),
-    link: `/shops/${shop.slug}`,
-  }));
+  const shops = toLocationCards(records);
   return (
     <>
       <Header navItems={headerLinks} />

@@ -7,6 +7,54 @@ export type ShopGalleryImage = {
   height?: number;
 };
 
+export type LocationCard = {
+  title: string;
+  image: string | null;
+  link: string;
+};
+
+/** Default Locations grid order: Roastery → April Experience → SP → Partners. */
+const LOCATION_CARD_ORDER = [
+  (shop: DatoShopRecord) =>
+    /roastery/i.test(shop.slug) || /roastery/i.test(shop.title),
+
+  (shop: DatoShopRecord) =>
+    /experience|showroom|april-showroom/i.test(shop.slug) ||
+    /experience|showroom/i.test(shop.title),
+
+  (shop: DatoShopRecord) =>
+    /^(sp)([-_]|$)|spcoffee|sp-coffee/i.test(shop.slug) ||
+    /^sp\b/i.test(shop.title),
+
+  (shop: DatoShopRecord) =>
+    /partners?/i.test(shop.slug) || /partners?/i.test(shop.title),
+];
+
+function locationOrderIndex(shop: DatoShopRecord): number {
+  const index = LOCATION_CARD_ORDER.findIndex((test) => test(shop));
+  return index === -1 ? LOCATION_CARD_ORDER.length : index;
+}
+
+export function toLocationCards(
+  shops: DatoShopRecord[],
+): LocationCard[] {
+  return [...shops]
+    .sort((a, b) => locationOrderIndex(a) - locationOrderIndex(b))
+    .map((shop) => ({
+      title: shop.title,
+      image: shopCoverSrc(shop),
+      link:
+        shop.slug === "partners"
+          ? "/partners"
+          : `/shops/${shop.slug}`,
+    }));
+}
+
+
+
+/** Map CMS shops to Locations cards with fixed order and Partners → /partners. */
+
+
 function responsiveToSlide(
   responsive: DatoResponsiveImage | null | undefined,
 ): ShopGalleryImage | null {
