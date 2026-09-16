@@ -13,14 +13,16 @@ export type LocationCard = {
   link: string;
 };
 
-/** Default Locations grid order: Roastery → April Experience → SP → Partners. */
+/** Default Locations grid order: Roastery → April Store → SP → Partners. */
 const LOCATION_CARD_ORDER = [
   (shop: DatoShopRecord) =>
     /roastery/i.test(shop.slug) || /roastery/i.test(shop.title),
 
   (shop: DatoShopRecord) =>
-    /experience|showroom|april-showroom/i.test(shop.slug) ||
-    /experience|showroom/i.test(shop.title),
+    /experience|showroom|april-showroom|april-store|\bstore\b/i.test(
+      shop.slug,
+    ) ||
+    /experience|showroom|\bstore\b/i.test(shop.title),
 
   (shop: DatoShopRecord) =>
     /^(sp)([-_]|$)|spcoffee|sp-coffee/i.test(shop.slug) ||

@@ -4,14 +4,15 @@ import type {
     ProductPageRelated,
     ProductPageVariant,
 } from "components/store/product/product-page-types";
-import type { Product, ProductVariant } from "lib/shopify/types";
+import { DEFAULT_OPTION } from "lib/constants";
 import { shopifyImageUrl } from "lib/shopify-image-url";
-import {
-  parseRecipeContent,
-  parseSizeChart,
-  parseTechnicalDetails,
-} from "lib/store/parse-product-metafields";
+import type { Product, ProductVariant } from "lib/shopify/types";
 import { parseProductDescriptionLines } from "lib/store/parse-product-description";
+import {
+    parseRecipeContent,
+    parseSizeChart,
+    parseTechnicalDetails,
+} from "lib/store/parse-product-metafields";
 
 /** Collections that may show the product `recommendations` metafield. */
 const RECOMMENDATIONS_COLLECTION_HANDLES = new Set([
@@ -63,7 +64,7 @@ export function mapProductPageData(
 
   const variants: ProductPageVariant[] = product.variants.map((variant) => ({
     id: variant.id,
-    label: variant.title,
+    label: variant.title === DEFAULT_OPTION ? "" : variant.title,
     price: formatVariantPrice(variant),
     priceAmount: variant.price.amount,
   }));
