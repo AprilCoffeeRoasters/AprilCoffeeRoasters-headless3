@@ -1,4 +1,5 @@
 import type { AdviceArticleDetail } from "lib/advice/advice-article";
+import { youtubeEmbedIdFromValue } from "lib/youtube";
 import Image from "next/image";
 
 function articleImages(article: AdviceArticleDetail) {
@@ -18,6 +19,7 @@ export function ArticleDetail({
   const editorialImages = allImages.slice(0, 6);
   const productImages = allImages.slice(6);
   const sidebarText = article.info ?? article.excerpt;
+  const youtubeId = youtubeEmbedIdFromValue(article.youtubeVideoId);
 
   return (
     <main
@@ -45,17 +47,18 @@ export function ArticleDetail({
             </div>
           </div>
 
-          {article.youtubeVideoId ? (
+          {youtubeId ? (
             <div
               aria-label="youtube-video-player"
-              className="relative mx-2.5 mt-5 h-0 pb-[56.25%]"
+              className="relative mx-auto mt-5 aspect-video w-full overflow-hidden"
             >
               <iframe
-                className="absolute left-0 top-0 h-full w-full"
-                frameBorder="0"
+                className="absolute inset-0 h-full w-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
                 title={article.title}
-                src={`https://www.youtube.com/embed/${article.youtubeVideoId}?autoplay=0&rel=0&controls=0`}
+                src={`https://www.youtube.com/embed/${youtubeId}?rel=0&playsinline=1`}
               />
             </div>
           ) : null}
