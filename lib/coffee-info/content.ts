@@ -58,8 +58,6 @@ export const coffeeInfoBrewingSection = {
       answer:
         "We recommend you let your beans rest for **at least 14 days** before brewing, this is what we use in our store and roastery, and we find that this way it offers a way better flavor clarity and balance in the cup.\n\nFor more details, check out our [Youtube channel](https://www.youtube.com/channel/UCPlsOYZ8ZEam57EUCf3DKjg), where we talk about brewing techniques and the coffees of our lineup.",
     },
-  ],
-} as const;
 
 export const GreenCoffeePurchasing = {
   title: "THE APRIL RULES OF COFFEE PURCHASING",
