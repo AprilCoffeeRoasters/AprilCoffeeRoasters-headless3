@@ -6,7 +6,6 @@ import { getAllCoffeeInfoFarms } from "lib/cms/coffee-info";
 import {
   coffeeInfoBrewingSection,
   coffeeInfoPageIntro, 
-  GreenCoffeePurchasing,
 } from "lib/coffee-info/content";
 import type { FaqSection } from "lib/contact/faq-content";
 import { getLandingPageData } from "lib/get-landing-page";
@@ -35,16 +34,6 @@ export default async function CoffeeInfRecipesPage() {
       title: coffeeInfoBrewingSection.title,
       description: coffeeInfoBrewingSection.description,
       items: coffeeInfoBrewingSection.items.map((item) => ({
-        question: item.question,
-        answer: item.answer,
-      })),
-    },
-
-      const GreenCoffeePurchasing: FaqSection[] = [
-    {
-      title: GreenCoffeePurchasing.title,
-      description: GreenCoffeePurchasing.description,
-      items: GreenCoffeePurchasing.items.map((item) => ({
         question: item.question,
         answer: item.answer,
       })),
