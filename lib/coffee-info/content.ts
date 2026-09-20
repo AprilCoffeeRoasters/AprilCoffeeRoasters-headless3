@@ -61,7 +61,7 @@ export const coffeeInfoBrewingSection = {
   ],
 } as const;
 
-export const RulesOfPurchasing = {
+export const coffeeInfoBrewingSection = {
   title: "THE APRIL RULES OF COFFEE PURCHASING",
   description:
     "Read about our green coffee purchasing rules",
