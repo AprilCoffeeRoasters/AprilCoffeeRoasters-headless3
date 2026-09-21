@@ -5,8 +5,10 @@ export type FaqItem = {
 
 export type FaqSection = {
   title: string;
-  description: string;
+  description?: string;
   items: FaqItem[];
+  /** Optional closing paragraph, rendered in italics below the items. */
+  note?: string;
 };
 
 export const faqSections: FaqSection[] = [

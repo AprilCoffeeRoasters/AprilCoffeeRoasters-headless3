@@ -37,6 +37,49 @@ export type CoffeeInfoFarm = {
 export const coffeeInfoPageIntro =
   "Brewing guides, farm information, and recipes for the coffees we currently work with.";
 
+/** Coffee purchasing philosophy, shown above BREWING APRIL. */
+export const coffeeInfoPurchasingSection = {
+  title: "THE APRIL RULES OF COFFEE PURCHASING",
+  items: [
+    {
+      question: "01 DIRECT TRADE",
+      answer:
+        "We purchase directly from our partner farmers, building relationships season after season.",
+    },
+    {
+      question: "02 FARMER-LED PRICING",
+      answer:
+        "The farmer decides the price and payment terms. It's that simple.",
+    },
+    {
+      question: "03 QUALITY, TOGETHER",
+      answer:
+        "We define quality together through tasting, dialogue and clear expectations. April and the partner farmer agree on a clear range of quality acceptance before purchasing. We also agree in advance on how to handle unexpected quality issues, including problems that may occur at origin, without placing the financial risk on the farmer.",
+    },
+    {
+      question: "04 SINGLE FARMER PROJECTS",
+      answer:
+        "We focus on individual farmers, their farms and their coffees rather than cooperative structures. This allows us to maintain full traceability of every coffee we purchase.",
+    },
+    {
+      question: "05 WE ALWAYS COME BACK",
+      answer:
+        "Our intention is always to return the following season and continue building together. We are proud that the vast majority of our partner farmers have worked with us through both good and challenging seasons since we started our direct trade program in 2019.",
+    },
+    {
+      question: "06 LOGISTICAL PARTNER",
+      answer:
+        "We trade all our coffees with the support of a logistical partner. If a quality issue arises on arrival, April, the partner farmer and our logistical partner work together to find a solution without placing the farmer at financial risk.",
+    },
+    {
+      question: "07 #GROWINGTOGETHER",
+      answer:
+        "We believe long-term relationships, shared progress and shared responsibility lead to better coffee.",
+    },
+  ],
+  note: "There are exceptions when we begin a new relationship and initially source the coffee through an importer. Our current relationship with Kayon Mountain in Ethiopia is one example. We are at the beginning of that journey, with Café Imports facilitating the process. In these cases, we still maintain direct contact and build a relationship with the farmer. And if a farmer prefers to continue working through an importer—not every farmer wants to trade directly—we respect and support that choice.",
+} as const;
+
 /** FAQ-style intro block shown above the farm list (same pattern as Get in Contact). */
 export const coffeeInfoBrewingSection = {
   title: "BREWING APRIL",

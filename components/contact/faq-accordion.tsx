@@ -68,13 +68,17 @@ export function FaqAccordion({ sections }: FaqAccordionProps) {
           <section key={section.title} aria-labelledby={headingId}>
             <h2
               id={headingId}
-              className="type-h2 mb-1 text-sm uppercase"
+              className={`type-h2 text-sm uppercase ${
+                section.description ? "mb-1" : "mb-3"
+              }`}
             >
               {section.title}
             </h2>
-            <p className="type-text mb-3 text-[13px] leading-[18px]">
-              {section.description}
-            </p>
+            {section.description ? (
+              <p className="type-text mb-3 text-[13px] leading-[18px]">
+                {section.description}
+              </p>
+            ) : null}
             <div>
               {section.items.map((item) => {
                 const key = `${section.title}::${item.question}`;
@@ -91,6 +95,11 @@ export function FaqAccordion({ sections }: FaqAccordionProps) {
                 );
               })}
             </div>
+            {section.note ? (
+              <p className="type-text mt-5 text-[13px] leading-[18px] italic [font-synthesis:style]">
+                {section.note}
+              </p>
+            ) : null}
           </section>
         );
       })}
