@@ -42,37 +42,37 @@ export const coffeeInfoPurchasingSection = {
   title: "THE APRIL RULES OF COFFEE PURCHASING",
   items: [
     {
-      question: "DIRECT TRADE",
+      question: "01 DIRECT TRADE",
       answer:
         "We purchase directly from our partner farmers, building relationships season after season.",
     },
     {
-      question: "FARMER-LED PRICING",
+      question: "02 FARMER-LED PRICING",
       answer:
         "The farmer decides the price and payment terms. It's that simple.",
     },
     {
-      question: "QUALITY, TOGETHER",
+      question: "03 QUALITY, TOGETHER",
       answer:
         "We define quality together through tasting, dialogue and clear expectations. April and the partner farmer agree on a clear range of quality acceptance before purchasing. We also agree in advance on how to handle unexpected quality issues, including problems that may occur at origin, without placing the financial risk on the farmer.",
     },
     {
-      question: "SINGLE FARMER PROJECTS",
+      question: "04 SINGLE FARMER PROJECTS",
       answer:
         "We focus on individual farmers, their farms and their coffees rather than cooperative structures. This allows us to maintain full traceability of every coffee we purchase.",
     },
     {
-      question: "WE ALWAYS COME BACK",
+      question: "05 WE ALWAYS COME BACK",
       answer:
         "Our intention is always to return the following season and continue building together. We are proud that the vast majority of our partner farmers have worked with us through both good and challenging seasons since we started our direct trade program in 2019.",
     },
     {
-      question: "LOGISTICAL PARTNER",
+      question: "06 LOGISTICAL PARTNER",
       answer:
         "We trade all our coffees with the support of a logistical partner. If a quality issue arises on arrival, April, the partner farmer and our logistical partner work together to find a solution without placing the farmer at financial risk.",
     },
     {
-      question: "#GROWINGTOGETHER",
+      question: "07 #GROWINGTOGETHER",
       answer:
         "We believe long-term relationships, shared progress and shared responsibility lead to better coffee.",
     },
