@@ -18,7 +18,6 @@ export type CoffeeInfoCoffee = {
   name: string;
   recipeFilter: string;
   recipeEspresso: string;
-  lotInformation: string;
 };
 
 export type CoffeeInfoFarm = {

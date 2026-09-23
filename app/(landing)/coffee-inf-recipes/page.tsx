@@ -5,8 +5,7 @@ import Header from "components/store/layout/header";
 import { getAllCoffeeInfoFarms } from "lib/cms/coffee-info";
 import {
   coffeeInfoBrewingSection,
-  coffeeInfoPageIntro,
-  coffeeInfoPurchasingSection,
+  coffeeInfoPageIntro, 
 } from "lib/coffee-info/content";
 import type { FaqSection } from "lib/contact/faq-content";
 import { getLandingPageData } from "lib/get-landing-page";
@@ -30,15 +29,7 @@ export default async function CoffeeInfRecipesPage() {
     console.error("Failed to load coffee info farms:", error);
   }
 
-  const pageSections: FaqSection[] = [
-    {
-      title: coffeeInfoPurchasingSection.title,
-      items: coffeeInfoPurchasingSection.items.map((item) => ({
-        question: item.question,
-        answer: item.answer,
-      })),
-      note: coffeeInfoPurchasingSection.note,
-    },
+  const brewingSections: FaqSection[] = [
     {
       title: coffeeInfoBrewingSection.title,
       description: coffeeInfoBrewingSection.description,
@@ -70,7 +61,7 @@ export default async function CoffeeInfRecipesPage() {
             </p>
           </header>
 
-          <FaqAccordion sections={pageSections} />
+          <FaqAccordion sections={brewingSections} />
 
           <section id="farms" className="mt-12 scroll-mt-8" aria-label="Farms">
             {/* <h2 className="type-h2 mb-1 text-sm uppercase">Farm Name</h2>
