@@ -5,7 +5,8 @@ import Header from "components/store/layout/header";
 import { getAllCoffeeInfoFarms } from "lib/cms/coffee-info";
 import {
   coffeeInfoBrewingSection,
-  coffeeInfoPageIntro, 
+  coffeeInfoPageIntro,
+  coffeeInfoPurchasingSection,
 } from "lib/coffee-info/content";
 import type { FaqSection } from "lib/contact/faq-content";
 import { getLandingPageData } from "lib/get-landing-page";
@@ -30,6 +31,14 @@ export default async function CoffeeInfRecipesPage() {
   }
 
   const brewingSections: FaqSection[] = [
+    {
+      title: coffeeInfoPurchasingSection.title,
+      items: coffeeInfoPurchasingSection.items.map((item) => ({
+        question: item.question,
+        answer: item.answer,
+      })),
+      note: coffeeInfoPurchasingSection.note,
+    },
     {
       title: coffeeInfoBrewingSection.title,
       description: coffeeInfoBrewingSection.description,
