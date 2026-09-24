@@ -4,8 +4,6 @@ import { mapProductPageData } from "lib/store/map-product-page-data";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export const maxDuration = 60;
-
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
