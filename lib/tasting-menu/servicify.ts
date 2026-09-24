@@ -181,6 +181,72 @@ function rangesForDate(employee: Employee, date: string) {
 let cachedEvent: { variantId: string; event: TastingEvent; at: number } | null =
   null;
 
+function omitJsonProperty(json: string, key: string) {
+  const marker = `"${key}":`;
+  const start = json.indexOf(marker);
+  if (start < 0) return json;
+
+  let index = start + marker.length;
+  while (json[index] === " " || json[index] === "\n") index += 1;
+  if (json[index] !== "[") return json;
+
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let cursor = index; cursor < json.length; cursor += 1) {
+    const char = json[cursor];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (char === "\\") escaped = true;
+      else if (char === '"') inString = false;
+      continue;
+    }
+    if (char === '"') inString = true;
+    else if (char === "[") depth += 1;
+    else if (char === "]" && depth > 0) {
+      depth -= 1;
+      if (depth === 0) {
+        const end = json[cursor + 1] === "," ? cursor + 2 : cursor + 1;
+        return json.slice(0, start) + json.slice(end);
+      }
+    }
+  }
+
+  return json;
+}
+
+async function fetchEventConfig(variantId: string) {
+  const url = `${SERVICIFY_API_URL}/api/variants/${variantId}/events`;
+  let status = 0;
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        cache: "no-store",
+        signal: AbortSignal.timeout(20000),
+        headers: { Accept: "application/json" },
+      });
+      status = response.status;
+      if (response.ok) {
+        return JSON.parse(
+          omitJsonProperty(await response.text(), "dates"),
+        ) as TastingEvent & {
+          location?: string;
+          minimumAttendeesPerTimeslot?: number;
+        };
+      }
+      if (status < 500) break;
+    } catch (error) {
+      if (attempt === 1) {
+        const reason = error instanceof Error ? error.name : "failed";
+        throw new Error(`Could not load tasting menu times (${reason}).`);
+      }
+    }
+  }
+
+  throw new Error(`Could not load tasting menu times (${status}).`);
+}
+
 async function getTastingEvent(variantId: string) {
   const id = numericId(variantId);
   if (
@@ -191,22 +257,7 @@ async function getTastingEvent(variantId: string) {
     return cachedEvent.event;
   }
 
-  const response = await fetch(
-    `${SERVICIFY_API_URL}/api/variants/${id}/events`,
-    {
-      cache: "no-store",
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error("Could not load tasting menu times.");
-  }
-
-  const event = (await response.json()) as TastingEvent & {
-    dates?: unknown;
-    location?: string;
-    minimumAttendeesPerTimeslot?: number;
-  };
+  const event = await fetchEventConfig(id);
   const employee = event.employees?.[0];
   if (!event.id || !employee) {
     throw new Error("Could not load tasting menu times.");
