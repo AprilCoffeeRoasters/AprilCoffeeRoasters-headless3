@@ -5,7 +5,9 @@ import type {
   CartItem,
   Product,
   ProductVariant,
+  SellingPlan,
 } from "lib/shopify/types";
+import { isShopifySellingPlanId } from "lib/store/subscription-plans";
 import React, {
   createContext,
   use,
@@ -20,7 +22,11 @@ type UpdateType = "plus" | "minus" | "delete";
 type CartAction =
   | {
       type: "UPDATE_ITEM";
-      payload: { merchandiseId: string; updateType: UpdateType };
+      payload: {
+        merchandiseId: string;
+        updateType: UpdateType;
+        lineId?: string;
+      };
     }
   | {
       type: "SET_QUANTITY";
@@ -28,7 +34,13 @@ type CartAction =
     }
   | {
       type: "ADD_ITEM";
-      payload: { variant: ProductVariant; product: Product; quantity: number };
+      payload: {
+        variant: ProductVariant;
+        product: Product;
+        quantity: number;
+        sellingPlan?: SellingPlan;
+        attributes?: { key: string; value: string }[];
+      };
     };
 
 type CartContextType = {
@@ -78,11 +90,32 @@ function updateCartItem(
   return updateCartLineQuantity(item, newQuantity);
 }
 
+function linePlanKey(item: CartItem) {
+  return (
+    item.sellingPlanAllocation?.sellingPlan.id ??
+    item.attributes?.find((attribute) => attribute.key === "Delivery frequency")
+      ?.value ??
+    ""
+  );
+}
+
+function planKey(sellingPlan?: SellingPlan) {
+  if (!sellingPlan) {
+    return "";
+  }
+
+  return isShopifySellingPlanId(sellingPlan.id)
+    ? sellingPlan.id
+    : sellingPlan.name;
+}
+
 function createOrUpdateCartItem(
   existingItem: CartItem | undefined,
   variant: ProductVariant,
   product: Product,
   addQuantity: number,
+  sellingPlan?: SellingPlan,
+  attributes?: { key: string; value: string }[],
 ): CartItem {
   const quantity = existingItem
     ? existingItem.quantity + addQuantity
@@ -109,6 +142,17 @@ function createOrUpdateCartItem(
         featuredImage: product.featuredImage,
       },
     },
+    attributes: attributes
+      ? attributes
+      : sellingPlan
+        ? [{ key: "Delivery frequency", value: sellingPlan.name }]
+        : existingItem?.attributes,
+    sellingPlanAllocation:
+      sellingPlan && isShopifySellingPlanId(sellingPlan.id)
+        ? { sellingPlan }
+        : sellingPlan
+          ? null
+          : existingItem?.sellingPlanAllocation,
   };
 }
 
@@ -153,9 +197,14 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
     case "UPDATE_ITEM":
     case "SET_QUANTITY": {
       const { merchandiseId } = action.payload;
+      const lineId =
+        action.type === "UPDATE_ITEM" ? action.payload.lineId : undefined;
       const updatedLines = currentCart.lines
         .map((item) => {
-          if (item.merchandise.id !== merchandiseId) return item;
+          const matches = lineId
+            ? item.id === lineId
+            : item.merchandise.id === merchandiseId;
+          if (!matches) return item;
 
           if (action.type === "UPDATE_ITEM") {
             return updateCartItem(item, action.payload.updateType);
@@ -184,21 +233,30 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
       };
     }
     case "ADD_ITEM": {
-      const { variant, product, quantity } = action.payload;
-      const existingItem = currentCart.lines.find(
-        (item) => item.merchandise.id === variant.id,
-      );
+      const { variant, product, quantity, sellingPlan, attributes } =
+        action.payload;
+      const bookingId = attributes?.find(
+        (attribute) => attribute.key === "_ID",
+      )?.value;
+      const nextPlanKey = planKey(sellingPlan);
+      const sameLine = (item: CartItem) =>
+        bookingId
+          ? item.attributes?.find((attribute) => attribute.key === "_ID")
+              ?.value === bookingId
+          : item.merchandise.id === variant.id &&
+            linePlanKey(item) === nextPlanKey;
+      const existingItem = currentCart.lines.find(sameLine);
       const updatedItem = createOrUpdateCartItem(
         existingItem,
         variant,
         product,
         quantity,
+        sellingPlan,
+        attributes,
       );
 
       const updatedLines = existingItem
-        ? currentCart.lines.map((item) =>
-            item.merchandise.id === variant.id ? updatedItem : item,
-          )
+        ? currentCart.lines.map((item) => (sameLine(item) ? updatedItem : item))
         : [...currentCart.lines, updatedItem];
 
       return {
@@ -239,11 +297,15 @@ export function useCart() {
   );
   const [, startTransition] = useTransition();
 
-  const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
+  const updateCartItem = (
+    merchandiseId: string,
+    updateType: UpdateType,
+    lineId?: string,
+  ) => {
     startTransition(() => {
       updateOptimisticCart({
         type: "UPDATE_ITEM",
-        payload: { merchandiseId, updateType },
+        payload: { merchandiseId, updateType, lineId },
       });
     });
   };
@@ -261,11 +323,13 @@ export function useCart() {
     variant: ProductVariant,
     product: Product,
     quantity: number = 1,
+    sellingPlan?: SellingPlan,
+    attributes?: { key: string; value: string }[],
   ) => {
     startTransition(() => {
       updateOptimisticCart({
         type: "ADD_ITEM",
-        payload: { variant, product, quantity },
+        payload: { variant, product, quantity, sellingPlan, attributes },
       });
     });
   };

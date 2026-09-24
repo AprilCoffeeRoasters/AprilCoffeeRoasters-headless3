@@ -53,6 +53,9 @@ export const HIDDEN_PRODUCT_TAG = "nextjs-frontend-hidden";
 export const COLLECTION_PRODUCTS_PAGE_SIZE = 30;
 export const DEFAULT_OPTION = "Default Title";
 export const SHOPIFY_GRAPHQL_API_ENDPOINT = "/api/2023-01/graphql.json";
+export const SERVICIFY_API_URL = "https://servicify-appointments.herokuapp.com";
+export const TASTING_MENU_HANDLE = "april-tasting-menu";
+export const TASTING_MENU_TIMEZONE = "Europe/Copenhagen";
 
 /** Read at call time so production env (e.g. Vercel) is applied, not only build-time values. */
 export function getShopifyHomeFeaturedCollectionHandle(): string {
@@ -152,11 +155,11 @@ export const socialLinks: LandingLink[] = [
     href: "https://www.findsmiley.dk/1347286",
     external: true,
   },
- 
+
   {
     label: "Mailing List",
     href: "https://mailchi.mp/aprilcoffeeroastery.com/april-coffee-newsletter",
-    external: true ,
+    external: true,
   },
   {
     label: "Get in Touch & FAQ",
@@ -190,7 +193,7 @@ export const defaultTriFergNav: LandingTriFergNavItem[] = [
     fillClass: "fill-tri-ferg-grey",
     ariaLabel: "web-shop-tri-ferg-link",
   },
- 
+
   {
     title: "PROJECTS",
     href: "/projects",

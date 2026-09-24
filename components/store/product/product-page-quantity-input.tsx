@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 export default function ProductPageQuantityInput({
   quantity,
   setQuantity,
+  max = 99,
 }: {
   quantity: number;
   setQuantity: (next: number) => void;
+  max?: number;
 }) {
   const [value, setValue] = useState(String(quantity));
 
@@ -15,7 +17,7 @@ export default function ProductPageQuantityInput({
     setValue(String(quantity));
   }, [quantity]);
 
-  const clamp = (next: number) => Math.min(99, Math.max(1, next));
+  const clamp = (next: number) => Math.min(max, Math.max(1, next));
 
   const applyQuantity = (next: number) => {
     const clamped = clamp(Math.floor(next));
@@ -77,6 +79,7 @@ export default function ProductPageQuantityInput({
       <button
         type="button"
         aria-label="increase-quantity"
+        disabled={quantity >= max}
         className={quantityButtonClass}
         onClick={() => applyQuantity(quantity + 1)}
       >

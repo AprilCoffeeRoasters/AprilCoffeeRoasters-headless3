@@ -18,9 +18,18 @@ const TERMS_URL =
 
 function CartLineRow({ line }: { line: CartItem }) {
   const variantLabel =
-    line.merchandise.title === DEFAULT_OPTION
-      ? ""
-      : line.merchandise.title;
+    line.merchandise.title === DEFAULT_OPTION ? "" : line.merchandise.title;
+  const deliveryFrequency =
+    line.sellingPlanAllocation?.sellingPlan.name ??
+    line.attributes?.find((attribute) => attribute.key === "Delivery frequency")
+      ?.value;
+  const appointmentDate = line.attributes?.find(
+    (attribute) => attribute.key === "Date",
+  )?.value;
+  const appointmentTime = line.attributes?.find(
+    (attribute) => attribute.key === "Time",
+  )?.value;
+  const isAppointment = Boolean(appointmentDate);
   const lineTotal = formatCartMoney(
     line.cost.totalAmount.amount,
     line.cost.totalAmount.currencyCode,
@@ -67,13 +76,20 @@ function CartLineRow({ line }: { line: CartItem }) {
           <div aria-label="price" className="text-sm">
             <div className="text-[0.85em]">
               {variantLabel ? <div>{variantLabel}</div> : null}
+              {deliveryFrequency ? <div>{deliveryFrequency}</div> : null}
+              {appointmentDate ? <div>{appointmentDate}</div> : null}
+              {appointmentTime ? <div>{appointmentTime}</div> : null}
               <div className="flex space-x-1">
                 <div>{unitAmount}</div>
               </div>
-              <CartLineQuantity
-                merchandiseId={line.merchandise.id}
-                quantity={line.quantity}
-              />
+              {isAppointment ? (
+                <div>Qty {line.quantity}</div>
+              ) : (
+                <CartLineQuantity
+                  merchandiseId={line.merchandise.id}
+                  quantity={line.quantity}
+                />
+              )}
             </div>
             <div
               aria-label="delete-button"
@@ -144,7 +160,22 @@ export default function CartPageClient() {
             ) : (
               <>
                 {lines.map((line) => (
-                  <CartLineRow key={line.id ?? line.merchandise.id} line={line} />
+                  <CartLineRow
+                    key={
+                      line.id ??
+                      `${line.merchandise.id}-${
+                        line.attributes?.find(
+                          (attribute) => attribute.key === "_ID",
+                        )?.value ??
+                        line.sellingPlanAllocation?.sellingPlan.id ??
+                        line.attributes?.find(
+                          (attribute) => attribute.key === "Delivery frequency",
+                        )?.value ??
+                        ""
+                      }`
+                    }
+                    line={line}
+                  />
                 ))}
 
                 <div className="mt-4 text-center text-sm font-bold uppercase max-md:mt-3">

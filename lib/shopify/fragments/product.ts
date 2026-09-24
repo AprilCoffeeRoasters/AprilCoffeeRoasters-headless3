@@ -73,8 +73,26 @@ const productFragment = /* GraphQL */ `
     recommendations: metafield(namespace: "custom", key: "recommendations") {
       value
     }
-    supplierInformation: metafield(namespace: "custom", key: "supplier_information") {
+    supplierInformation: metafield(
+      namespace: "custom"
+      key: "supplier_information"
+    ) {
       value
+    }
+    sellingPlanGroups(first: 1) {
+      edges {
+        node {
+          name
+          sellingPlans(first: 6) {
+            edges {
+              node {
+                id
+                name
+              }
+            }
+          }
+        }
+      }
     }
   }
   ${imageFragment}

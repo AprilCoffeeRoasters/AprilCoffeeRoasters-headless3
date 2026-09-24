@@ -24,7 +24,7 @@ export default function CartLineRemoveButton({
       onSubmit={(event) => {
         event.preventDefault();
         startTransition(async () => {
-          updateCartItem(merchandiseId, "delete");
+          updateCartItem(merchandiseId, "delete", lineId);
           await removeCartLine(lineId);
           router.refresh();
         });

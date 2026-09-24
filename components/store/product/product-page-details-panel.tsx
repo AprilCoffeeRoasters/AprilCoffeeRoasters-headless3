@@ -1,18 +1,24 @@
 "use client";
 
 import ProductPageAddToCart from "components/store/product/product-page-add-to-cart";
+import TastingMenuBooking from "components/store/product/tasting-menu-booking";
+import { TASTING_MENU_HANDLE } from "lib/constants";
 import ProductPageHeader from "components/store/product/product-page-header";
 import ProductPageMetafieldBody from "components/store/product/product-page-metafield-body";
 import ProductPageQuantityInput from "components/store/product/product-page-quantity-input";
-import type {
-  ProductPageVariant,
-} from "components/store/product/product-page-types";
+import SubscribeAndSave from "components/store/product/subscribe-and-save";
+import type { ProductPageVariant } from "components/store/product/product-page-types";
 import type { Product } from "lib/shopify/types";
+import {
+  getSubscriptionGroupName,
+  getSubscriptionPlans,
+} from "lib/store/subscription-plans";
 import type {
   ParsedRecipeContent,
   ParsedSizeChart,
   ParsedTechnicalDetails,
 } from "lib/store/parse-product-metafields";
+import { useState } from "react";
 
 type ProductPageDetailsPanelProps = {
   product: Product;
@@ -31,9 +37,7 @@ type ProductPageDetailsPanelProps = {
   onToggleAccordion: (id: string) => void;
   onSelectedVariantIdChange: (id: string) => void;
   onQuantityChange: (next: number) => void;
-  onOpenMetafieldModal: (
-    modal: "technical-details" | "size-chart",
-  ) => void;
+  onOpenMetafieldModal: (modal: "technical-details" | "size-chart") => void;
 };
 
 function AccordionChevron({ open }: { open: boolean }) {
@@ -95,6 +99,16 @@ export default function ProductPageDetailsPanel({
 }: ProductPageDetailsPanelProps) {
   const showVariantControl =
     variants.length > 1 || Boolean(selectedVariant?.label);
+  const subscriptionPlans = getSubscriptionPlans(product);
+  const [selectedPlanId, setSelectedPlanId] = useState(
+    subscriptionPlans[0]?.id ?? "",
+  );
+  const selectedPlan =
+    subscriptionPlans.find((plan) => plan.id === selectedPlanId) ??
+    subscriptionPlans[0];
+  const selectedProductVariant = product.variants.find(
+    (variant) => variant.id === selectedVariantId,
+  );
 
   return (
     <div
@@ -243,30 +257,44 @@ export default function ProductPageDetailsPanel({
       ) : null}
 
       {/* ACTIONS — mobile: first after product image */}
-      {variants.length > 0 && hasAnyVariantAvailable ? (
-        <div
-          aria-label="product-actions-wrapper"
-          className={
-            showVariantControl
-              ? "mt-6 grid w-full grid-cols-3 gap-2 max-md:order-1 max-md:mt-5"
-              : "mt-6 flex w-full gap-2 max-md:order-1 max-md:mt-5"
-          }
-        >
-          {showVariantControl ? (
-            <div
-              aria-label="product-variant-select-wrapper"
-              className="col-span-2 w-full"
-            >
-              {variants.length > 1 ? (
-                <select
-                  id="variant-selector"
-                  aria-label="product-select"
-                  role="combobox"
-                  value={selectedVariantId}
-                  onChange={(event) =>
-                    onSelectedVariantIdChange(event.target.value)
-                  }
-                  className="
+      {product.handle === TASTING_MENU_HANDLE ? (
+        <div className="mt-6 w-full max-md:order-1 max-md:mt-5">
+          <TastingMenuBooking product={product} variantId={selectedVariantId} />
+        </div>
+      ) : variants.length > 0 && hasAnyVariantAvailable ? (
+        <div className="mt-6 flex w-full flex-col gap-3 max-md:order-1 max-md:mt-5">
+          {subscriptionPlans.length > 0 && selectedPlan ? (
+            <SubscribeAndSave
+              groupName={getSubscriptionGroupName(product)}
+              plans={subscriptionPlans}
+              selectedPlanId={selectedPlan.id}
+              price={selectedProductVariant?.price}
+              onSelectedPlanIdChange={setSelectedPlanId}
+            />
+          ) : null}
+          <div
+            aria-label="product-actions-wrapper"
+            className={
+              showVariantControl
+                ? "grid w-full grid-cols-3 gap-2"
+                : "flex w-full gap-2"
+            }
+          >
+            {showVariantControl ? (
+              <div
+                aria-label="product-variant-select-wrapper"
+                className="col-span-2 w-full"
+              >
+                {variants.length > 1 ? (
+                  <select
+                    id="variant-selector"
+                    aria-label="product-select"
+                    role="combobox"
+                    value={selectedVariantId}
+                    onChange={(event) =>
+                      onSelectedVariantIdChange(event.target.value)
+                    }
+                    className="
                   h-7
                   w-full
                   cursor-pointer
@@ -288,21 +316,21 @@ export default function ProductPageDetailsPanel({
                   max-md:h-8
                   max-md:text-base
                 "
-                >
-                  {variants.map((variant) => (
-                    <option
-                      key={variant.id}
-                      value={variant.id}
-                      className="uppercase"
-                    >
-                      {variant.label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <div
-                  aria-label="product-variant"
-                  className="
+                  >
+                    {variants.map((variant) => (
+                      <option
+                        key={variant.id}
+                        value={variant.id}
+                        className="uppercase"
+                      >
+                        {variant.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <div
+                    aria-label="product-variant"
+                    className="
                   flex
                   h-7
                   w-full
@@ -316,34 +344,55 @@ export default function ProductPageDetailsPanel({
                   max-md:h-8
                   max-md:text-base
                 "
-                >
-                  {selectedVariant?.label}
-                </div>
-              )}
+                  >
+                    {selectedVariant?.label}
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+            <div
+              aria-label="product-quantity-wrapper"
+              className={showVariantControl ? "col-span-1" : "shrink-0"}
+            >
+              <ProductPageQuantityInput
+                quantity={quantity}
+                setQuantity={onQuantityChange}
+              />
             </div>
+
+            <div
+              className={showVariantControl ? "col-span-3" : "min-w-0 flex-1"}
+            >
+              <ProductPageAddToCart
+                product={product}
+                selectedVariantId={selectedVariantId}
+                variantLabel={selectedVariant?.label ?? "item"}
+                quantity={quantity}
+                sellingPlan={selectedPlan}
+                className="btn-brand flex h-7 w-full items-center justify-center border-[2pt] px-4 text-sm font-bold uppercase max-md:h-8 max-md:text-base"
+              />
+            </div>
+          </div>
+          {subscriptionPlans.length > 0 ? (
+            <blockquote className="border-l-2 border-[#ff8000] pl-3 text-[13px] leading-snug font-bold italic">
+              <p>
+                <span className="text-[#ff8000]">
+                  Before you Subscribe please note that regardless of when you
+                  subscribe you will be charged again on the 15th. So, if you
+                  want to avoid to be charged twice in your first month. Please
+                  place your order after the 15th.{" "}
+                  <span className="text-[#ff2a00]">
+                    Subscriptions are shipped the first week of the following
+                    month.{" "}
+                    <span className="text-[#ff8000]">
+                      We do not offer VAT free invoices on Subscriptions.
+                    </span>
+                  </span>
+                </span>
+              </p>
+            </blockquote>
           ) : null}
-
-          <div
-            aria-label="product-quantity-wrapper"
-            className={showVariantControl ? "col-span-1" : "shrink-0"}
-          >
-            <ProductPageQuantityInput
-              quantity={quantity}
-              setQuantity={onQuantityChange}
-            />
-          </div>
-
-          <div
-            className={showVariantControl ? "col-span-3" : "min-w-0 flex-1"}
-          >
-            <ProductPageAddToCart
-              product={product}
-              selectedVariantId={selectedVariantId}
-              variantLabel={selectedVariant?.label ?? "item"}
-              quantity={quantity}
-              className="btn-brand flex h-7 w-full items-center justify-center border-[2pt] px-4 text-sm font-bold uppercase max-md:h-8 max-md:text-base"
-            />
-          </div>
         </div>
       ) : null}
     </div>

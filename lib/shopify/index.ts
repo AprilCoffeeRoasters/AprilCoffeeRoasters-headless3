@@ -6,11 +6,7 @@ import {
 } from "lib/constants";
 import { isShopifyError } from "lib/type-guards";
 import { ensureStartsWith } from "lib/utils";
-import {
-  cacheLife,
-  cacheTag,
-  revalidateTag,
-} from "next/cache";
+import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { cookies, headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import {
@@ -18,6 +14,7 @@ import {
   createCartMutation,
   editCartItemsMutation,
   removeFromCartMutation,
+  updateCartAttributesMutation,
 } from "./mutations/cart";
 import { getArticleQuery, getBlogArticlesQuery } from "./queries/blog";
 import { getCartQuery } from "./queries/cart";
@@ -63,6 +60,7 @@ import {
   ShopifyProductRecommendationsOperation,
   ShopifyProductsOperation,
   ShopifyRemoveFromCartOperation,
+  ShopifyUpdateCartAttributesOperation,
   ShopifyUpdateCartOperation,
 } from "./types";
 
@@ -171,13 +169,26 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
 
   return {
     ...cart,
-    checkoutUrl: cart.checkoutUrl,
+    checkoutUrl: toStoreCheckoutUrl(cart.checkoutUrl),
     lines: removeEdgesAndNodes(cart.lines),
   };
 };
 
+/** Keep Shopify's cart path and token; only the host comes from SHOPIFY_STORE_DOMAIN. */
+function toStoreCheckoutUrl(checkoutUrl: string) {
+  if (!checkoutUrl || !domain) return checkoutUrl;
+
+  try {
+    const url = new URL(checkoutUrl);
+    url.host = new URL(domain).host;
+    return url.toString();
+  } catch {
+    return checkoutUrl;
+  }
+}
+
 const reshapeCollection = (
-  collection: ShopifyCollection
+  collection: ShopifyCollection,
 ): Collection | undefined => {
   if (!collection) {
     return undefined;
@@ -217,9 +228,22 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
   });
 };
 
+const reshapeSellingPlanGroups = (
+  groups: ShopifyProduct["sellingPlanGroups"],
+) => {
+  if (!groups) {
+    return [];
+  }
+
+  return removeEdgesAndNodes(groups).map((group) => ({
+    name: group.name,
+    sellingPlans: removeEdgesAndNodes(group.sellingPlans),
+  }));
+};
+
 const reshapeProduct = (
   product: ShopifyProduct,
-  filterHiddenProducts: boolean = true
+  filterHiddenProducts: boolean = true,
 ) => {
   if (
     !product ||
@@ -228,13 +252,14 @@ const reshapeProduct = (
     return undefined;
   }
 
-  const { images, variants, collections, ...rest } = product;
+  const { images, variants, collections, sellingPlanGroups, ...rest } = product;
 
   return {
     ...rest,
     images: reshapeImages(images, product.title),
     variants: removeEdgesAndNodes(variants),
     collections: collections ? removeEdgesAndNodes(collections) : [],
+    sellingPlanGroups: reshapeSellingPlanGroups(sellingPlanGroups),
   };
 };
 
@@ -294,7 +319,12 @@ export async function ensureActiveCart(): Promise<Cart> {
 }
 
 export async function addToCart(
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: {
+    merchandiseId: string;
+    quantity: number;
+    sellingPlanId?: string;
+    attributes?: { key: string; value: string }[];
+  }[],
 ): Promise<Cart> {
   const cart = await ensureActiveCart();
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
@@ -305,6 +335,28 @@ export async function addToCart(
     },
   });
   return reshapeCart(res.body.data.cartLinesAdd.cart);
+}
+
+export async function updateCartAttributes(
+  attributes: { key: string; value: string }[],
+  cartId?: string,
+): Promise<void> {
+  const id = cartId ?? (await ensureActiveCart()).id;
+  if (!id) {
+    throw new Error("Could not reserve this time.");
+  }
+
+  const res = await shopifyFetch<ShopifyUpdateCartAttributesOperation>({
+    query: updateCartAttributesMutation,
+    variables: {
+      cartId: id,
+      attributes,
+    },
+  });
+  const message = res.body.data.cartAttributesUpdate.userErrors[0]?.message;
+  if (message) {
+    throw new Error(message);
+  }
 }
 
 export async function removeFromCart(lineIds: string[]): Promise<Cart> {
@@ -321,7 +373,7 @@ export async function removeFromCart(lineIds: string[]): Promise<Cart> {
 }
 
 export async function updateCart(
-  lines: { id: string; merchandiseId: string; quantity: number }[]
+  lines: { id: string; merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   const cart = await ensureActiveCart();
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
@@ -358,7 +410,7 @@ export async function getCart(): Promise<Cart | undefined> {
 }
 
 export async function getCollection(
-  handle: string
+  handle: string,
 ): Promise<Collection | undefined> {
   "use cache";
   cacheTag(TAGS.collections);
@@ -389,7 +441,7 @@ export async function getCollectionProducts({
 
   if (!endpoint) {
     console.log(
-      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`
+      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`,
     );
     return [];
   }
@@ -576,7 +628,7 @@ export async function getCollections(): Promise<Collection[]> {
     // Filter out the `hidden` collections.
     // Collections that start with `hidden-*` need to be hidden on the search page.
     ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith("hidden")
+      (collection) => !collection.handle.startsWith("hidden"),
     ),
   ];
 
@@ -649,7 +701,7 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 }
 
 export async function getProductRecommendations(
-  productId: string
+  productId: string,
 ): Promise<Product[]> {
   "use cache";
   cacheTag(TAGS.products);

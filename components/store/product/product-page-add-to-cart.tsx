@@ -2,7 +2,7 @@
 
 import { addVariantToCart } from "components/cart/actions";
 import { useCart } from "components/cart/cart-context";
-import type { Product } from "lib/shopify/types";
+import type { Product, SellingPlan } from "lib/shopify/types";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -11,6 +11,7 @@ export default function ProductPageAddToCart({
   selectedVariantId,
   variantLabel,
   quantity = 1,
+  sellingPlan,
   className,
   onAdded,
 }: {
@@ -18,6 +19,7 @@ export default function ProductPageAddToCart({
   selectedVariantId: string;
   variantLabel: string;
   quantity?: number;
+  sellingPlan?: SellingPlan;
   className: string;
   onAdded?: () => void;
 }) {
@@ -41,9 +43,13 @@ export default function ProductPageAddToCart({
     }
 
     startTransition(async () => {
-      addCartItem(selectedVariant, product, quantityToAdd);
+      addCartItem(selectedVariant, product, quantityToAdd, sellingPlan);
 
-      const result = await addVariantToCart(selectedVariantId, quantityToAdd);
+      const result = await addVariantToCart(
+        selectedVariantId,
+        quantityToAdd,
+        sellingPlan,
+      );
       if (result.error) {
         setError(result.error);
         return;
@@ -79,7 +85,10 @@ export default function ProductPageAddToCart({
             : "Sold Out"}
       </button>
       {error ? (
-        <p className="mt-1 text-xs font-bold uppercase text-red-600" role="alert">
+        <p
+          className="mt-1 text-xs font-bold uppercase text-red-600"
+          role="alert"
+        >
           {error}
         </p>
       ) : null}

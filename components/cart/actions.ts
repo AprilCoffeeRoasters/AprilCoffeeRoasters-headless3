@@ -2,19 +2,21 @@
 
 import { TAGS } from "lib/constants";
 import {
-    addToCart,
-    createCart,
-    getCart,
-    removeFromCart,
-    updateCart,
+  addToCart,
+  createCart,
+  getCart,
+  removeFromCart,
+  updateCart,
 } from "lib/shopify";
+import type { SellingPlan } from "lib/shopify/types";
+import { isShopifySellingPlanId } from "lib/store/subscription-plans";
 import { updateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function addItem(
   prevState: any,
-  selectedVariantId: string | undefined
+  selectedVariantId: string | undefined,
 ) {
   if (!selectedVariantId) {
     return "Error adding item to cart";
@@ -26,7 +28,8 @@ export async function addItem(
 
 export async function addVariantToCart(
   variantId: string,
-  quantity: number = 1
+  quantity: number = 1,
+  sellingPlan?: SellingPlan,
 ): Promise<{ error?: string }> {
   if (!variantId) {
     return { error: "No variant selected" };
@@ -37,7 +40,22 @@ export async function addVariantToCart(
   }
 
   try {
-    await addToCart([{ merchandiseId: variantId, quantity }]);
+    await addToCart([
+      {
+        merchandiseId: variantId,
+        quantity,
+        ...(sellingPlan && isShopifySellingPlanId(sellingPlan.id)
+          ? { sellingPlanId: sellingPlan.id }
+          : {}),
+        ...(sellingPlan
+          ? {
+              attributes: [
+                { key: "Delivery frequency", value: sellingPlan.name },
+              ],
+            }
+          : {}),
+      },
+    ]);
     updateTag(TAGS.cart);
     return {};
   } catch (e) {
@@ -47,7 +65,7 @@ export async function addVariantToCart(
 }
 
 export async function removeCartLine(
-  lineId: string
+  lineId: string,
 ): Promise<{ error?: string }> {
   if (!lineId) {
     return { error: "Missing line id" };
@@ -72,7 +90,7 @@ export async function removeItem(prevState: any, merchandiseId: string) {
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) => line.merchandise.id === merchandiseId,
     );
 
     if (lineItem && lineItem.id) {
@@ -91,7 +109,7 @@ export async function updateItemQuantity(
   payload: {
     merchandiseId: string;
     quantity: number;
-  }
+  },
 ) {
   const { merchandiseId, quantity } = payload;
 
@@ -103,7 +121,7 @@ export async function updateItemQuantity(
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) => line.merchandise.id === merchandiseId,
     );
 
     if (lineItem && lineItem.id) {

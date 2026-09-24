@@ -31,6 +31,13 @@ export type CartItem = {
   cost: {
     totalAmount: Money;
   };
+  attributes?: {
+    key: string;
+    value: string;
+  }[];
+  sellingPlanAllocation?: {
+    sellingPlan: SellingPlan;
+  } | null;
   merchandise: {
     id: string;
     title: string;
@@ -98,13 +105,24 @@ export type ProductCollection = {
   title: string;
 };
 
+export type SellingPlan = {
+  id: string;
+  name: string;
+};
+
+export type SellingPlanGroup = {
+  name: string;
+  sellingPlans: SellingPlan[];
+};
+
 export type Product = Omit<
   ShopifyProduct,
-  "variants" | "images" | "collections"
+  "variants" | "images" | "collections" | "sellingPlanGroups"
 > & {
   variants: ProductVariant[];
   images: Image[];
   collections: ProductCollection[];
+  sellingPlanGroups: SellingPlanGroup[];
 };
 
 export type ProductsPage = {
@@ -181,6 +199,10 @@ export type ShopifyProduct = {
   sizeChart?: ProductMetafield;
   recommendations?: ProductMetafield;
   supplierInformation?: ProductMetafield;
+  sellingPlanGroups?: Connection<{
+    name: string;
+    sellingPlans: Connection<SellingPlan>;
+  }>;
 };
 
 export type ShopifyCartOperation = {
@@ -207,6 +229,8 @@ export type ShopifyAddToCartOperation = {
     lines: {
       merchandiseId: string;
       quantity: number;
+      sellingPlanId?: string;
+      attributes?: { key: string; value: string }[];
     }[];
   };
 };
@@ -220,6 +244,18 @@ export type ShopifyRemoveFromCartOperation = {
   variables: {
     cartId: string;
     lineIds: string[];
+  };
+};
+
+export type ShopifyUpdateCartAttributesOperation = {
+  data: {
+    cartAttributesUpdate: {
+      userErrors: { message: string }[];
+    };
+  };
+  variables: {
+    cartId: string;
+    attributes: { key: string; value: string }[];
   };
 };
 
