@@ -442,6 +442,18 @@ export default function TastingMenuBooking({
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    console.log("[april-tasting-menu]", {
+      handle: product.handle,
+      title: product.title,
+      variantId,
+      variants: product.variants.map((item) => ({
+        id: item.id,
+        title: item.title,
+      })),
+    });
+  }, [product, variantId]);
+
+  useEffect(() => {
     if (!open) return;
 
     let ignore = false;
@@ -450,11 +462,17 @@ export default function TastingMenuBooking({
 
     loadTastingMonth(variantId, month)
       .then((result) => {
+        console.log("[april-tasting-menu] month", { variantId, month, result });
         if (ignore) return;
         setData(result);
         setIsLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("[april-tasting-menu] month failed", {
+          variantId,
+          month,
+          error,
+        });
         if (ignore) return;
         setLoadError(true);
         setIsLoading(false);
@@ -536,6 +554,7 @@ export default function TastingMenuBooking({
         quantity: seats,
         answers: nextAnswers,
       });
+      console.log("[april-tasting-menu] reservation", result);
 
       if (result.error || !result.lineAttributes || !result.checkoutUrl) {
         setSubmitError(result.error ?? "Could not reserve this time.");

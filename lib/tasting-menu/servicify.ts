@@ -203,11 +203,25 @@ async function getTastingEvent(variantId: string) {
   }
 
   const event = (await response.json()) as TastingEvent & {
+    status?: string;
+    message?: string;
     dates?: unknown;
     location?: string;
     minimumAttendeesPerTimeslot?: number;
+    customFields?: number[];
   };
   const employee = event.employees?.[0];
+
+  console.log("[april-tasting-menu] servicify event", {
+    variantId: id,
+    httpStatus: response.status,
+    eventId: event.id ?? null,
+    status: event.status ?? null,
+    message: event.message ?? null,
+    employeeId: employee?.id ?? null,
+    customFields: event.customFields ?? null,
+  });
+
   if (!event.id || !employee) {
     throw new Error("Could not load tasting menu times.");
   }
