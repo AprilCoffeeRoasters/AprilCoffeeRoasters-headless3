@@ -63,7 +63,7 @@ export default function ProductPageClient({
         productGalleryOpen={galleryMode}
         onProductGalleryClose={() => setGalleryMode(false)}
       />
-      <div className="mx-auto h-screen sm:mt-0 mt-3 sm:mb-5 mb-0 w-full max-w-[1400px] overflow-y-auto bg-white">
+      <div className="mx-auto mt-3 mb-0 h-screen w-full max-w-[1400px] overflow-y-auto bg-white sm:mt-0 sm:mb-5 max-md:h-auto max-md:overflow-visible">
         <CategoryNav menuOpen={menuOpen} />
 
         <main

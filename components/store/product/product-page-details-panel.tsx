@@ -130,7 +130,7 @@ export default function ProductPageDetailsPanel({
         className="max-md:hidden"
       />
 
-      <div className="mt-6 w-full max-md:order-3">
+      <div className="mt-6 w-full max-md:order-2">
         {/* Product Details — product description/content */}
         {descriptionLines.length > 0 ? (
           <>
@@ -231,7 +231,7 @@ export default function ProductPageDetailsPanel({
 
       {/* LINKS — lg: after price; mobile: after description */}
       {technicalDetails || sizeChart ? (
-        <div className="mt-5 flex flex-col gap-0 max-md:order-4">
+        <div className="mt-5 flex flex-col gap-0 max-md:order-3">
           {technicalDetails ? (
             <button
               type="button"
@@ -374,26 +374,27 @@ export default function ProductPageDetailsPanel({
               />
             </div>
           </div>
-          {subscriptionPlans.length > 0 ? (
-            <blockquote className="border-l-2 border-[#ff8000] pl-3 text-[13px] leading-snug font-bold italic">
-              <p>
-                <span className="text-[#ff8000]">
-                  Before you Subscribe please note that regardless of when you
-                  subscribe you will be charged again on the 15th. So, if you
-                  want to avoid to be charged twice in your first month. Please
-                  place your order after the 15th.{" "}
-                  <span className="text-[#ff2a00]">
-                    Subscriptions are shipped the first week of the following
-                    month.{" "}
-                    <span className="text-[#ff8000]">
-                      We do not offer VAT free invoices on Subscriptions.
-                    </span>
-                  </span>
-                </span>
-              </p>
-            </blockquote>
-          ) : null}
         </div>
+      ) : null}
+
+      {subscriptionPlans.length > 0 ? (
+        <blockquote className="mt-3 w-full border-l-2 border-[#ff8000] pl-3 text-[13px] leading-snug font-bold italic max-md:order-4 max-md:mt-5">
+          <p>
+            <span className="text-[#ff8000]">
+              Before you Subscribe please note that regardless of when you
+              subscribe you will be charged again on the 15th. So, if you want
+              to avoid to be charged twice in your first month. Please place
+              your order after the 15th.{" "}
+              <span className="text-[#ff2a00]">
+                Subscriptions are shipped the first week of the following
+                month.{" "}
+                <span className="text-[#ff8000]">
+                  We do not offer VAT free invoices on Subscriptions.
+                </span>
+              </span>
+            </span>
+          </p>
+        </blockquote>
       ) : null}
     </div>
   );
