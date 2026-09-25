@@ -209,15 +209,17 @@ export function CoffeeInfoFarmAccordion({ farm }: CoffeeInfoFarmAccordionProps) 
             onToggle={() => toggle(key)}
           >
             <div className="space-y-5">
+            <RecipeBlock
+                title="Lot Information"
+                body={coffee.lotInformation}
+              />
               <RecipeBlock title="Recipe Filter" body={coffee.recipeFilter} />
+            
               <RecipeBlock
                 title="Recipe Espresso"
                 body={coffee.recipeEspresso}
               />
-              <RecipeBlock
-                title="Lot Information"
-                body={coffee.lotInformation}
-              />
+           
             </div>
           </AccordionItem>
         );

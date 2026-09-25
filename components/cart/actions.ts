@@ -1,12 +1,13 @@
 "use server";
 
+import { cartCookieOptions } from "lib/cart-cookie";
 import { TAGS } from "lib/constants";
 import {
-    addToCart,
-    createCart,
-    getCart,
-    removeFromCart,
-    updateCart,
+  addToCart,
+  createCart,
+  getCart,
+  removeFromCart,
+  updateCart,
 } from "lib/shopify";
 import type { SellingPlan } from "lib/shopify/types";
 import { isShopifySellingPlanId } from "lib/store/subscription-plans";
@@ -151,7 +152,7 @@ export async function updateItemQuantity(
 export async function redirectToCheckout() {
   const cart = await getCart();
   if (!cart?.checkoutUrl || cart.lines.length === 0) {
-    (await cookies()).delete("cartId");
+    (await cookies()).delete({ name: "cartId", path: "/" });
     updateTag(TAGS.cart);
     redirect("/cart");
   }
@@ -159,8 +160,8 @@ export async function redirectToCheckout() {
 }
 
 export async function createCartAndSetCookie() {
-  (await cookies()).delete("cartId");
+  (await cookies()).delete({ name: "cartId", path: "/" });
   const cart = await createCart();
-  (await cookies()).set("cartId", cart.id!);
+  (await cookies()).set("cartId", cart.id!, cartCookieOptions);
   updateTag(TAGS.cart);
 }

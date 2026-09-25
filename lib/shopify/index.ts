@@ -1,3 +1,4 @@
+import { cartCookieOptions } from "lib/cart-cookie";
 import {
   COLLECTION_PRODUCTS_PAGE_SIZE,
   HIDDEN_PRODUCT_TAG,
@@ -6,6 +7,7 @@ import {
 } from "lib/constants";
 import { isShopifyError } from "lib/type-guards";
 import { ensureStartsWith } from "lib/utils";
+import { timingSafeEqual } from "node:crypto";
 import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { cookies, headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -196,7 +198,7 @@ const reshapeCollection = (
 
   return {
     ...collection,
-    path: `/search/${collection.handle}`,
+    path: `/collections/${collection.handle}`,
   };
 };
 
@@ -310,11 +312,11 @@ export async function ensureActiveCart(): Promise<Cart> {
     if (cart) {
       return cart;
     }
-    cookieStore.delete("cartId");
+    cookieStore.delete({ name: "cartId", path: "/" });
   }
 
   const cart = await createCart();
-  cookieStore.set("cartId", cart.id!);
+  cookieStore.set("cartId", cart.id!, cartCookieOptions);
   return cart;
 }
 
@@ -802,6 +804,17 @@ export async function getArticle({
   return res.body.data.blog?.articleByHandle ?? null;
 }
 
+function revalidationSecretMatches(provided: string | null): boolean {
+  const expected = process.env.SHOPIFY_REVALIDATION_SECRET;
+  if (!provided || !expected) return false;
+
+  const providedBuffer = Buffer.from(provided);
+  const expectedBuffer = Buffer.from(expected);
+  if (providedBuffer.length !== expectedBuffer.length) return false;
+
+  return timingSafeEqual(providedBuffer, expectedBuffer);
+}
+
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
 export async function revalidate(req: NextRequest): Promise<NextResponse> {
   // We always need to respond with a 200 status code to Shopify,
@@ -817,13 +830,15 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
     "products/update",
   ];
   const topic = (await headers()).get("x-shopify-topic") || "unknown";
-  const secret = req.nextUrl.searchParams.get("secret");
+  const secret =
+    req.nextUrl.searchParams.get("secret") ||
+    req.headers.get("x-shopify-revalidation-secret");
   const isCollectionUpdate = collectionWebhooks.includes(topic);
   const isProductUpdate = productWebhooks.includes(topic);
 
-  if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
+  if (!revalidationSecretMatches(secret)) {
     console.error("Invalid revalidation secret.");
-    return NextResponse.json({ status: 401 });
+    return NextResponse.json({ status: 401 }, { status: 401 });
   }
 
   if (!isCollectionUpdate && !isProductUpdate) {

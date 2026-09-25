@@ -1,7 +1,8 @@
 import type { AdviceArticleDetail } from "lib/advice/advice-article";
+import { sanitizeRichHtml } from "lib/html/sanitize-rich-html";
 import {
-    fetchDatoAdviceDetail,
-    isDatoCmsConfigured,
+  fetchDatoAdviceDetail,
+  isDatoCmsConfigured,
 } from "lib/cms/aprilcoffee-advice";
 import { fetchShopifyArticleDetail } from "lib/advice/shopify-advice";
 import type { Article } from "lib/shopify/types";
@@ -15,7 +16,9 @@ export function shopifyArticleToDetail(article: Article): AdviceArticleDetail {
           altText: article.image.altText || article.title,
         }
       : undefined,
-    contentHtml: article.contentHtml || undefined,
+    contentHtml: article.contentHtml
+      ? sanitizeRichHtml(article.contentHtml)
+      : undefined,
     excerpt: article.excerpt || undefined,
   };
 }

@@ -36,32 +36,7 @@ export default function ShopPage({
       <div className="flex flex-1 grow justify-center pt-0 sm:pt-12">
         <div className="mx-5 flex w-full max-w-5xl">
           <div className="w-full uppercase" aria-label="shop-view">
-            {/* Previous shop header + carousel layout
-            <div className="flex justify-between px-16 pb-6 max-md:px-0 font-bold">
-              <div className="text-[17.6px] md:text-[20px]">{name}</div>
-
-              <div className="text-sm max-md:text-xs">
-                <div>
-                  {address.map((line, lineIndex) => (
-                    <p key={lineIndex}>{line || <span>&nbsp;</span>}</p>
-                  ))}
-                </div>
-
-                {phone ? <p>{phone}</p> : null}
-
-                {timing ? <div>{timing}</div> : null}
-              </div>
-            </div>
-
-            {miscInformationHtml ? (
-              <div
-                className="px-16 pb-6 text-sm max-md:px-0 max-md:text-xs"
-                dangerouslySetInnerHTML={{ __html: miscInformationHtml }}
-              />
-            ) : null}
-
-            <ShopGalleryCarousel images={images} alt={name} />
-            */}
+   
 
             <div className="flex flex-row max-md:flex-col">
               <h1
@@ -71,21 +46,15 @@ export default function ShopPage({
                 {name}
               </h1>
 
-              {hasSidebarInfo ? (
-                <div className="w-1/4 whitespace-pre text-sm font-bold max-md:w-auto max-md:text-xs md:w-auto">
-                  <div>
-                    {address.map((line, lineIndex) => (
-                      <p key={lineIndex}>{line || <span>&nbsp;</span>}</p>
-                    ))}
-                  </div>
-
-                  {phone ? <p>{phone}</p> : null}
-
-                  {timing ? <div>{timing}</div> : null}
-                </div>
-              ) : null}
+           
             </div>
 
+            {miscInformationHtml ? (
+              <div
+                className="mt-3 normal-case font-normal text-sm max-md:text-xs"
+                dangerouslySetInnerHTML={{ __html: miscInformationHtml }}
+              />
+            ) : null}
             {images.length ? (
               <div className="sm:mt-7.5 mt-2.5 grid grid-cols-3 gap-[20px] sm:px-2.5 px-0 max-md:grid-cols-1">
                 {images.map((image, index) => (
@@ -103,13 +72,20 @@ export default function ShopPage({
                 ))}
               </div>
             ) : null}
+               {hasSidebarInfo ? (
+                <div className="mt-8 w-1/4 whitespace-pre text-sm font-bold max-md:w-auto max-md:text-xs md:w-auto">
+                  <div>
+                    {address.map((line, lineIndex) => (
+                      <p key={lineIndex}>{line || <span>&nbsp;</span>}</p>
+                    ))}
+                  </div>
 
-            {miscInformationHtml ? (
-              <div
-                className="mt-10 normal-case font-normal text-sm max-md:text-xs"
-                dangerouslySetInnerHTML={{ __html: miscInformationHtml }}
-              />
-            ) : null}
+                  {phone ? <p>{phone}</p> : null}
+
+                  {timing ? <div>{timing}</div> : null}
+                </div>
+              ) : null}
+
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { sanitizeRichHtml } from "lib/html/sanitize-rich-html";
 import { parseProductDescriptionLines } from "lib/store/parse-product-description";
 
 export type SizeChartMeasurement = {
@@ -38,7 +39,9 @@ function splitBulletText(text: string): string[] {
     .filter(Boolean);
 }
 
-export function parseTechnicalDetails(value: string | null | undefined): ParsedTechnicalDetails | null {
+export function parseTechnicalDetails(
+  value: string | null | undefined,
+): ParsedTechnicalDetails | null {
   if (!value?.trim()) return null;
 
   const trimmed = value.trim();
@@ -47,7 +50,7 @@ export function parseTechnicalDetails(value: string | null | undefined): ParsedT
     const lines = parseProductDescriptionLines("", trimmed);
     return {
       lines,
-      html: trimmed,
+      html: sanitizeRichHtml(trimmed),
     };
   }
 
@@ -74,7 +77,9 @@ export function parseRecipeContent(
   return parseTechnicalDetails(value);
 }
 
-export function parseSizeChart(value: string | null | undefined): ParsedSizeChart | null {
+export function parseSizeChart(
+  value: string | null | undefined,
+): ParsedSizeChart | null {
   if (!value?.trim()) return null;
 
   const trimmed = value.trim();
@@ -105,8 +110,7 @@ export function parseSizeChart(value: string | null | undefined): ParsedSizeChar
           plainText: null,
         };
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
   }

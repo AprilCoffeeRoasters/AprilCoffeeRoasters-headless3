@@ -19,6 +19,34 @@ function escapeAttr(text: string): string {
 
 const linkAttrs = 'target="_blank" rel="noopener"';
 
+function safeHref(url: string): string | null {
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+  if (trimmed.startsWith("/") && !trimmed.startsWith("//")) return trimmed;
+
+  const candidate = /^(https?:|mailto:)/i.test(trimmed)
+    ? trimmed
+    : /^[\w.-]+\.[a-z]{2,}([/?#]|$)/i.test(trimmed)
+      ? `https://${trimmed}`
+      : null;
+  if (!candidate) return null;
+
+  try {
+    const parsed = new URL(candidate);
+    if (
+      parsed.protocol === "http:" ||
+      parsed.protocol === "https:" ||
+      parsed.protocol === "mailto:"
+    ) {
+      return candidate;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 function isUrlOnlyLink(link: DastNode): boolean {
   if (link.type !== "link" || !link.url) return false;
   const label = inlineNodesToHtml(link.children).trim();
@@ -46,8 +74,9 @@ function paragraphToHtml(children: DastNode[] | undefined): string {
       })
       .join("");
 
-    if (label.trim()) {
-      return `<a href="${escapeAttr(last.url)}" ${linkAttrs}>${escapeHtml(label)}</a>`;
+    const href = safeHref(last.url);
+    if (label.trim() && href) {
+      return `<a href="${escapeAttr(href)}" ${linkAttrs}>${escapeHtml(label)}</a>`;
     }
   }
 
@@ -65,8 +94,13 @@ function inlineNodesToHtml(nodes: DastNode[] | undefined): string {
     }
 
     if (node.type === "link" && node.url) {
+      const href = safeHref(node.url);
       const label = inlineNodesToHtml(node.children) || escapeHtml(node.url);
-      html += `<a href="${escapeAttr(node.url)}" ${linkAttrs}>${label}</a>`;
+      if (!href) {
+        html += label;
+        continue;
+      }
+      html += `<a href="${escapeAttr(href)}" ${linkAttrs}>${label}</a>`;
       continue;
     }
 
@@ -98,9 +132,7 @@ function walkDast(nodes: DastNode[] | undefined, parts: string[]) {
   }
 }
 
-export function structuredTextToHtml(
-  value: unknown,
-): string | undefined {
+export function structuredTextToHtml(value: unknown): string | undefined {
   if (!value || typeof value !== "object") return undefined;
 
   const document = (value as { document?: DastNode }).document;
@@ -149,9 +181,7 @@ function walkDastPlain(nodes: DastNode[] | undefined, parts: string[]) {
   }
 }
 
-export function structuredTextToPlain(
-  value: unknown,
-): string | undefined {
+export function structuredTextToPlain(value: unknown): string | undefined {
   if (!value || typeof value !== "object") return undefined;
 
   const document = (value as { document?: DastNode }).document;

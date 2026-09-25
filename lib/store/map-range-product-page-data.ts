@@ -1,4 +1,5 @@
 import type { DatoRangeProductRecord } from "lib/cms/range";
+import { sanitizeRichHtml } from "lib/html/sanitize-rich-html";
 import type { DatoResponsiveImage } from "lib/cms/datocms";
 import { structuredTextToPlain } from "lib/cms/structured-text";
 import type { Product, ProductVariant } from "lib/shopify/types";
@@ -56,7 +57,9 @@ function collectGalleryImages(
   return images;
 }
 
-function descriptionToHtml(description: DatoRangeProductRecord["description"]): string {
+function descriptionToHtml(
+  description: DatoRangeProductRecord["description"],
+): string {
   const plain = structuredTextToPlain(description);
   if (!plain?.trim()) return "";
 
@@ -79,7 +82,7 @@ export function mapRangeProductPageData({
   const cmsDescription = descriptionToHtml(cmsProduct.description);
   const shopifyDescription = shopifyProduct?.descriptionHtml
     ? shopifyProduct.descriptionHtml.replace(/<[^>]+>/g, " ").trim()
-    : shopifyProduct?.description?.trim() ?? "";
+    : (shopifyProduct?.description?.trim() ?? "");
 
   const variants: RangeProductPageVariant[] = shopifyProduct
     ? shopifyProduct.variants.map((variant) => ({
@@ -92,14 +95,19 @@ export function mapRangeProductPageData({
   return {
     handle: cmsProduct.slug,
     rangeSlug,
-    title: (cmsProduct.title || shopifyProduct?.title || cmsProduct.slug).toUpperCase(),
-    descriptionHtml:
+    title: (
+      cmsProduct.title ||
+      shopifyProduct?.title ||
+      cmsProduct.slug
+    ).toUpperCase(),
+    descriptionHtml: sanitizeRichHtml(
       cmsDescription ||
-      shopifyDescription
-        .split(/\n+/)
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .join("<br>"),
+        shopifyDescription
+          .split(/\n+/)
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .join("<br>"),
+    ),
     images: collectGalleryImages(cmsProduct),
     product: shopifyProduct ?? null,
     variants,

@@ -1,4 +1,5 @@
 import { datoCacheTag } from "lib/cms/datocms";
+import { timingSafeEqual } from "node:crypto";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,6 +14,19 @@ const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function webhookSecret(): string | undefined {
   return process.env.DATOCMS_WEBHOOK_SECRET?.trim() || undefined;
+}
+
+function secretMatches(
+  provided: string | undefined,
+  expected: string | undefined,
+): boolean {
+  if (!provided || !expected) return false;
+
+  const providedBuffer = Buffer.from(provided);
+  const expectedBuffer = Buffer.from(expected);
+  if (providedBuffer.length !== expectedBuffer.length) return false;
+
+  return timingSafeEqual(providedBuffer, expectedBuffer);
 }
 
 function readSecret(req: NextRequest): string | undefined {
@@ -61,10 +75,7 @@ function safeRevalidateTag(tag: string): boolean {
   }
 }
 
-function safeRevalidatePath(
-  path: string,
-  type?: "layout" | "page",
-): boolean {
+function safeRevalidatePath(path: string, type?: "layout" | "page"): boolean {
   try {
     if (type) {
       revalidatePath(path, type);
@@ -88,7 +99,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const secret = readSecret(req);
-  if (!secret || secret !== configuredSecret) {
+  if (!secretMatches(secret, configuredSecret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -146,7 +157,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json({
       revalidated: !hasFailures,
-      partial: hasFailures && (revalidatedTags.length > 0 || revalidatedPaths.length > 0),
+      partial:
+        hasFailures &&
+        (revalidatedTags.length > 0 || revalidatedPaths.length > 0),
       slug: slug ?? null,
       revalidatedTags,
       revalidatedPaths,
