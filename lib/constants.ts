@@ -172,6 +172,11 @@ export const socialLinks: LandingLink[] = [
     external: false,
   },
   {
+    label: "Job Openings",
+    href: "https://docs.google.com/forms/d/e/1FAIpQLSfKOBr8dWgGLlq7yNqGcYMI4ZgEaSBP2nXOC--4khnQYQ1QyA/viewform?usp=send_form&urp=gmail_link",
+    external: true,
+  },
+  {
     label: "Tasting Menu Booking",
     href: "/product/april-tasting-menu",
     external: false,
