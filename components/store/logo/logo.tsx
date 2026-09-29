@@ -4,7 +4,6 @@ import {
   TriFergSvg,
   triFergLogoFromMarkId,
 } from "components/store/logo/landing-logos";
-import CustomerAccountLink from "components/store/layout/customer-account-link";
 import StoreCart from "components/store/store-cart";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -75,9 +74,7 @@ export default function Logo({
       aria-label="header"
       className="mx-auto flex max-w-(--breakpoint-xl) py-0.5 text-center ease-out duration-300 max-md:sticky max-md:top-0 max-md:z-50 max-md:w-full max-md:py-1.5  md:w-[90%] max-md:pb-2 md:pb-4 lg:w-[70%]"
     >
-      <div className="flex w-4/12 items-center pl-4 uppercase max-md:invisible max-md:hidden">
-        <CustomerAccountLink className="type-h2 text-left text-sm leading-[18px] text-standard-grey no-underline outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame active:text-active" />
-      </div>
+      <div className="w-4/12 max-md:invisible max-md:hidden" />
 
       <div className="w-4/12 max-md:w-1/2 max-md:text-left">
         <Link
