@@ -13,9 +13,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-const TERMS_URL =
-  "https://www.aprilcoffeeroasters.com/policies/terms-of-service";
-
 function CartLineRow({ line }: { line: CartItem }) {
   const variantLabel =
     line.merchandise.title === DEFAULT_OPTION ? "" : line.merchandise.title;
@@ -123,7 +120,7 @@ function CartLineRow({ line }: { line: CartItem }) {
   );
 }
 
-export default function CartPageClient() {
+export default function CartPageClient({ termsUrl }: { termsUrl: string }) {
   const { cart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -215,7 +212,7 @@ export default function CartPageClient() {
                           <a
                             className="underline"
                             aria-label="terms-and-conditions"
-                            href={TERMS_URL}
+                            href={termsUrl}
                             target="_blank"
                             rel="noreferrer"
                           >

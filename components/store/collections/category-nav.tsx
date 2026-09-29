@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "components/cart/cart-context";
+import CustomerAccountLink from "components/store/layout/customer-account-link";
 import { collectionCategories } from "lib/store/collection-categories";
 import Link from "next/link";
 
@@ -45,6 +46,9 @@ export default function CategoryNav({
             </li>
           );
         })}
+        <li aria-label="menu-item-account" className="md:hidden">
+          <CustomerAccountLink className="type-h2 ml-auto block w-fit text-sm leading-[18px] text-standard-grey no-underline outline outline-[2pt] outline-transparent outline-offset-2 transition duration-150 ease-in-out hover:outline-hover-frame active:text-active max-md:ml-0 max-md:py-2" />
+        </li>
         {showCart ? (
           <li aria-label="menu-item-cart">
             <Link

@@ -1,5 +1,6 @@
 "use client";
 
+import CustomerAccountLink from "components/store/layout/customer-account-link";
 import { defaultTriFergNav } from "lib/constants";
 import type { LandingLink } from "lib/landing-types";
 import Image from "next/image";
@@ -88,6 +89,11 @@ export default function Header({
                 )}
               </h2>
             ))}
+            {landing ? null : (
+              <h2 className="header-nav-item type-h2">
+                <CustomerAccountLink />
+              </h2>
+            )}
           </nav>
           <button
             type="button"
@@ -175,6 +181,14 @@ export default function Header({
               )}
             </li>
           ))}
+          {landing ? null : (
+            <li data-testid="menu-item-login / my account">
+              <CustomerAccountLink
+                className={mobileLinkClass}
+                onClick={closeMenu}
+              />
+            </li>
+          )}
         </ul>
       </nav>
     </>
