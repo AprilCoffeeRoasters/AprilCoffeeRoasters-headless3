@@ -161,7 +161,7 @@ h-[calc(100vh-30px)]
         >
           {initialProducts.length === 0 ? (
             <p className="py-10 text-center text-sm font-bold uppercase">
-              No products available. Check Shopify configuration.
+  This collection is currently empty. We’re working on bringing something new your way — please check back soon.
             </p>
           ) : (
             <>
