@@ -9,7 +9,7 @@ export async function GET() {
     return NextResponse.redirect(getShopifyCustomerAccountUrl(), 307);
   } catch {
     return NextResponse.json(
-      { error: "SHOPIFY_SHOP_DOMAIN is not configured" },
+      { error: "SHOPIFY_STORE_DOMAIN is not configured" },
       { status: 500 },
     );
   }
