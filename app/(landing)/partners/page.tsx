@@ -41,10 +41,12 @@ export default async function PartnersPage() {
       >
         <div className="flex w-full min-w-0 flex-1 grow justify-center pt-0 sm:pt-12">
           <div className="mx-5 flex w-full min-w-0 max-w-5xl">
-            <PartnersFeed
-              initialPartners={feed.partners}
-              initialMetadata={feed.partnersMetadata}
-            />
+            <div className="block min-w-0 w-full">
+              <PartnersFeed
+                initialPartners={feed.partners}
+                initialMetadata={feed.partnersMetadata}
+              />
+            </div>
           </div>
         </div>
       </main>
