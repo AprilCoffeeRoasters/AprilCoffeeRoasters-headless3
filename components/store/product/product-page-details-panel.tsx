@@ -1,23 +1,23 @@
 "use client";
 
 import ProductPageAddToCart from "components/store/product/product-page-add-to-cart";
-import TastingMenuBooking from "components/store/product/tasting-menu-booking";
-import { TASTING_MENU_HANDLE } from "lib/constants";
 import ProductPageHeader from "components/store/product/product-page-header";
 import ProductPageMetafieldBody from "components/store/product/product-page-metafield-body";
 import ProductPageQuantityInput from "components/store/product/product-page-quantity-input";
-import SubscribeAndSave from "components/store/product/subscribe-and-save";
 import type { ProductPageVariant } from "components/store/product/product-page-types";
+import SubscribeAndSave from "components/store/product/subscribe-and-save";
+import TastingMenuBooking from "components/store/product/tasting-menu-booking";
+import { TASTING_MENU_HANDLE } from "lib/constants";
 import type { Product } from "lib/shopify/types";
-import {
-  getSubscriptionGroupName,
-  getSubscriptionPlans,
-} from "lib/store/subscription-plans";
 import type {
   ParsedRecipeContent,
   ParsedSizeChart,
   ParsedTechnicalDetails,
 } from "lib/store/parse-product-metafields";
+import {
+  getSubscriptionGroupName,
+  getSubscriptionPlans,
+} from "lib/store/subscription-plans";
 import { useState } from "react";
 
 type ProductPageDetailsPanelProps = {
@@ -230,7 +230,7 @@ export default function ProductPageDetailsPanel({
       </div>
 
       {/* LINKS — lg: after price; mobile: after description */}
-      {technicalDetails || sizeChart ? (
+      {/* {technicalDetails || sizeChart ? (
         <div className="mt-5 flex flex-col gap-0 max-md:order-3">
           {technicalDetails ? (
             <button
@@ -254,7 +254,7 @@ export default function ProductPageDetailsPanel({
             </button>
           ) : null}
         </div>
-      ) : null}
+      ) : null} */}
 
       {/* ACTIONS — mobile: first after product image */}
       {product.handle === TASTING_MENU_HANDLE ? (
