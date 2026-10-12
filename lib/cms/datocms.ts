@@ -2,6 +2,43 @@ import { gql } from "graphql-request";
 
 const endpoint = "https://graphql.datocms.com/";
 const DATO_CACHE_TAG = "datocms";
+const MAX_ATTEMPTS = 4;
+const MAX_CONCURRENT_REQUESTS = 2;
+
+let activeRequests = 0;
+const requestWaiters: Array<() => void> = [];
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function acquireRequestSlot(): Promise<void> {
+  if (activeRequests < MAX_CONCURRENT_REQUESTS) {
+    activeRequests += 1;
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    requestWaiters.push(() => {
+      activeRequests += 1;
+      resolve();
+    });
+  });
+}
+
+function releaseRequestSlot(): void {
+  activeRequests -= 1;
+  requestWaiters.shift()?.();
+}
+
+function retryDelayMs(response: Response, attempt: number): number {
+  const resetSeconds = Number(response.headers.get("x-ratelimit-reset"));
+  if (Number.isFinite(resetSeconds) && resetSeconds >= 0) {
+    return Math.min(resetSeconds * 1000, 15_000);
+  }
+
+  return Math.min(1000 * 2 ** (attempt - 1), 8_000);
+}
 
 export type DatoResponsiveImage = {
   src: string;
@@ -72,38 +109,59 @@ export async function datoRequest<T>(
     throw new Error("DATOCMS_API_TOKEN is not configured");
   }
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      "X-Cache-Tags": "true",
-    },
-    body: JSON.stringify({ query, variables }),
-  });
+  let status = 0;
 
-  if (!response.ok) {
-    throw new Error(`DatoCMS request failed: ${response.status}`);
-  }
-
-  const json = (await response.json()) as {
-    data?: T;
-    errors?: Array<{ extensions?: { code?: string }; message?: string }>;
-  };
-
-  if (json.errors?.length) {
-    const error = new Error("DatoCMS GraphQL error");
-    (error as { response?: unknown }).response = { errors: json.errors };
-    if (process.env.NODE_ENV === "development") {
-      console.error(
-        "DatoCMS GraphQL error:",
-        JSON.stringify(json.errors, null, 2),
-      );
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    await acquireRequestSlot();
+    let response: Response;
+    try {
+      response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "X-Cache-Tags": "true",
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+    } finally {
+      releaseRequestSlot();
     }
-    throw error;
+
+    status = response.status;
+
+    if (response.ok) {
+      const json = (await response.json()) as {
+        data?: T;
+        errors?: Array<{ extensions?: { code?: string }; message?: string }>;
+      };
+
+      if (json.errors?.length) {
+        const error = new Error("DatoCMS GraphQL error");
+        (error as { response?: unknown }).response = { errors: json.errors };
+        if (process.env.NODE_ENV === "development") {
+          console.error(
+            "DatoCMS GraphQL error:",
+            JSON.stringify(json.errors, null, 2),
+          );
+        }
+        throw error;
+      }
+
+      return json.data as T;
+    }
+
+    const limited = status === 429 || status === 509;
+    if (!limited || attempt === MAX_ATTEMPTS) {
+      throw new Error(`DatoCMS request failed: ${status}`);
+    }
+
+    const delay = retryDelayMs(response, attempt);
+    console.warn(`DatoCMS limit reached (${status}), retrying in ${delay}ms`);
+    await sleep(delay);
   }
 
-  return json.data as T;
+  throw new Error(`DatoCMS request failed: ${status}`);
 }
 
 export async function getAllArticles(): Promise<DatoArticleRecord[]> {
@@ -130,11 +188,7 @@ export async function getArticlesPage(options: {
   const query = gql`
     ${articleFields}
     query ArticlesPage($first: IntType!, $skip: IntType!) {
-      allArticles(
-        first: $first
-        skip: $skip
-        orderBy: _updatedAt_DESC
-      ) {
+      allArticles(first: $first, skip: $skip, orderBy: _updatedAt_DESC) {
         ...ArticleFields
       }
       _allArticlesMeta {
