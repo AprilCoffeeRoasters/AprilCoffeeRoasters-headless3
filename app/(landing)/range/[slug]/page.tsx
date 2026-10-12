@@ -1,11 +1,7 @@
 import Footer from "components/store/layout/footer";
 import Header from "components/store/layout/header";
 import RangePage from "components/store/range/range-page";
-import {
-  getAllRanges,
-  getRangeBySlug,
-  isDatoCmsConfigured,
-} from "lib/cms/range";
+import { getAllRanges, getRangeBySlug, isDatoCmsConfigured } from "lib/cms/range";
 import { FALLBACK_STATIC_PARAMS } from "lib/constants";
 import { getLandingPageData } from "lib/get-landing-page";
 import type { Metadata } from "next";
@@ -27,12 +23,12 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata(props: {
+export async function generateMetadata(props: { 
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await props.params;
 
-  if (slug === FALLBACK_STATIC_PARAMS[0]?.slug || !isDatoCmsConfigured()) {
+  if (!isDatoCmsConfigured()) {
     return { title: "Range" };
   }
 
@@ -44,8 +40,7 @@ export async function generateMetadata(props: {
 
     return {
       title: range.seo?.title ?? range.title,
-      description:
-        range.seo?.description ?? range.shortDescription ?? undefined,
+      description: range.seo?.description ?? range.shortDescription ?? undefined,
     };
   } catch {
     return { title: "Range" };
@@ -57,7 +52,7 @@ export default async function RangeDetailPage(props: {
 }) {
   const { slug } = await props.params;
 
-  if (!isDatoCmsConfigured() || slug === FALLBACK_STATIC_PARAMS[0]?.slug) {
+  if (!isDatoCmsConfigured()) {
     notFound();
   }
 
