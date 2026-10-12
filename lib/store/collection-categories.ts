@@ -8,7 +8,6 @@ export const collectionCategories = [
   { label: "Coffee Subscriptions", handle: "coffee-subscriptions" },
   { label: "Sample Box", handle: "samplebox" },
   { label: "Filter Drip Packs", handle: "filter-drip-packs" },
-  { label: "Compostable Capsules", handle: "compostable-capsules" },
   { label: "Brewers", handle: "brewers" },
   { label: "Paper Filter", handle: "paper-filter" },
   { label: "Cups & Mugs", handle: "cupsandmugs" },
